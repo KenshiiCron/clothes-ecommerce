@@ -7,14 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 class Brand extends Model
 {
     protected $fillable = [
-        'name', 'slug', 'description', 'image',
+        'name',
+        'slug',
+        'description',
+        'featured',
+        'image',
     ];
 
     protected $appends = ['image_url'];
 
+    protected $casts = ['featured' => 'boolean'];
+
     public function getImageUrlAttribute()
     {
-        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/admin/images/default-150x150.png');
+        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/category-d-1.jpg');
     }
 
 

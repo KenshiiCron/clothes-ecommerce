@@ -4,22 +4,22 @@
 namespace App\Repositories;
 
 
-use App\Contracts\CarouselContract;
-use App\Models\Carousel;
+use App\Contracts\BrandContract;
+use App\Models\Brand;
 use app\Traits\UploadAble;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 
-class BrandRepository extends BaseRepositories implements CarouselContract
+class BrandRepository extends BaseRepositories implements BrandContract
 {
     use UploadAble;
 
     /**
-     * @param Carousel $model
+     * @param Brand $model
      * @param array $filters
      */
     #[Pure]
-    public function __construct(Carousel $model, array $filters = [
+    public function __construct(Brand $model, array $filters = [
         \App\QueryFilter\Search::class,
     ])
     {

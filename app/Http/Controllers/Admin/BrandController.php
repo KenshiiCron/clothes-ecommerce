@@ -2,19 +2,41 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\BrandContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Models\Brand;
+use Inertia\Inertia;
 
 class BrandController extends Controller
 {
+    /**
+     * @var BrandContract
+     */
+    protected BrandContract $brand;
+
+    /**
+     * @param BrandContract $brand
+     */
+    public function __construct(BrandContract $brand)
+    {
+        $this->brand = $brand;
+
+//        $this->middleware(['permission:view-list-brand'])->only(['index']);
+//        $this->middleware(['permission:view-brand'])->only(['show']);
+//        $this->middleware(['permission:edit-brand'])->only(['edit', 'update']);
+//        $this->middleware(['permission:create-brand'])->only(['create', 'store']);
+//        $this->middleware(['permission:delete-brand'])->only(['destroy']);
+    }
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $brands = $this->brand->findByFilter();
+        return Inertia::render('brands/index', compact('brands'));
     }
 
     /**

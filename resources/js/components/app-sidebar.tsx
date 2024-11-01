@@ -1,12 +1,14 @@
 "use client"
 
 import * as React from "react"
+
 import {
     Command,
-    Frame, Home,
-    LifeBuoy,
-    Send,
-    SquareTerminal,
+    Home,
+    LibraryBig,
+    Settings,
+    Users,
+    LayoutGrid,
     ShoppingBag,
 } from "lucide-react"
 
@@ -16,13 +18,15 @@ import {NavUser} from "@/components/nav-user"
 import {
     Sidebar,
     SidebarContent,
-    SidebarFooter,
+    SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel,
     SidebarHeader,
     SidebarMenu,
     SidebarMenuButton,
     SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
 import {Link, usePage} from "@inertiajs/react";
+
 import {PageProps} from "@/types";
 
 const data = {
@@ -46,20 +50,26 @@ const data = {
         {
             title: "Categories",
             url: "/admin/categories",
-            icon: SquareTerminal,
+            icon: LayoutGrid,
+            isActive: false,
+        },
+        {
+            title: "Brands",
+            url: "/admin/brands",
+            icon: LibraryBig,
             isActive: false,
         },
     ],
     navSecondary: [
         {
-            title: "Support",
+            title: "Settings",
             url: "#",
-            icon: LifeBuoy,
+            icon: Settings,
         },
         {
-            title: "Feedback",
+            title: "Roles",
             url: "#",
-            icon: Send,
+            icon: Users,
         },
     ],
 }

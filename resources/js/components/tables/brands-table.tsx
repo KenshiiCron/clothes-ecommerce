@@ -1,4 +1,5 @@
 import * as React from "react";
+
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -11,10 +12,11 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {ArrowUpDown, ChevronDown, MoreHorizontal} from "lucide-react";
+
+import {Button} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -24,7 +26,9 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Input } from "@/components/ui/input";
+
+import {Input} from "@/components/ui/input";
+
 import {
     Table,
     TableBody,
@@ -33,10 +37,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch"
-import { PageProps } from "@/types";
 
-export type Category = {
+import {Switch} from "@/components/ui/switch"
+import {PageProps} from "@/types";
+
+export type Brand = {
     id: string;
     name: string;
     image_url: string;
@@ -47,10 +52,10 @@ export type Category = {
     updated_at: string;
 };
 
-export const columns: ColumnDef<Category>[] = [
+export const columns: ColumnDef<Brand>[] = [
     {
         id: "select",
-        header: ({ table }) => (
+        header: ({table}) => (
             <Checkbox
                 checked={
                     table.getIsAllPageRowsSelected() ||
@@ -60,7 +65,7 @@ export const columns: ColumnDef<Category>[] = [
                 aria-label="Select all"
             />
         ),
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -73,53 +78,54 @@ export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: "image_url",
         header: 'Image',
-        cell: ({ row }) => <div>
+        cell: ({row}) => <div>
             <img src={row.getValue("image_url")} alt="image" className="w-10 h-10 object-cover"/>
-            </div>,
+        </div>,
     },
     {
         accessorKey: "name",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+        cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
         accessorKey: "created_at",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
                     Created at
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => <div className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
+        cell: ({row}) => <div
+            className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
     },
     {
         accessorKey: "featured",
         header: "Featured",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="capitalize">
-                <Switch value={row.getValue("featured")}/>
+                <Switch value={row.getValue("featured")} />
             </div>
         ),
     },
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const payment = row.original;
 
             return (
@@ -127,7 +133,7 @@ export const columns: ColumnDef<Category>[] = [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreHorizontal className="h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -137,7 +143,7 @@ export const columns: ColumnDef<Category>[] = [
                         >
                             Copy payment ID
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem>View customer</DropdownMenuItem>
                         <DropdownMenuItem>View payment details</DropdownMenuItem>
                     </DropdownMenuContent>
@@ -148,17 +154,17 @@ export const columns: ColumnDef<Category>[] = [
 ];
 
 interface DataTableDemoProps {
-    categories: Category[];
+    brands: Brand[];
 }
 
-export default function DataTableDemo({ categories }: DataTableDemoProps) {
+export default function DataTableDemo({brands}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data: categories,
+        data: brands,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -180,7 +186,7 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter categories..."
+                    placeholder="Filter brands..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
                         table.getColumn("name")?.setFilterValue(event.target.value)
@@ -190,7 +196,7 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown className="ml-2 h-4 w-4" />
+                            Columns <ChevronDown className="ml-2 h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">

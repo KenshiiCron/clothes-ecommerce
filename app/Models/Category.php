@@ -11,11 +11,14 @@ class Category extends Model
         'slug',
         'description',
         'parent_id',
+        'featured',
         'image',
         'order'
     ];
 
     protected $appends = ['image_url'];
+
+    protected $casts = ['featured' => 'boolean'];
 
     public function getImageUrlAttribute()
     {
