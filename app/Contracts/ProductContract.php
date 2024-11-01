@@ -2,7 +2,7 @@
 
 namespace App\Contracts;
 
-interface CategoryContract extends Base\CrudContract
+interface ProductContract extends Base\CrudContract
 {
     public function new(array $data);
 

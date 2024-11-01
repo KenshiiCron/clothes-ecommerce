@@ -28,18 +28,12 @@ abstract class BaseRepositories implements CrudContract
             $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
         }
 
-        if ($model AND $user) {
-            activity()
-                ->causedBy($user)
-                ->performedOn($model)
-                ->event('store')
-                ->log('created: '. $model);
-        }
+
 
         return $this->model::create($data);
     }
 
-    public function update($model,array $data, $user = null)
+    public function update($model,array $data )
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
@@ -52,19 +46,12 @@ abstract class BaseRepositories implements CrudContract
             $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
         }
 
-        if ($model AND $user) {
-            activity()
-                ->causedBy($user)
-                ->performedOn($model)
-                ->event('update')
-                ->log('updated: '. $model);
-        }
 
         $model->update($data);
         return $model->refresh();
     }
 
-    public function destroy($model, $user = null)
+    public function destroy($model)
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
@@ -74,13 +61,6 @@ abstract class BaseRepositories implements CrudContract
         }
 
 
-        if ($model AND $user) {
-            activity()
-                ->causedBy($user)
-                ->performedOn($model)
-                ->event('destroy')
-                ->log('deleted: '. $model);
-        }
 
         return $model ->delete();
     }
