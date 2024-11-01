@@ -30,3 +30,5 @@ use Inertia\Inertia;
 //Route::get('/categories', [\App\Http\Controllers\Admin\CategoryController::class, 'index'])->name('categories.index');
 //
 //require __DIR__.'/auth.php';
+
+Route::get('locale/{locale}', [\App\Http\Controllers\User\WebsiteController::class, 'switchLocale'])->name('switchLocale');

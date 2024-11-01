@@ -1,0 +1,25 @@
+<?php
+ return [
+     "models" => [
+         "user" => "{1}User|[2.*]Users",
+         "admin" => "{1}Admin|[2.*]Admins",
+         "brand" => "{1}Brand|[2.*]Brands",
+         "category" => "{1}Category|[2.*]Categories",
+         "product" => "{1}Product|[2.*]Products",
+         "order" => "{1}Order|[2.*]Orders",
+         "attribute" => "{1}Attribute|[2.*]Attributes",
+         "value" => "{1}Value|[2.*]Values",
+         "permission" => "{1}Permission|[2.*]permissions",
+         "log" => "{1}Log|[2.*]Logs",
+         "setting" => "{1}Setting|[2.*]Settings",
+     ],
+     "enum" => [
+         "order" => [
+             "state" => [
+                 0 => "Pending",
+                 1 => "Confirmed",
+                 2 => "Cancelled",
+             ],
+         ]
+     ]
+ ];

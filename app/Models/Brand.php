@@ -18,8 +18,8 @@ class Brand extends Model
     }
 
 
-    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
-    {
-        return $this->hasMany(Product::class);
-    }
+//    public function products(): \Illuminate\Database\Eloquent\Relations\HasMany
+//    {
+//        return $this->hasMany(Product::class);
+//    }
 }
