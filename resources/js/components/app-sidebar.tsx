@@ -41,7 +41,7 @@ const data = {
             title: "Products",
             url: "/admin/products",
             icon: ShoppingBag,
-            isActive: false,
+            isActive: true,
         },
         {
             title: "Categories",

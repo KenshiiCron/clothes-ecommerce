@@ -1,4 +1,4 @@
-import * as React from "react"
+import * as React from "react";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -10,11 +10,11 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+} from "@tanstack/react-table";
+import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -23,8 +23,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
     Table,
     TableBody,
@@ -32,21 +32,19 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-
-const data: Category[] = [
-    {
-        id: "m5gr84i9",
-        name: "Category 1",
-        status: "active",
-    },
-]
+} from "@/components/ui/table";
+import { Switch } from "@/components/ui/switch"
+import { PageProps } from "@/types";
 
 export type Category = {
-    id: string
-    name : string
-    status: "active" | "inactive"
-}
+    id: string;
+    name: string;
+    image_url: string;
+    slug: string;
+    description: string;
+    created_at: string;
+    updated_at: string;
+};
 
 export const columns: ColumnDef<Category>[] = [
     {
@@ -72,11 +70,11 @@ export const columns: ColumnDef<Category>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "status",
-        header: "Status",
-        cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
-        ),
+        accessorKey: "image_url",
+        header: 'Image',
+        cell: ({ row }) => <div>
+            <img src={row.getValue("image_url")} alt="image" className="w-10 h-10"/>
+            </div>,
     },
     {
         accessorKey: "name",
@@ -89,15 +87,39 @@ export const columns: ColumnDef<Category>[] = [
                     Name
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
-            )
+            );
         },
         cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+    },
+    {
+        accessorKey: "created_at",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Created at
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
+        },
+        cell: ({ row }) => <div className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
+    },
+    {
+        accessorKey: "state",
+        header: "State",
+        cell: ({ row }) => (
+            <div className="capitalize">
+                <Switch />
+            </div>
+        ),
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const payment = row.original
+            const payment = row.original;
 
             return (
                 <DropdownMenu>
@@ -119,22 +141,23 @@ export const columns: ColumnDef<Category>[] = [
                         <DropdownMenuItem>View payment details</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            )
+            );
         },
     },
-]
+];
 
-export default function DataTableDemo() {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
+interface DataTableDemoProps {
+    categories: Category[];
+}
+
+export default function DataTableDemo({ categories }: DataTableDemoProps) {
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data,
+        data: categories,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -150,16 +173,16 @@ export default function DataTableDemo() {
             columnVisibility,
             rowSelection,
         },
-    })
+    });
 
     return (
         <div className="w-full">
             <div className="flex items-center py-4">
                 <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
+                    placeholder="Filter categories..."
+                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
                     onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
+                        table.getColumn("name")?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
@@ -185,7 +208,7 @@ export default function DataTableDemo() {
                                     >
                                         {column.id}
                                     </DropdownMenuCheckboxItem>
-                                )
+                                );
                             })}
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -205,7 +228,7 @@ export default function DataTableDemo() {
                                                     header.getContext()
                                                 )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -265,5 +288,5 @@ export default function DataTableDemo() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

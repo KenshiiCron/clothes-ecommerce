@@ -11,7 +11,7 @@ export default function Categories({categories}: PageProps<{ categories: any }>)
             header="Categories"
         >
             <Head title="Categories" />
-            <CategoryTable />
+            <CategoryTable categories={categories.data}/>
         </AuthenticatedLayout>
     );
 }
