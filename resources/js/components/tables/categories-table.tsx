@@ -11,7 +11,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react";
+import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -35,11 +35,13 @@ import {
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch"
 import { PageProps } from "@/types";
+import {Link} from "@inertiajs/react";
 
 export type Category = {
     id: string;
     name: string;
     image_url: string;
+    state: number;
     slug: string;
     featured: boolean;
     description: string;
@@ -73,12 +75,13 @@ export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: "image_url",
         header: 'Image',
-        cell: ({ row }) => <div>
-            <img src={row.getValue("image_url")} alt="image" className="w-10 h-10 object-cover"/>
+        cell: ({ row }) => <div style={{ padding: "16px", textAlign: "center" }}>
+            <img style={{ width: "60px", height: "60px", borderRadius: "8px", objectFit: "cover" }} src={row.getValue("image_url")} alt="image" className="w-10 h-10"/>
             </div>,
     },
     {
         accessorKey: "name",
+
         header: ({ column }) => {
             return (
                 <Button
@@ -108,11 +111,11 @@ export const columns: ColumnDef<Category>[] = [
         cell: ({ row }) => <div className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
     },
     {
-        accessorKey: "featured",
-        header: "Featured",
+        accessorKey: "state",
+        header: "State",
         cell: ({ row }) => (
             <div className="capitalize">
-                <Switch value={row.getValue("featured")}/>
+                <Switch checked={row.getValue("state") === 1} />
             </div>
         ),
     },
@@ -120,7 +123,7 @@ export const columns: ColumnDef<Category>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const payment = row.original;
+            const category = row.original;
 
             return (
                 <DropdownMenu>
@@ -132,14 +135,18 @@ export const columns: ColumnDef<Category>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
-                        </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        {/*<DropdownMenuItem*/}
+                        {/*    onClick={() => navigator.clipboard.writeText(payment.id)}*/}
+                        {/*>*/}
+                        {/*    Copy payment ID*/}
+                        {/*</DropdownMenuItem>*/}
+                        {/*<DropdownMenuSeparator />*/}
+                        <DropdownMenuItem asChild>
+                            <Link href={route('admin.categories.edit', category.id)}>
+                                <p>Edit category</p>
+                            </Link>
+                            </DropdownMenuItem>
+                        <DropdownMenuItem>View category</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -178,7 +185,15 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
 
     return (
         <div className="w-full">
-            <div className="flex items-center py-4">
+            <div className="flex justify-between items-center py-4">
+                <Button
+                asChild
+                >
+                    <Link href={route('admin.categories.create')}>
+                        <p>Create</p>
+                        <PlusCircleIcon className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
                 <Input
                     placeholder="Filter categories..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -187,32 +202,32 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
                     }
                     className="max-w-sm"
                 />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown className="ml-2 h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                );
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                {/*<DropdownMenu>*/}
+                {/*    <DropdownMenuTrigger asChild>*/}
+                {/*        <Button variant="outline" className="ml-auto">*/}
+                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
+                {/*        </Button>*/}
+                {/*    </DropdownMenuTrigger>*/}
+                {/*    <DropdownMenuContent align="end">*/}
+                {/*        {table*/}
+                {/*            .getAllColumns()*/}
+                {/*            .filter((column) => column.getCanHide())*/}
+                {/*            .map((column) => {*/}
+                {/*                return (*/}
+                {/*                    <DropdownMenuCheckboxItem*/}
+                {/*                        key={column.id}*/}
+                {/*                        className="capitalize"*/}
+                {/*                        checked={column.getIsVisible()}*/}
+                {/*                        onCheckedChange={(value) =>*/}
+                {/*                            column.toggleVisibility(!!value)*/}
+                {/*                        }*/}
+                {/*                    >*/}
+                {/*                        {column.id}*/}
+                {/*                    </DropdownMenuCheckboxItem>*/}
+                {/*                );*/}
+                {/*            })}*/}
+                {/*    </DropdownMenuContent>*/}
+                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>

@@ -40,7 +40,7 @@ class CategoryController extends Controller
      */
     public function create()
     {
-        return view('admin.pages.categories.create');
+        return Inertia::render('categories/create');
     }
 
     /**
@@ -50,7 +50,6 @@ class CategoryController extends Controller
     {
         $data = $request->validated();
         $category = $this->category->new($data);
-        session()->flash('success',__('messages.flash.success'));
         return redirect()->route('admin.categories.index');
     }
 
@@ -69,15 +68,17 @@ class CategoryController extends Controller
     public function edit($id)
     {
         $category = $this->category->findOneById($id);
-        return view('admin.pages.categories.edit',compact('category'));
+        return Inertia::render('categories/edit',compact('category'));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCategoryRequest $request, Category $category)
+    public function update($id,UpdateCategoryRequest $request)
     {
-        //
+        dd($request->validated());
+        $category = $this->category->update($id,$request->validated());
+        return redirect()->route('admin.categories.index');
     }
 
     /**

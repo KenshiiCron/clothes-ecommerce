@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('parent_id')->nullable()->constrained('categories')->onDelete('set null')->onUpdate('cascade');
             $table->string('slug');
             $table->string('description');
+            $table->integer('state');
             $table->boolean('featured')->default(false);
             $table->timestamps();
         });

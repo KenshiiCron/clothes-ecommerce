@@ -13,7 +13,8 @@ class Category extends Model
         'parent_id',
         'featured',
         'image',
-        'order'
+        'order',
+        'state'
     ];
 
     protected $appends = ['image_url'];
@@ -22,6 +23,6 @@ class Category extends Model
 
     public function getImageUrlAttribute()
     {
-        return $this->image ? asset('storage/'.$this->image) : asset('assets/front/images/category-d-1.jpg');
+        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/category-d-1.jpg');
     }
 }
