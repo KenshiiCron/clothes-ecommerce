@@ -65,7 +65,7 @@
                                 id="image"
                                 type="file"
                                 placeholder="Image url"
-                                onChange={(e) => setData('image', e.target.files[0])}
+                               // onChange={(e) => setData('image', e.target.files[0])}
                                 required
                             />
                             <InputError message={errors.image} />

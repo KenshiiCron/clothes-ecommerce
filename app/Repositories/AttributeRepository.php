@@ -4,9 +4,9 @@
 namespace App\Repositories;
 
 
-use App\Contracts\CategoryContract;
+
+use App\Contracts\AttributeContract;
 use App\Models\Attribute;
-use App\Models\Category;
 use app\Traits\UploadAble;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
@@ -34,9 +34,10 @@ class AttributeRepository extends BaseRepositories implements AttributeContract
         {
             $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image');
         }
-        $data['slug'] = Str::slug($data['name']);
         return $this->model::create($data);
     }
+
+
 
 
 }

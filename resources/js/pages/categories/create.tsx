@@ -65,7 +65,7 @@ export default function Create() {
                             id="image"
                             type="file"
                             placeholder="Image url"
-                            onChange={(e) => setData('image', e.target.files[0])}
+                           // onChange={(e) => setData('image', e.target.files[0])}
                             required
                         />
                         <InputError message={errors.image} />
@@ -80,7 +80,7 @@ export default function Create() {
                                 <SelectItem value="1">Active</SelectItem>
                                 <SelectItem value="0">Inactive</SelectItem>
                             </SelectContent>
-                        </Select>
+                        </Select>²
                         <InputError message={errors.state} />
                     </div>
                     <Button type="submit" className="w-full">

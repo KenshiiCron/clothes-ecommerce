@@ -2,19 +2,39 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\AttributeContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAttributeRequest;
 use App\Http\Requests\Admin\UpdateAttributeRequest;
 use App\Models\Attribute;
+use Illuminate\Support\Facades\Redirect;
+use Inertia\Inertia;
+
+
 
 class AttributeController extends Controller
 {
+
     /**
-     * Display a listing of the resource.
+     * @var AttributeContract
      */
+    protected AttributeContract $attribute;
+
+    /**
+     * @param AttributeContract $attribute
+     */
+    public function __construct(AttributeContract $attribute)
+    {
+        $this->attribute = $attribute;
+
+        /**
+         * Display a listing of the resource.
+         */
+    }
     public function index()
     {
-        //
+        $attributes = $this->attribute->findByFilter();
+        return Inertia::render('attributes/index', compact('attributes'));
     }
 
     /**
@@ -22,7 +42,7 @@ class AttributeController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('attributes/create');
     }
 
     /**
@@ -30,7 +50,9 @@ class AttributeController extends Controller
      */
     public function store(StoreAttributeRequest $request)
     {
-        //
+        $data = $request->validated();
+        $attribute = $this->attribute->new($data);
+        return Inertia('attributes/index');
     }
 
     /**
@@ -44,17 +66,24 @@ class AttributeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Attribute $attribute)
+    public function edit($id)
     {
-        //
+        $attribute = $this->attribute->findOneById($id);
+        $attribute_values = $attribute->attributeValues->toArray();
+        return Inertia::render('attributes/edit',[
+            'attribute' => $attribute,
+            'attribute_values' => $attribute_values
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateAttributeRequest $request, Attribute $attribute)
+    public function update(UpdateAttributeRequest $request, $id)
     {
-        //
+        $data = $request->validated();
+        $attribute = $this->attribute->update($id, $data);
+        return to_route('admin.attributes.index');
     }
 
     /**

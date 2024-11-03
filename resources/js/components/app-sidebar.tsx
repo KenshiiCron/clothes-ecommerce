@@ -9,7 +9,7 @@ import {
     Settings,
     Users,
     LayoutGrid,
-    ShoppingBag,
+    ShoppingBag, TypeIcon,
 } from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
@@ -57,6 +57,12 @@ const data = {
             title: "Brands",
             url: "/admin/brands",
             icon: LibraryBig,
+            isActive: false,
+        },
+        {
+            title: "Attributes",
+            url: "/admin/attributes",
+            icon: TypeIcon,
             isActive: false,
         },
     ],

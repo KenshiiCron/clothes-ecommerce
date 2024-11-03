@@ -1,6 +1,4 @@
-"use client"
-
-import * as React from "react"
+import * as React from "react";
 import {
     ColumnDef,
     ColumnFiltersState,
@@ -12,11 +10,11 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from "lucide-react"
+} from "@tanstack/react-table";
+import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
-import { Checkbox } from "@/components/ui/checkbox"
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -25,8 +23,8 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
     Table,
     TableBody,
@@ -34,49 +32,19 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
+import {Link} from "@inertiajs/react";
 
-const data: Payment[] = [
-    {
-        id: "m5gr84i9",
-        amount: 316,
-        status: "success",
-        email: "ken99@yahoo.com",
-    },
-    {
-        id: "3u1reuv4",
-        amount: 242,
-        status: "success",
-        email: "Abe45@gmail.com",
-    },
-    {
-        id: "derv1ws0",
-        amount: 837,
-        status: "processing",
-        email: "Monserrat44@gmail.com",
-    },
-    {
-        id: "5kma53ae",
-        amount: 874,
-        status: "success",
-        email: "Silas22@gmail.com",
-    },
-    {
-        id: "bhqecj4p",
-        amount: 721,
-        status: "failed",
-        email: "carmella@hotmail.com",
-    },
-]
 
-export type Payment = {
-    id: string
-    amount: number
-    status: "pending" | "processing" | "success" | "failed"
-    email: string
-}
+export type AttributeValue = {
+    id: string;
+    attribute_id : string
+    value: string;
+    created_at: string;
+    updated_at: string;
+};
 
-export const columns: ColumnDef<Payment>[] = [
+export const columns: ColumnDef<AttributeValue>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -100,47 +68,41 @@ export const columns: ColumnDef<Payment>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "status",
-        header: "Status",
-        cell: ({ row }) => (
-            <div className="capitalize">{row.getValue("status")}</div>
-        ),
-    },
-    {
-        accessorKey: "email",
+        accessorKey: "value",
+
         header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
                     onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
                 >
-                    Email
+                    Value
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
-            )
+            );
         },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
+        cell: ({ row }) => <div className="lowercase">{row.getValue("value")}</div>,
     },
     {
-        accessorKey: "amount",
-        header: () => <div className="text-right">Amount</div>,
-        cell: ({ row }) => {
-            const amount = parseFloat(row.getValue("amount"))
-
-            // Format the amount as a dollar amount
-            const formatted = new Intl.NumberFormat("en-US", {
-                style: "currency",
-                currency: "USD",
-            }).format(amount)
-
-            return <div className="text-right font-medium">{formatted}</div>
+        accessorKey: "created_at",
+        header: ({ column }) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                >
+                    Created at
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                </Button>
+            );
         },
+        cell: ({ row }) => <div className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const payment = row.original
+            const attribute_value = row.original;
 
             return (
                 <DropdownMenu>
@@ -152,32 +114,31 @@ export const columns: ColumnDef<Payment>[] = [
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
+                        <DropdownMenuItem asChild>
+                            <Link href={route('admin.attributes.edit', attribute_value.id)}>
+                                <p>Edit attribute value</p>
+                            </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <DropdownMenuItem>View attribute value</DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
-            )
+            );
         },
     },
-]
+];
 
-export default function DataTableDemo() {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
-    const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
+interface DataTableDemoProps {
+    attribute_values: AttributeValue[];
+}
+
+export default function DataTableDemo({ attribute_values }: DataTableDemoProps) {
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data,
+        data: attribute_values,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -193,46 +154,42 @@ export default function DataTableDemo() {
             columnVisibility,
             rowSelection,
         },
-    })
+    });
+
+
+
 
 
     return (
         <div className="w-full">
-            <div className="flex items-center py-4">
-                <Input
-                    placeholder="Filter emails..."
-                    value={(table.getColumn("email")?.getFilterValue() as string) ?? ""}
-                    onChange={(event) =>
-                        table.getColumn("email")?.setFilterValue(event.target.value)
-                    }
-                    className="max-w-sm"
-                />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown className="ml-2 h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                )
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+            <div className="flex justify-between items-center py-4">
+
+                {/*<DropdownMenu>*/}
+                {/*    <DropdownMenuTrigger asChild>*/}
+                {/*        <Button variant="outline" className="ml-auto">*/}
+                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
+                {/*        </Button>*/}
+                {/*    </DropdownMenuTrigger>*/}
+                {/*    <DropdownMenuContent align="end">*/}
+                {/*        {table*/}
+                {/*            .getAllColumns()*/}
+                {/*            .filter((column) => column.getCanHide())*/}
+                {/*            .map((column) => {*/}
+                {/*                return (*/}
+                {/*                    <DropdownMenuCheckboxItem*/}
+                {/*                        key={column.id}*/}
+                {/*                        className="capitalize"*/}
+                {/*                        checked={column.getIsVisible()}*/}
+                {/*                        onCheckedChange={(value) =>*/}
+                {/*                            column.toggleVisibility(!!value)*/}
+                {/*                        }*/}
+                {/*                    >*/}
+                {/*                        {column.id}*/}
+                {/*                    </DropdownMenuCheckboxItem>*/}
+                {/*                );*/}
+                {/*            })}*/}
+                {/*    </DropdownMenuContent>*/}
+                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -249,7 +206,7 @@ export default function DataTableDemo() {
                                                     header.getContext()
                                                 )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -309,5 +266,5 @@ export default function DataTableDemo() {
                 </div>
             </div>
         </div>
-    )
+    );
 }

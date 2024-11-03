@@ -5,22 +5,23 @@ namespace App\Repositories;
 
 
 
-use App\Contracts\ProductContract;
-use App\Models\Product;
+use App\Contracts\InventoryContract;
+use App\Models\Inventory;
+
 use app\Traits\UploadAble;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 
-class ProductRepository extends BaseRepositories implements ProductContract
+class InventoryRepository extends BaseRepositories implements InventoryContract
 {
     use UploadAble;
 
     /**
-     * @param Product $model
+     * @param Inventory $model
      * @param array $filters
      */
     #[Pure]
-    public function __construct(Product $model, array $filters = [
+    public function __construct(Inventory $model, array $filters = [
         \App\QueryFilter\Search::class,
     ])
     {
@@ -34,7 +35,6 @@ class ProductRepository extends BaseRepositories implements ProductContract
         {
             $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image');
         }
-        $data['slug'] = Str::slug($data['name']);
         return $this->model::create($data);
     }
 

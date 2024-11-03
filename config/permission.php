@@ -211,7 +211,7 @@ return [
                 'guard' => 'admin'
             ],
             'attribute' => [
-                'capabilities' => ['edit', 'view'],
+                'capabilities' => ['create', 'edit', 'delete', 'view', 'view-list'],
                 'guard' => 'admin'
             ],
             'value' => [
