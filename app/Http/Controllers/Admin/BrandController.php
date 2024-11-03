@@ -78,9 +78,10 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBrandRequest $request, Brand $brand)
+    public function update(UpdateBrandRequest $request, $id)
     {
-        //
+        $brand = $this->brand->update($id,$request->validated());
+        return redirect()->route('admin.categories.index');
     }
 
     /**
