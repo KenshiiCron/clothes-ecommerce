@@ -11,7 +11,14 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react";
+import {
+    ArrowUpDown,
+    ChevronDown,
+    MoreHorizontal,
+    PlusCircleIcon,
+    Pencil,
+    Eye
+} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,9 +40,10 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch"
+import { Switch } from "@/components/ui/switch";
 import { PageProps } from "@/types";
-import {Link} from "@inertiajs/react";
+import { Link } from "@inertiajs/react";
+import { Badge } from "../ui/badge";
 
 export type Category = {
     id: string;
@@ -58,7 +66,9 @@ export const columns: ColumnDef<Category>[] = [
                     table.getIsAllPageRowsSelected() ||
                     (table.getIsSomePageRowsSelected() && "indeterminate")
                 }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                onCheckedChange={(value) =>
+                    table.toggleAllPageRowsSelected(!!value)
+                }
                 aria-label="Select all"
             />
         ),
@@ -74,10 +84,16 @@ export const columns: ColumnDef<Category>[] = [
     },
     {
         accessorKey: "image_url",
-        header: 'Image',
-        cell: ({ row }) => <div style={{ padding: "16px", textAlign: "center" }}>
-            <img style={{ width: "60px", height: "60px", borderRadius: "8px", objectFit: "cover" }} src={row.getValue("image_url")} alt="image" className="w-10 h-10"/>
-            </div>,
+        header: "Image",
+        cell: ({ row }) => (
+            <div className="p-2">
+                <img
+                    src={row.getValue("image_url")}
+                    alt="image"
+                    className="w-14 h-w-14 rounded-md object-cover"
+                />
+            </div>
+        ),
     },
     {
         accessorKey: "name",
@@ -86,14 +102,18 @@ export const columns: ColumnDef<Category>[] = [
             return (
                 <Button
                     variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
                 >
                     Name
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
-        cell: ({ row }) => <div className="lowercase">{row.getValue("name")}</div>,
+        cell: ({ row }) => (
+            <div className="lowercase">{row.getValue("name")}</div>
+        ),
     },
     {
         accessorKey: "created_at",
@@ -101,21 +121,39 @@ export const columns: ColumnDef<Category>[] = [
             return (
                 <Button
                     variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
                 >
                     Created at
                     <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
-        cell: ({ row }) => <div className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
+        cell: ({ row }) => (
+            <div className="lowercase">
+                {new Date(row.getValue("created_at"))
+                    .toISOString()
+                    .slice(0, 19)
+                    .replace("T", " ")}
+            </div>
+        ),
     },
     {
-        accessorKey: "state",
-        header: "State",
+        accessorKey: "featured",
+        header: "Featured",
         cell: ({ row }) => (
             <div className="capitalize">
-                <Switch checked={row.getValue("state") === 1} />
+                {/* <Switch checked={row.getValue("state") === 1} /> */}
+                <Badge
+                    variant={
+                        row.getValue("featured") == 0
+                            ? "destructive"
+                            : "secondary"
+                    }
+                >
+                    {row.getValue("featured") == 0 ? "No" : "Yes"}
+                </Badge>
             </div>
         ),
     },
@@ -142,11 +180,27 @@ export const columns: ColumnDef<Category>[] = [
                         {/*</DropdownMenuItem>*/}
                         {/*<DropdownMenuSeparator />*/}
                         <DropdownMenuItem asChild>
-                            <Link href={route('admin.categories.edit', category.id)}>
+                            <Link
+                                href={route(
+                                    "admin.categories.edit",
+                                    category.id
+                                )}
+                            >
+                                <Pencil></Pencil>
                                 <p>Edit category</p>
                             </Link>
-                            </DropdownMenuItem>
-                        <DropdownMenuItem>View category</DropdownMenuItem>
+                        </DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                href={route(
+                                    "admin.categories.show",
+                                    category.id
+                                )}
+                            >
+                                <Eye></Eye>
+                                <p>View category</p>
+                            </Link>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -160,8 +214,10 @@ interface DataTableDemoProps {
 
 export default function DataTableDemo({ categories }: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+    const [columnFilters, setColumnFilters] =
+        React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] =
+        React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
@@ -186,19 +242,22 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button
-                asChild
-                >
-                    <Link href={route('admin.categories.create')}>
+                <Button asChild>
+                    <Link href={route("admin.categories.create")}>
                         <p>Create</p>
                         <PlusCircleIcon className="ml-2 h-4 w-4" />
                     </Link>
                 </Button>
                 <Input
                     placeholder="Filter categories..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                    value={
+                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        ""
+                    }
                     onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
+                        table
+                            .getColumn("name")
+                            ?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
@@ -240,9 +299,10 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
                                     );
                                 })}
@@ -254,7 +314,9 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

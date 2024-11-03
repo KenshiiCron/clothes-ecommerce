@@ -43,22 +43,25 @@ const data = {
         },
         {
             title: "Products",
-            url: "/admin/products",
             icon: ShoppingBag,
-            isActive: true,
-        },
-        {
-            title: "Categories",
-            url: "/admin/categories",
-            icon: LayoutGrid,
+            url: "/admin/products",
             isActive: false,
+            items: [
+                {
+                    title: "Brands",
+                    url: "/admin/brands"
+                },
+                {
+                    title: "Categories",
+                    url: "/admin/categories"
+                },
+                {
+                    title: "Products",
+                    url: "/admin/products"
+                },
+            ],
         },
-        {
-            title: "Brands",
-            url: "/admin/brands",
-            icon: LibraryBig,
-            isActive: false,
-        },
+
     ],
     navSecondary: [
         {
@@ -98,6 +101,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavMain items={data.navMain}/>
+                <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={auth.user}/>

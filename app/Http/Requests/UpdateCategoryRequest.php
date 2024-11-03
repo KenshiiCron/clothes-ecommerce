@@ -25,7 +25,7 @@ class UpdateCategoryRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'file', 'max:1024'],
-            'state' => ['required', 'integer'],
+            'featured' => ['required', 'integer'],
         ];
     }
 }

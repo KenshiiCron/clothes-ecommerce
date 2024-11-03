@@ -44,7 +44,7 @@ class BrandController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('brands/create');
     }
 
     /**
@@ -52,23 +52,27 @@ class BrandController extends Controller
      */
     public function store(StoreBrandRequest $request)
     {
-        //
+        $data = $request->validated();
+        $brand = $this->brand->new($data);
+        return redirect()->route('admin.brands.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(Brand $brand)
+    public function show($id)
     {
-        //
+        $brand = $this->brand->findOneById($id);
+        return Inertia::render('brands/show',compact('brand'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Brand $brand)
+    public function edit($id)
     {
-        //
+        $brand = $this->brand->findOneById($id);
+        return Inertia::render('brands/edit',compact('brand'));
     }
 
     /**

@@ -24,9 +24,9 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::middleware(['auth:admin', 'verified'])->group(function () {
-    Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
+//    Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
-    Route::get('/brands', [\App\Http\Controllers\Admin\BrandController::class, 'index'])->name('brands.index');
+    Route::resource('brands', \App\Http\Controllers\Admin\BrandController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -1,9 +1,10 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import {Head, useForm} from "@inertiajs/react";
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
-import {Button} from "@/components/ui/button";
-import {InputError} from "@/components/ui/input-error";
+import { Head, useForm } from "@inertiajs/react";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { InputError } from "@/components/ui/input-error";
+import { Switch } from "@/components/ui/switch";
 import {
     Select,
     SelectContent,
@@ -12,11 +13,10 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import {FormEventHandler, useState} from "react";
-import {Textarea} from "@/components/ui/textarea";
-import {Switch} from "@/components/ui/switch";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function Create() {
-    const {data, setData, post, processing, errors, reset} = useForm({
+    const { data, setData, post, processing, errors, reset } = useForm({
         name: "",
         description: "",
         featured: true,
@@ -35,11 +35,11 @@ export default function Create() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("admin.categories.store"));
+        post(route("admin.brands.store"));
     };
     return (
         <AuthenticatedLayout header="Categories">
-            <Head title="Create Category"/>
+            <Head title="Create Brand" />
 
             <p>Create</p>
             <form onSubmit={submit} className="max-w-md mt-6">
@@ -49,25 +49,25 @@ export default function Create() {
                         <Input
                             id="name"
                             type="text"
-                            placeholder="Category name"
+                            placeholder="Brand name"
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
                             required
                         />
-                        <InputError message={errors.name}/>
+                        <InputError message={errors.name} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="description">Description</Label>
                         <Textarea
                             id="description"
-                            placeholder="Category description"
+                            placeholder="Brand description"
                             value={data.description}
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
                             required
                         />
-                        <InputError message={errors.description}/>
+                        <InputError message={errors.description} />
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="image">Image</Label>
@@ -85,7 +85,7 @@ export default function Create() {
                                 className="w-32 h-32 object-cover rounded"
                             />
                         )}
-                        <InputError message={errors.image}/>
+                        <InputError message={errors.image} />
                     </div>
                     <div className="grid gap-2">
                         <div className="flex items-center space-x-3">
@@ -96,7 +96,7 @@ export default function Create() {
                                 onCheckedChange={(e) => setData("featured", e)}
                             />
                         </div>
-                        <InputError message={errors.description}/>
+                        <InputError message={errors.description} />
                     </div>
                     <Button type="submit" className="w-full mt-4">
                         Create

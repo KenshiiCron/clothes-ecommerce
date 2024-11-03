@@ -13,8 +13,7 @@ class Category extends Model
         'parent_id',
         'featured',
         'image',
-        'order',
-        'state'
+        'order'
     ];
 
     protected $appends = ['image_url'];
