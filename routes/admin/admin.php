@@ -26,8 +26,6 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
 Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
-    Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
-    Route::post('attribute-values',[\App\Http\Controllers\Admin\AttributeValueController::class,'store'])->name('attribute-values.store');
     Route::get('/brands', [\App\Http\Controllers\Admin\BrandController::class, 'index'])->name('brands.index');
 });
 

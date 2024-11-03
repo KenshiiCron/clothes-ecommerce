@@ -29,31 +29,28 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
 
     public function new(array $data)
     {
-        if (array_key_exists('image', $data))
-        {
-            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image');
+        if (array_key_exists('image', $data)) {
+            $data['image'] = $this->uploadOne($data['image'], (new \ReflectionClass($this->model))->getShortName() . '/image', 'public');
         }
 
         activity()
             ->causedBy(auth()->user())
             ->performedOn($this->model)
             ->event('store')
-            ->log('created: '. $this->model);
+            ->log('created: ' . $this->model);
 
         return $this->model::create($data);
     }
 
-    public function update($model,array $data)
+    public function update($model, array $data)
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
-        if (array_key_exists('image',$data))
-        {
-            if ($model->image)
-            {
+        if (array_key_exists('image', $data)) {
+            if ($model->image) {
                 $this->deleteOne($model->image);
             }
-            $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
+            $data['image'] = $this->uploadOne($data['image'], (new ReflectionClass($this->model))->getShortName() . '/image');
         }
 
         $model->update($data);
@@ -62,7 +59,7 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
             ->causedBy(auth()->user())
             ->performedOn($this->model)
             ->event('update')
-            ->log('edited: '. $this->model);
+            ->log('edited: ' . $this->model);
 
         return $model->refresh();
     }
@@ -71,8 +68,7 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
-        if ($model->image)
-        {
+        if ($model->image) {
             $this->deleteOne($model->image);
         }
 
@@ -80,8 +76,8 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
             ->causedBy(auth()->user())
             ->performedOn($this->model)
             ->event('destroy')
-            ->log('deleted: '. $this->model);
+            ->log('deleted: ' . $this->model);
 
-        return $model ->delete();
+        return $model->delete();
     }
 }

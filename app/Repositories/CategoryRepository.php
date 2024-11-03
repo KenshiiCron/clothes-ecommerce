@@ -31,9 +31,17 @@ class CategoryRepository extends BaseRepositories implements CategoryContract
     {
         if (array_key_exists('image', $data))
         {
-            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image','public');
+            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image', 'public');
         }
+
         $data['slug'] = Str::slug($data['name']);
+
+        activity()
+            ->causedBy(auth()->user())
+            ->performedOn($this->model)
+            ->event('store')
+            ->log('created: '. $this->model);
+
         return $this->model::create($data);
     }
 

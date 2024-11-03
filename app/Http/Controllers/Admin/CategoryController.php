@@ -76,7 +76,6 @@ class CategoryController extends Controller
      */
     public function update($id,UpdateCategoryRequest $request)
     {
-        dd($request->validated());
         $category = $this->category->update($id,$request->validated());
         return redirect()->route('admin.categories.index');
     }

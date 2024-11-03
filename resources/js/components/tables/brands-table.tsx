@@ -13,10 +13,15 @@ import {
     useReactTable,
 } from "@tanstack/react-table";
 
-import {ArrowUpDown, ChevronDown, MoreHorizontal} from "lucide-react";
+import {
+    ArrowUpDown,
+    ChevronDown, Eye,
+    MoreHorizontal, Pencil,
+    PlusCircleIcon,
+} from "lucide-react";
 
-import {Button} from "@/components/ui/button";
-import {Checkbox} from "@/components/ui/checkbox";
+import { Button } from "@/components/ui/button";
+import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -27,7 +32,7 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import {Input} from "@/components/ui/input";
+import { Input } from "@/components/ui/input";
 
 import {
     Table,
@@ -38,8 +43,10 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import {Switch} from "@/components/ui/switch"
-import {PageProps} from "@/types";
+import { Switch } from "@/components/ui/switch";
+import { Badge } from "@/components/ui/badge";
+import { PageProps } from "@/types";
+import { Link } from "@inertiajs/react";
 
 export type Brand = {
     id: string;
@@ -55,17 +62,19 @@ export type Brand = {
 export const columns: ColumnDef<Brand>[] = [
     {
         id: "select",
-        header: ({table}) => (
+        header: ({ table }) => (
             <Checkbox
                 checked={
                     table.getIsAllPageRowsSelected() ||
                     (table.getIsSomePageRowsSelected() && "indeterminate")
                 }
-                onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
+                onCheckedChange={(value) =>
+                    table.toggleAllPageRowsSelected(!!value)
+                }
                 aria-label="Select all"
             />
         ),
-        cell: ({row}) => (
+        cell: ({ row }) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -77,75 +86,120 @@ export const columns: ColumnDef<Brand>[] = [
     },
     {
         accessorKey: "image_url",
-        header: 'Image',
-        cell: ({row}) => <div>
-            <img src={row.getValue("image_url")} alt="image" className="w-10 h-10 object-cover"/>
-        </div>,
+        header: "Image",
+        cell: ({ row }) => (
+            <div className="p-2">
+                <img
+                    src={row.getValue("image_url")}
+                    alt="image"
+                    className="w-14 h-w-14 rounded-md object-cover"
+                />
+            </div>
+        ),
     },
     {
         accessorKey: "name",
-        header: ({column}) => {
+        header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
                 >
                     Name
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
-        cell: ({row}) => <div>{row.getValue("name")}</div>,
+        cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
     {
         accessorKey: "created_at",
-        header: ({column}) => {
+        header: ({ column }) => {
             return (
                 <Button
                     variant="ghost"
-                    onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
                 >
                     Created at
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    <ArrowUpDown className="ml-2 h-4 w-4" />
                 </Button>
             );
         },
-        cell: ({row}) => <div
-            className="lowercase">{new Date(row.getValue("created_at")).toISOString().slice(0, 19).replace("T", " ")}</div>,
+        cell: ({ row }) => (
+            <div className="lowercase">
+                {new Date(row.getValue("created_at"))
+                    .toISOString()
+                    .slice(0, 19)
+                    .replace("T", " ")}
+            </div>
+        ),
     },
     {
         accessorKey: "featured",
         header: "Featured",
-        cell: ({row}) => (
+        cell: ({ row }) => (
             <div className="capitalize">
-                <Switch value={row.getValue("featured")} />
+                {/* <Switch value={row.getValue("featured")} /> */}
+                <Badge
+                    variant={
+                        row.getValue("featured") == 0
+                            ? "destructive"
+                            : "secondary"
+                    }
+                >
+                    {row.getValue("featured") == 0 ? "No" : "Yes"}
+                </Badge>
             </div>
         ),
     },
     {
         id: "actions",
         enableHiding: false,
-        cell: ({row}) => {
-            const payment = row.original;
+        cell: ({ row }) => {
+            const brand = row.original;
 
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4"/>
+                            <MoreHorizontal className="h-4 w-4" />
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
+                        {/*<DropdownMenuItem*/}
+                        {/*    onClick={() => navigator.clipboard.writeText(payment.id)}*/}
+                        {/*>*/}
+                        {/*    Copy payment ID*/}
+                        {/*</DropdownMenuItem>*/}
+                        {/*<DropdownMenuSeparator />*/}
+                        <DropdownMenuItem asChild>
+                            <Link
+                                href={route(
+                                    "admin.brands.edit",
+                                    brand.id
+                                )}
+                            >
+                                <Pencil></Pencil>
+                                <p>Edit brand</p>
+                            </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator/>
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                href={route(
+                                    "admin.brands.show",
+                                    brand.id
+                                )}
+                            >
+                                <Eye></Eye>
+                                <p>View brand</p>
+                            </Link>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );
@@ -157,10 +211,12 @@ interface DataTableDemoProps {
     brands: Brand[];
 }
 
-export default function DataTableDemo({brands}: DataTableDemoProps) {
+export default function DataTableDemo({ brands }: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
-    const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
+    const [columnFilters, setColumnFilters] =
+        React.useState<ColumnFiltersState>([]);
+    const [columnVisibility, setColumnVisibility] =
+        React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
@@ -184,41 +240,52 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
 
     return (
         <div className="w-full">
-            <div className="flex items-center py-4">
+            <div className="flex justify-between items-center py-4">
+                <Button asChild>
+                    <Link href={route("admin.brands.create")}>
+                        <p>Create</p>
+                        <PlusCircleIcon className="ml-2 h-4 w-4" />
+                    </Link>
+                </Button>
                 <Input
                     placeholder="Filter brands..."
-                    value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
+                    value={
+                        (table.getColumn("name")?.getFilterValue() as string) ??
+                        ""
+                    }
                     onChange={(event) =>
-                        table.getColumn("name")?.setFilterValue(event.target.value)
+                        table
+                            .getColumn("name")
+                            ?.setFilterValue(event.target.value)
                     }
                     className="max-w-sm"
                 />
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="outline" className="ml-auto">
-                            Columns <ChevronDown className="ml-2 h-4 w-4"/>
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        {table
-                            .getAllColumns()
-                            .filter((column) => column.getCanHide())
-                            .map((column) => {
-                                return (
-                                    <DropdownMenuCheckboxItem
-                                        key={column.id}
-                                        className="capitalize"
-                                        checked={column.getIsVisible()}
-                                        onCheckedChange={(value) =>
-                                            column.toggleVisibility(!!value)
-                                        }
-                                    >
-                                        {column.id}
-                                    </DropdownMenuCheckboxItem>
-                                );
-                            })}
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                {/*<DropdownMenu>*/}
+                {/*    <DropdownMenuTrigger asChild>*/}
+                {/*        <Button variant="outline" className="ml-auto">*/}
+                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
+                {/*        </Button>*/}
+                {/*    </DropdownMenuTrigger>*/}
+                {/*    <DropdownMenuContent align="end">*/}
+                {/*        {table*/}
+                {/*            .getAllColumns()*/}
+                {/*            .filter((column) => column.getCanHide())*/}
+                {/*            .map((column) => {*/}
+                {/*                return (*/}
+                {/*                    <DropdownMenuCheckboxItem*/}
+                {/*                        key={column.id}*/}
+                {/*                        className="capitalize"*/}
+                {/*                        checked={column.getIsVisible()}*/}
+                {/*                        onCheckedChange={(value) =>*/}
+                {/*                            column.toggleVisibility(!!value)*/}
+                {/*                        }*/}
+                {/*                    >*/}
+                {/*                        {column.id}*/}
+                {/*                    </DropdownMenuCheckboxItem>*/}
+                {/*                );*/}
+                {/*            })}*/}
+                {/*    </DropdownMenuContent>*/}
+                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -231,9 +298,10 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef.header,
-                                                    header.getContext()
-                                                )}
+                                                      header.column.columnDef
+                                                          .header,
+                                                      header.getContext()
+                                                  )}
                                         </TableHead>
                                     );
                                 })}
@@ -245,7 +313,9 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>

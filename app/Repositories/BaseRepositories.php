@@ -28,8 +28,6 @@ abstract class BaseRepositories implements CrudContract
             $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
         }
 
-
-
         return $this->model::create($data);
     }
 
@@ -46,7 +44,6 @@ abstract class BaseRepositories implements CrudContract
             $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
         }
 
-
         $model->update($data);
         return $model->refresh();
     }
@@ -59,8 +56,6 @@ abstract class BaseRepositories implements CrudContract
         {
             $this->deleteOne($model->image);
         }
-
-
 
         return $model ->delete();
     }
