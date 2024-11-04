@@ -36,5 +36,14 @@ class AttributeValueRepository extends BaseRepositories implements AttributeValu
         return $this->model::create($data);
     }
 
+    public function update($model,array $data )
+    {
+        $model = $model instanceof $this->model ? $model : $this->findOneById($model);
+        $attribute_id = $model->attribute->id;
+        $data['attribute_id'] = $attribute_id;
+        $model->update($data);
+        return $model->refresh();
+    }
+
 
 }

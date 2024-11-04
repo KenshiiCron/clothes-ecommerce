@@ -27,6 +27,8 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
+    Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
+    Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
 });
 
 require __DIR__.'/auth.php';

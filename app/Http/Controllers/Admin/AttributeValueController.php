@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreAttributeValueRequest;
 use App\Http\Requests\Admin\UpdateAttributeValueRequest;
 use App\Models\AttributeValue;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Redirect;
 use Inertia\Inertia;
 
@@ -82,8 +83,8 @@ class AttributeValueController extends Controller
     public function update(UpdateAttributeValueRequest $request, $id)
     {
         $data = $request->validated();
-        $attribute = $this->attribute->update($id, $data);
-        return to_route('admin.attributes.index');
+        $this->attribute_value->update($id, $data);
+        return to_route('admin.attribute-values.index');
     }
 
     /**

@@ -83,8 +83,9 @@ export default function Edit({ attribute, attribute_values }: PageProps<{ attrib
             </form>
             <Head title="Attribute Values" />
             <Dialog>
-                <DialogTrigger asChild>
+                <DialogTrigger  asChild>
                     <Button
+                        className='mt-4'
                     >
                         <p>Add Value</p>
                         <PlusCircleIcon className="ml-2 h-4 w-4" />
@@ -119,7 +120,8 @@ export default function Edit({ attribute, attribute_values }: PageProps<{ attrib
                         </div>
                     </form>
                 </DialogContent>
-            </Dialog>
+            </Dialog
+            >
             <AttributeValuesTable attribute_values={attribute_values}/>
         </AuthenticatedLayout>
     );
