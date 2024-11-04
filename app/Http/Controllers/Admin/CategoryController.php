@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
 use App\Models\Category;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CategoryController extends Controller
@@ -74,8 +75,9 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($id,UpdateCategoryRequest $request)
+    public function update($id, Request $request)
     {
+        dd($request->all());
         $category = $this->category->update($id,$request->validated());
         return redirect()->route('admin.categories.index');
     }

@@ -49,13 +49,14 @@ class BrandRepository extends BaseRepositories implements BrandContract
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
-        if (array_key_exists('image',$data))
+        if (array_key_exists('image',$data) && !is_null($data['image']))
         {
             if ($model->image)
             {
                 $this->deleteOne($model->image);
             }
-            $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
+            $data['image'] = $this->uploadOne($data['image'], (new \ReflectionClass($this->model))->getShortName() . '/image', 'public');
+
         }
 
         $model->update($data);

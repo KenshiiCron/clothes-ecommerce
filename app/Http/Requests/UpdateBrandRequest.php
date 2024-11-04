@@ -25,7 +25,7 @@ class UpdateBrandRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'image', 'max:5000'],
-            'featured' => ['required', 'integer'],
+            'featured' => ['required', 'integer', 'in:0,1'],
         ];
     }
 }

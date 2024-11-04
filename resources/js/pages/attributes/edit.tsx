@@ -19,6 +19,7 @@ export type Attribute = {
     created_at: string;
     updated_at: string;
 };
+
 export type AttributeValue = {
     id: string;
     attribute_id : bigint

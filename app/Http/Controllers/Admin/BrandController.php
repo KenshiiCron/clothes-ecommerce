@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreBrandRequest;
 use App\Http\Requests\UpdateBrandRequest;
 use App\Models\Brand;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class BrandController extends Controller
@@ -78,10 +79,11 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBrandRequest $request, $id)
+    public function update(Request $request, $id)
     {
+        dd($request->all());
         $brand = $this->brand->update($id,$request->validated());
-        return redirect()->route('admin.categories.index');
+        return redirect()->route('admin.brands.index');
     }
 
     /**

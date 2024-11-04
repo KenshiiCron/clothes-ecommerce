@@ -46,24 +46,24 @@ const data = {
             url: "/admin/products",
             icon: ShoppingBag,
             isActive: true,
-        },
-        {
-            title: "Categories",
-            url: "/admin/categories",
-            icon: LayoutGrid,
-            isActive: false,
-        },
-        {
-            title: "Brands",
-            url: "/admin/brands",
-            icon: LibraryBig,
-            isActive: false,
-        },
-        {
-            title: "Attributes",
-            url: "/admin/attributes",
-            icon: TypeIcon,
-            isActive: false,
+            items: [
+                {
+                    title: "Products",
+                    url: "/admin/products",
+                },
+                {
+                    title: "Categories",
+                    url: "/admin/categories",
+                },
+                {
+                    title: "Brands",
+                    url: "/admin/brands",
+                },
+                {
+                    title: "Attributes",
+                    url: "/admin/attributes",
+                },
+            ]
         },
     ],
     navSecondary: [

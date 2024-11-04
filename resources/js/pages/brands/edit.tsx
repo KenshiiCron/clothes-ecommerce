@@ -9,15 +9,25 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
 export default function Edit({ brand }: any) {
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const { data, setData, put, processing, errors, reset, transform } = useForm({
         name: brand.name,
         description: brand.description,
         featured: brand.featured,
         image: null,
     });
 
+    transform((data) => {
+        const formData = new FormData();
+        Object.keys(data).forEach((key) => {
+            formData.append(key, data[key]);
+        });
+        return formData;
+    });
+
     const [preview, setPreview] = useState(data.image ? data.image : null);
     const handleImageChange = (e: any) => {
+        e.preventDefault()
+
         const file = e.target.files[0];
         if (file) {
             setData("image", file);
@@ -26,9 +36,11 @@ export default function Edit({ brand }: any) {
     };
 
     const submit: FormEventHandler = (e) => {
+        console.log(data)
         e.preventDefault();
 
         put(route("admin.brands.update", brand.id));
+        console.log(data)
     };
     return (
         <AuthenticatedLayout header="Brands">

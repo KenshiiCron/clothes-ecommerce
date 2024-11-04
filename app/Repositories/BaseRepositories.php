@@ -8,7 +8,6 @@ use App\Traits\FilterableTrait;
 use App\Traits\FindAbleTrait;
 use App\Traits\UploadAble;
 use Illuminate\Database\Eloquent\Model;
-use ReflectionClass;
 
 abstract class BaseRepositories implements CrudContract
 {
@@ -25,7 +24,7 @@ abstract class BaseRepositories implements CrudContract
     {
         if (array_key_exists('image', $data))
         {
-            $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
+            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image');
         }
 
         return $this->model::create($data);
@@ -41,7 +40,7 @@ abstract class BaseRepositories implements CrudContract
             {
                 $this->deleteOne($model->image);
             }
-            $data['image'] = $this->uploadOne($data['image'],(new ReflectionClass($this->model))->getShortName().'/image');
+            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image');
         }
 
         $model->update($data);

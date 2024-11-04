@@ -15,7 +15,7 @@ import {
 
 import {
     ArrowUpDown,
-    ChevronDown, Eye,
+    Trash, Eye,
     MoreHorizontal, Pencil,
     PlusCircleIcon,
 } from "lucide-react";
@@ -31,6 +31,8 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+
+import { Separator } from "@/components/ui/separator"
 
 import { Input } from "@/components/ui/input";
 
@@ -198,6 +200,19 @@ export const columns: ColumnDef<Brand>[] = [
                             >
                                 <Eye></Eye>
                                 <p>View brand</p>
+                            </Link>
+                        </DropdownMenuItem>
+                        <Separator className="my-1"/>
+                        <DropdownMenuItem asChild>
+                            <Link
+                                href={route(
+                                    "admin.brands.show",
+                                    brand.id
+                                )}
+                                className="text-red-600"
+                            >
+                                <Trash></Trash>
+                                <p>Delete brand</p>
                             </Link>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
