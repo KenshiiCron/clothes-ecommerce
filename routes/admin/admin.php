@@ -26,6 +26,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
 Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
+    Route::post('brands-update/{id}',[\App\Http\Controllers\Admin\BrandController::class, 'updatehh'])->name('brands.updatehh');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
 });
 

@@ -9,19 +9,11 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
 export default function Edit({ brand }: any) {
-    const { data, setData, put, processing, errors, reset, transform } = useForm({
+    const { data, setData, post, processing, errors, reset} = useForm({
         name: brand.name,
         description: brand.description,
         featured: brand.featured,
         image: null,
-    });
-
-    transform((data) => {
-        const formData = new FormData();
-        Object.keys(data).forEach((key) => {
-            formData.append(key, data[key]);
-        });
-        return formData;
     });
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
@@ -31,6 +23,7 @@ export default function Edit({ brand }: any) {
         const file = e.target.files[0];
         if (file) {
             setData("image", file);
+            // @ts-ignore
             setPreview(URL.createObjectURL(file));
         }
     };
@@ -39,12 +32,12 @@ export default function Edit({ brand }: any) {
         console.log(data)
         e.preventDefault();
 
-        put(route("admin.brands.update", brand.id));
+        post(route("admin.brands.updatehh", brand.id));
         console.log(data)
     };
     return (
         <AuthenticatedLayout header="Brands">
-            <Head title="Create Brand" />
+            <Head title="Edit Brand" />
 
             <p>Edit</p>
             <form onSubmit={submit} className="max-w-md mt-6">
