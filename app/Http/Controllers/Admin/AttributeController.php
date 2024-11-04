@@ -52,7 +52,7 @@ class AttributeController extends Controller
     {
         $data = $request->validated();
         $attribute = $this->attribute->new($data);
-        return Inertia('attributes/index');
+        return to_route('admin.attributes.index');
     }
 
     /**

@@ -11,7 +11,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react";
+import {ArrowUpDown, ChevronDown, Eye, MoreHorizontal, PlusCircleIcon, Trash} from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -33,7 +33,23 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {Link} from "@inertiajs/react";
+import {
+    AlertDialog,
+    AlertDialogAction,
+    AlertDialogCancel,
+    AlertDialogContent,
+    AlertDialogDescription,
+    AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import {Link, useForm} from "@inertiajs/react";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {Label} from "@/components/ui/label";
+import {InputError} from "@/components/ui/input-error";
+import {FormEventHandler} from "react";
+import {Separator} from "@/components/ui/separator";
 
 
 export type AttributeValue = {
@@ -103,25 +119,87 @@ export const columns: ColumnDef<AttributeValue>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const attribute_value = row.original;
+            const {
+                data: editValueData,
+                setData: setEditValueData,
+                put: submitEditValue,
+                processing: processingEditValue,
+                errors: errorsEditValue,
+                reset: resetEditValue
+            } = useForm({
+                value : attribute_value.value, // initial data for form1
+            })
+            const updateValue: FormEventHandler = (e) => {
+                e.preventDefault();
+                submitEditValue(route("admin.attribute-values.update",attribute_value.id));
+            };
+            return (<>
+                    <Dialog>
+                        <DropdownMenu>
+                            <DropdownMenuTrigger>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                    <span className="sr-only">Open menu</span>
+                                    <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                            </DropdownMenuTrigger>
+                            <DropdownMenuContent align="end">
+                                <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                                <DialogTrigger>
+                                    <DropdownMenuItem>
+                                        <p>Edit attribute value</p>
+                                    </DropdownMenuItem>
+                                </DialogTrigger>
+                                <Separator className="my-1"/>
+                                <AlertDialog>
+                                    <AlertDialogTrigger>
+                                        <DropdownMenuItem className="text-red-600">
+                                            <Trash></Trash>
+                                            <p>Delete brand</p>
+                                        </DropdownMenuItem>
+                                    </AlertDialogTrigger>
+                                    <AlertDialogContent>
+                                        <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
+                                        <AlertDialogFooter>
+                                            <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                            <AlertDialogAction>Continue</AlertDialogAction>
+                                        </AlertDialogFooter>
+                                    </AlertDialogContent>
+                                </AlertDialog>
+                            </DropdownMenuContent>
+                        </DropdownMenu>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    Edit this attribute value
+                                </DialogTitle>
+                            </DialogHeader>
+                            <form onSubmit={updateValue} className="max-w-md mt-6">
+                                <div className="grid gap-4">
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="value">Value</Label>
+                                        <Input
+                                            id="name"
+                                            type="text"
+                                            placeholder="Attribute value"
+                                            value={editValueData.value}
+                                            onChange={(e) => setEditValueData("value", e.target.value)}
+                                            required
+                                        />
 
-            return (
-                <DropdownMenu>
-                    <DropdownMenuTrigger asChild>
-                        <Button variant="ghost" className="h-8 w-8 p-0">
-                            <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
-                        </Button>
-                    </DropdownMenuTrigger>
-                    <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem asChild>
-                            <Link href={route('admin.attributes.edit', attribute_value.id)}>
-                                <p>Edit attribute value</p>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem>View attribute value</DropdownMenuItem>
-                    </DropdownMenuContent>
-                </DropdownMenu>
+                                        <InputError message={errorsEditValue.value}/>
+                                    </div>
+                                    <DialogClose>
+                                        <Button type="submit" className="w-full">
+                                            Update
+                                        </Button>
+                                    </DialogClose>
+                                </div>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
+
+                </>
+
             );
         },
     },
@@ -163,33 +241,6 @@ export default function DataTableDemo({ attribute_values }: DataTableDemoProps) 
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-
-                {/*<DropdownMenu>*/}
-                {/*    <DropdownMenuTrigger asChild>*/}
-                {/*        <Button variant="outline" className="ml-auto">*/}
-                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
-                {/*        </Button>*/}
-                {/*    </DropdownMenuTrigger>*/}
-                {/*    <DropdownMenuContent align="end">*/}
-                {/*        {table*/}
-                {/*            .getAllColumns()*/}
-                {/*            .filter((column) => column.getCanHide())*/}
-                {/*            .map((column) => {*/}
-                {/*                return (*/}
-                {/*                    <DropdownMenuCheckboxItem*/}
-                {/*                        key={column.id}*/}
-                {/*                        className="capitalize"*/}
-                {/*                        checked={column.getIsVisible()}*/}
-                {/*                        onCheckedChange={(value) =>*/}
-                {/*                            column.toggleVisibility(!!value)*/}
-                {/*                        }*/}
-                {/*                    >*/}
-                {/*                        {column.id}*/}
-                {/*                    </DropdownMenuCheckboxItem>*/}
-                {/*                );*/}
-                {/*            })}*/}
-                {/*    </DropdownMenuContent>*/}
-                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>

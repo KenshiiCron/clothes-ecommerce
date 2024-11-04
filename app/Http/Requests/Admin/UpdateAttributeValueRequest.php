@@ -22,7 +22,7 @@ class UpdateAttributeValueRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'attribute_id' => ['required', 'integer', 'exists:attributes,id'],
+            'attribute_id' => ['nullable', 'integer', 'exists:attributes,id'],
             'value' => ['string','required']
         ];
     }

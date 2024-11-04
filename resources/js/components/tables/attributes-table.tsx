@@ -36,6 +36,9 @@ import {
 import { Switch } from "@/components/ui/switch"
 import { PageProps } from "@/types";
 import {Link} from "@inertiajs/react";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {Label} from "@/components/ui/label";
+import {InputError} from "@/components/ui/input-error";
 
 export type Attribute = {
     id: string;
@@ -175,32 +178,6 @@ export default function DataTableDemo({ attributes }: DataTableDemoProps) {
                     }
                     className="max-w-sm"
                 />
-                {/*<DropdownMenu>*/}
-                {/*    <DropdownMenuTrigger asChild>*/}
-                {/*        <Button variant="outline" className="ml-auto">*/}
-                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
-                {/*        </Button>*/}
-                {/*    </DropdownMenuTrigger>*/}
-                {/*    <DropdownMenuContent align="end">*/}
-                {/*        {table*/}
-                {/*            .getAllColumns()*/}
-                {/*            .filter((column) => column.getCanHide())*/}
-                {/*            .map((column) => {*/}
-                {/*                return (*/}
-                {/*                    <DropdownMenuCheckboxItem*/}
-                {/*                        key={column.id}*/}
-                {/*                        className="capitalize"*/}
-                {/*                        checked={column.getIsVisible()}*/}
-                {/*                        onCheckedChange={(value) =>*/}
-                {/*                            column.toggleVisibility(!!value)*/}
-                {/*                        }*/}
-                {/*                    >*/}
-                {/*                        {column.id}*/}
-                {/*                    </DropdownMenuCheckboxItem>*/}
-                {/*                );*/}
-                {/*            })}*/}
-                {/*    </DropdownMenuContent>*/}
-                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -230,6 +207,7 @@ export default function DataTableDemo({ attributes }: DataTableDemoProps) {
                                     data-state={row.getIsSelected() && "selected"}
                                 >
                                     {row.getVisibleCells().map((cell) => (
+
                                         <TableCell key={cell.id}>
                                             {flexRender(
                                                 cell.column.columnDef.cell,

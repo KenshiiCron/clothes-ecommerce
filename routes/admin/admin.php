@@ -28,6 +28,8 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::post('brands-update/{id}',[\App\Http\Controllers\Admin\BrandController::class, 'updatehh'])->name('brands.updatehh');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
+    Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
+    Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
 });
 
 require __DIR__.'/auth.php';
