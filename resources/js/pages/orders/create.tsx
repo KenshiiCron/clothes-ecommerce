@@ -7,9 +7,6 @@ import { InputError } from "@/components/ui/input-error";
 import { FormEventHandler, useState } from "react";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 
-import { Textarea } from "@/components/ui/textarea";
-import { Switch } from "@/components/ui/switch";
-
 
 interface Users {
     id: string;

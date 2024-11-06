@@ -200,37 +200,7 @@ export const columns: ColumnDef<Brand>[] = [
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
                         <DropdownMenuItem asChild>
-                            <AlertDialog>
-                                <AlertDialogTrigger asChild>
-                                    <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
-                                    >
-                                        <Trash size={16}></Trash>
-                                        <p>Delete brand</p>
-                                    </div>
-                                </AlertDialogTrigger>
 
-                                <AlertDialogContent>
-                                    <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete {brand.name}</AlertDialogTitle>
-                                        <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete this brand,
-                                            products
-                                            and orders will not be deleted.
-                                        </AlertDialogDescription>
-                                    </AlertDialogHeader>
-                                    <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                        <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
-                                                           onClick={() => {
-                                                               destroy(route("admin.brands.destroy", brand.id));
-                                                           }}>
-                                            <Trash size={16}></Trash>
-                                            <p>Delete</p>
-                                        </AlertDialogAction>
-                                    </AlertDialogFooter>
-                                </AlertDialogContent>
-                            </AlertDialog>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

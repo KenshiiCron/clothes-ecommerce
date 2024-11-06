@@ -5,6 +5,7 @@ import { createRoot } from "react-dom/client";
 import { createInertiaApp } from "@inertiajs/react";
 import { resolvePageComponent } from "laravel-vite-plugin/inertia-helpers";
 import { ThemeProvider } from "@/components/theme-provider";
+import {Toaster} from "@/components/ui/toaster";
 
 const appName = import.meta.env.VITE_APP_NAME || "Laravel";
 
@@ -25,7 +26,9 @@ createInertiaApp({
                 enableSystem
                 disableTransitionOnChange
             >
+
                 <App {...props} />
+                <Toaster />
             </ThemeProvider>
         );
     },

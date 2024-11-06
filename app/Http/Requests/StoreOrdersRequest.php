@@ -32,7 +32,6 @@ class StoreOrdersRequest extends FormRequest
             'sub_total_price' => 'required|numeric',
             'shipping_price' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
-            'total_qty' => 'required|integer',
             'wilaya_id' => 'nullable|exists:wilayas,id',
             'commune_id' => 'nullable|exists:communes,id',
             'delivery_state' => 'required|integer',

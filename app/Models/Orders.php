@@ -19,7 +19,6 @@ class Orders extends Model
         'sub_total_price',
         'shipping_price',
         'discount',
-        'total_qty',
         'state',
         'wilaya_id',
         'commune_id',
