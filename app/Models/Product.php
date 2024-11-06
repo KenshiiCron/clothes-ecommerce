@@ -18,6 +18,11 @@ class Product extends Model
         return $this->hasMany(Attribute::class);
     }
 
+    public function orders(): HasMany
+    {
+        return $this->hasMany(Orders::class);
+    }
+
     public function getImageUrlAttribute()
     {
         return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/admin/images/default-150x150.png');

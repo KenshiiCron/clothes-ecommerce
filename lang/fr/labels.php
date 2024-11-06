@@ -19,6 +19,7 @@ return [
                 0 => "En attente",
                 1 => "Confirmé",
                 2 => "Annulé",
+                3 => "Rejeté",
             ],
             "activity_log" => [
                 "event" => [

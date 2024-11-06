@@ -6,6 +6,7 @@ import {
     Command,
     Home,
     LibraryBig,
+    ShoppingBasket,
     Settings,
     Users,
     LayoutGrid,
@@ -64,6 +65,11 @@ const data = {
                     url: "/admin/attributes",
                 },
             ]
+        },
+        {
+            title: "Orders",
+            url: "/admin/orders",
+            icon: ShoppingBasket,
         },
     ],
     navSecondary: [

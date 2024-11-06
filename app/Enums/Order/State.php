@@ -13,6 +13,7 @@ enum State: int implements ColorAbleContract
     case PENDING = 0;
     case CONFIRMED = 1;
     case CANCELLED = 2;
+    case REJECTED = 3;
 
     public static function colors(): array
     {
@@ -20,6 +21,7 @@ enum State: int implements ColorAbleContract
             self::PENDING->value => 'light-info',
             self::CONFIRMED->value => 'light-success',
             self::CANCELLED->value => 'light-danger',
+            self::REJECTED->value => 'light-danger',
         ];
     }
     public function label():string

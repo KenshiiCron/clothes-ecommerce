@@ -19,6 +19,7 @@
                  0 => "Pending",
                  1 => "Confirmed",
                  2 => "Cancelled",
+                 3 => "Rejected",
              ],
          ],
          "activity_log" => [
