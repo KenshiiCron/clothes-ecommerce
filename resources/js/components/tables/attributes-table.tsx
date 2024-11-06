@@ -11,9 +11,9 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react";
+import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon, Trash} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
@@ -35,10 +35,17 @@ import {
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch"
 import { PageProps } from "@/types";
-import {Link} from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
 import {InputError} from "@/components/ui/input-error";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 export type Attribute = {
     id: string;
@@ -106,7 +113,7 @@ export const columns: ColumnDef<Attribute>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const attribute = row.original;
-
+            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -122,7 +129,39 @@ export const columns: ColumnDef<Attribute>[] = [
                                 <p>Edit attribute</p>
                             </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuItem>View attribute</DropdownMenuItem>
+                        <DropdownMenuSeparator/>
+                        <DropdownMenuItem asChild>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <div
+                                        className="text-red-600  flex items-center gap-2 py-1 px-2 cursor-default hover:bg-slate-800 rounded-sm"
+                                    >
+                                        <Trash size={16}></Trash>
+                                        <p>Delete brand</p>
+                                    </div>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete {attribute.name}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete this attribute,
+                                            products and values related to have this attribute will be affected.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+                                                           onClick={() => {
+                                                               destroy(route("admin.attributes.destroy", attribute.id));
+                                                           }}>
+                                            <Trash size={16}></Trash>
+                                            <p>Delete</p>
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             );

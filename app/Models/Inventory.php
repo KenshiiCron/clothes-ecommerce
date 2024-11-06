@@ -10,10 +10,11 @@ class Inventory extends Model
     protected $fillable = [
         'quantity',
         'price',
+        'old_price',
         'sku',
     ];
 
-    public function attributevalues(): HasMany{
+    public function attribute_values(): HasMany{
         return $this->hasMany(AttributeValue::class);
     }
 }

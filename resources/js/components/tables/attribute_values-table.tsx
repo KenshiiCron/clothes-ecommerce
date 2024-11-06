@@ -13,7 +13,7 @@ import {
 } from "@tanstack/react-table";
 import {ArrowUpDown, ChevronDown, Eye, MoreHorizontal, PlusCircleIcon, Trash} from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
@@ -133,6 +133,7 @@ export const columns: ColumnDef<AttributeValue>[] = [
                 e.preventDefault();
                 submitEditValue(route("admin.attribute-values.update",attribute_value.id));
             };
+            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
             return (<>
                     <Dialog>
                         <DropdownMenu>
@@ -149,19 +150,34 @@ export const columns: ColumnDef<AttributeValue>[] = [
                                         <p>Edit attribute value</p>
                                     </DropdownMenuItem>
                                 </DialogTrigger>
-                                <Separator className="my-1"/>
+                                <DropdownMenuSeparator/>
                                 <AlertDialog>
-                                    <AlertDialogTrigger>
-                                        <DropdownMenuItem className="text-red-600">
-                                            <Trash></Trash>
+                                    <AlertDialogTrigger asChild>
+                                        <div
+                                            className="text-red-600  flex items-center gap-2 py-1 px-2 cursor-default hover:bg-slate-800 rounded-sm"
+                                        >
+                                            <Trash size={16}></Trash>
                                             <p>Delete brand</p>
-                                        </DropdownMenuItem>
+                                        </div>
                                     </AlertDialogTrigger>
+
                                     <AlertDialogContent>
-                                        <AlertDialogTitle>Are you sure you want to delete?</AlertDialogTitle>
+                                        <AlertDialogHeader>
+                                            <AlertDialogTitle>Delete {attribute_value.value}</AlertDialogTitle>
+                                            <AlertDialogDescription>
+                                                This action cannot be undone. This will permanently delete this attribute value,
+                                                products related to have this attribute value will be affected.
+                                            </AlertDialogDescription>
+                                        </AlertDialogHeader>
                                         <AlertDialogFooter>
                                             <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                            <AlertDialogAction>Continue</AlertDialogAction>
+                                            <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+                                                               onClick={() => {
+                                                                   destroy(route("admin.attribute-values.destroy", attribute_value.id));
+                                                               }}>
+                                                <Trash size={16}></Trash>
+                                                <p>Delete</p>
+                                            </AlertDialogAction>
                                         </AlertDialogFooter>
                                     </AlertDialogContent>
                                 </AlertDialog>

@@ -67,6 +67,7 @@ export default function CreateOrder({users, wilayas, communes}: CreateOrderProps
     };
 
 
+    // @ts-ignore
     return (
         <AuthenticatedLayout header="Create Order">
             <Head title="Create Order" />
@@ -87,7 +88,7 @@ export default function CreateOrder({users, wilayas, communes}: CreateOrderProps
                             </SelectTrigger>
                             <SelectContent>
                                 {users.map((user) => (
-                                    <SelectItem key={user.id} value={user.id}>
+                                    <SelectItem key={user.id} value={String(user.id)}>
                                         {user.name}
                                     </SelectItem>
                                 ))}

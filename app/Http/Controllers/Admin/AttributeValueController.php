@@ -90,8 +90,9 @@ class AttributeValueController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(AttributeValue $attribute)
+    public function destroy($id)
     {
-        //
+        $this->attribute_value->destroy($id);
+        session()->flash('success',__('messages.flash.delete'));
     }
 }

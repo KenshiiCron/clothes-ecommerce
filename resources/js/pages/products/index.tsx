@@ -1,16 +1,16 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Head } from "@inertiajs/react";
-import ProductTable from "@/components/products-table";
+import ProductTable from "@/components/tables/products-table";
 import { PageProps } from "@/types";
 
-export default function Products() {
+export default function Products({products}: PageProps<{ products: any }>) {
     return (
         <AuthenticatedLayout
             header="Products"
         >
             <Head title="Products" />
 
-            <ProductTable />
+            <ProductTable  products={products.data}/>
         </AuthenticatedLayout>
     );
 }

@@ -11,10 +11,10 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory_attribute_values', function (Blueprint $table) {
+        Schema::create('images', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('inventory_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('attribute_values_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('product_id')->constrained('products');
+            $table->string('path');
             $table->timestamps();
         });
     }
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory_attribute_values');
+        Schema::dropIfExists('images');
     }
 };

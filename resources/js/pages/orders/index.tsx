@@ -1,6 +1,6 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import { Head } from "@inertiajs/react";
-import OrdersTable from "@/components/orders-table";
+import OrdersTable from "@/components/tables/orders-table";
 import { PageProps } from "@/types";
 import {Button} from "@/components/ui/button";
 import {toast} from "@/hooks/use-toast";

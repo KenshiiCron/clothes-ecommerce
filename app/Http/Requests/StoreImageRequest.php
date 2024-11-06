@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\Admin;
+namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateProductRequest extends FormRequest
+class StoreImageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -22,10 +22,7 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required','exists:categories,id'],
-            'name' => ['required', 'string', 'max:255'],
-            'description' => ['string','sometimes'],
-            'image' => ['nullable', 'file', 'max:5000'],
+            'path' => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
         ];
     }
 }
