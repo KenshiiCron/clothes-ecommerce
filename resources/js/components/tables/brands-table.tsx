@@ -275,7 +275,12 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.brands.create"/>
+                <Button asChild>
+                    <Link href={route("admin.brands.create")}>
+                        <p>Create</p>
+                        <PlusCircleIcon className="ml-2 h-4 w-4"/>
+                    </Link>
+                </Button>
                 <Input
                     placeholder="Filter brands..."
                     value={

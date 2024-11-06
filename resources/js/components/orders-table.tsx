@@ -20,7 +20,7 @@ import {
     PlusCircleIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
@@ -48,7 +48,14 @@ import {
 import { Switch } from "@/components/ui/switch";
 import { Badge } from "@/components/ui/badge";
 import { PageProps } from "@/types";
-import { Link } from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 export type Order = {
     id: String
@@ -116,37 +123,17 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         accessorKey: "name",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
+        header: "Name",
         cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
     {
         accessorKey: "phone",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Phone
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => <div>{row.getValue("phone")}</div>,
+        header: "Phone",
+        cell: ({ row }) => (
+            <div className="capitalize">
+                {row.getValue("phone")}
+            </div>
+        ),
     },
     {
         accessorKey: "total_price",
@@ -213,6 +200,8 @@ export const columns: ColumnDef<Order>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const order = row.original;
+            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
+
 
             return (
                 <DropdownMenu>
@@ -233,17 +222,6 @@ export const columns: ColumnDef<Order>[] = [
                         <DropdownMenuItem asChild>
                             <Link
                                 href={route(
-                                    "admin.orders.edit",
-                                    order.id
-                                )}
-                            >
-                                <Pencil></Pencil>
-                                <p>Edit order</p>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link
-                                href={route(
                                     "admin.orders.show",
                                     order.id
                                 )}
@@ -254,16 +232,36 @@ export const columns: ColumnDef<Order>[] = [
                         </DropdownMenuItem>
                         <Separator className="my-1"/>
                         <DropdownMenuItem asChild>
-                            <Link
-                                href={route(
-                                    "admin.orders.show",
-                                    order.id
-                                )}
-                                className="text-red-600"
-                            >
-                                <Trash></Trash>
-                                <p>Delete order</p>
-                            </Link>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <div
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
+                                    >
+                                        <Trash size={16}></Trash>
+                                        <p className="text-sm">Delete Order</p>
+                                    </div>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete Order {order.order_number}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete this order
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+
+                                                           onClick={() => {
+                                                               destroy(route("admin.orders.destroy", order.id));
+                                                           }}>
+                                            <Trash size={16}></Trash>
+                                            <p>Delete</p>
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

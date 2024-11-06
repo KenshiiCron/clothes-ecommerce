@@ -81,8 +81,9 @@ class OrdersController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Order $orders)
+    public function destroy($id)
     {
-        //
+        $this->order->destroy($id);
+        return redirect()->route('admin.orders.index');
     }
 }
