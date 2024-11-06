@@ -123,19 +123,7 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         accessorKey: "name",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
+        header: "Name",
         cell: ({ row }) => <div>{row.getValue("name")}</div>,
     },
     {
@@ -250,7 +238,7 @@ export const columns: ColumnDef<Order>[] = [
                                         className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p>Delete brand</p>
+                                        <p className="text-sm">Delete Order</p>
                                     </div>
                                 </AlertDialogTrigger>
 
@@ -264,6 +252,7 @@ export const columns: ColumnDef<Order>[] = [
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+
                                                            onClick={() => {
                                                                destroy(route("admin.orders.destroy", order.id));
                                                            }}>
