@@ -20,7 +20,7 @@ class Brand extends Model
 
     public function getImageUrlAttribute()
     {
-        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/category-d-1.jpg');
+        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/image-default.jpg');
     }
 
 

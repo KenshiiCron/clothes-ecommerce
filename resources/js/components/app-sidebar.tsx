@@ -5,12 +5,11 @@ import * as React from "react"
 import {
     Command,
     Home,
-    LibraryBig,
     ShoppingBasket,
     Settings,
     Users,
-    LayoutGrid,
-    ShoppingBag, TypeIcon,
+    User,
+    ShoppingBag,
 } from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
@@ -46,7 +45,7 @@ const data = {
             title: "Products",
             url: "/admin/products",
             icon: ShoppingBag,
-            isActive: true,
+            isActive: false,
             items: [
                 {
                     title: "Products",
@@ -70,6 +69,22 @@ const data = {
             title: "Orders",
             url: "/admin/orders",
             icon: ShoppingBasket,
+        },
+        {
+            title: "Users",
+            url: "/admin/users",
+            icon: User,
+            isActive: false,
+            items: [
+                {
+                    title: "Users",
+                    url: "/admin/users",
+                },
+                {
+                    title: "Admins",
+                    url: "/admin/admins",
+                },
+            ]
         },
     ],
     navSecondary: [
@@ -110,6 +125,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             </SidebarHeader>
             <SidebarContent>
                 <NavMain items={data.navMain}/>
+                <NavSecondary items={data.navSecondary} className="mt-auto" />
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={auth.user}/>

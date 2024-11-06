@@ -20,7 +20,7 @@ class OrdersFactory extends Factory
     public function definition(): array
     {
         return [
-            'user_id' => User::factory(),                  // Create a related user or use null for optional
+            'user_id' => 1,                  // Create a related user or use null for optional
             'order_number' => strtoupper(Str::random(10)), // Random unique order number
             'name' => $this->faker->name,                  // Fake name
             'state' => $this->faker->numberBetween(0, 2),  // Random state (e.g., 0, 1, or 2)

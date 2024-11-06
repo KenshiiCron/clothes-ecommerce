@@ -29,7 +29,7 @@ class BrandRepository extends BaseRepositories implements BrandContract
 
     public function new(array $data)
     {
-        if (array_key_exists('image', $data)) {
+        if (array_key_exists('image', $data) && isset($data['image'])) {
             $data['image'] = $this->uploadOne($data['image'], ((new \ReflectionClass($this->model))->getShortName()) . '/image', 'public');
         }
 

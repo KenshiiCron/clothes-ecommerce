@@ -6,8 +6,6 @@ use App\Contracts\CategoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCategoryRequest;
 use App\Http\Requests\UpdateCategoryRequest;
-use App\Models\Category;
-use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CategoryController extends Controller

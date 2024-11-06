@@ -1,29 +1,22 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputError } from "@/components/ui/input-error";
-import { Switch } from "@/components/ui/switch";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
-import {FormEventHandler, useState} from "react";
+import { FormEventHandler, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { Switch } from "@/components/ui/switch";
 
-export default function Create() {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
-        description: "",
-        featured: true,
+export default function Edit({ brand }: any) {
+    const { data, setData, put, processing, errors, reset } = useForm({
+        name: brand.name,
+        description: brand.description,
+        featured: brand.featured,
         image: null,
     });
 
-    const [preview, setPreview] = useState(data.image);
+    const [preview, setPreview] = useState(data.image ? data.image : null);
     const handleImageChange = (e: any) => {
         const file = e.target.files[0];
         if (file) {
@@ -36,13 +29,21 @@ export default function Create() {
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("admin.brands.store"));
+        // put(route("admin.brands.update", brand.id));
+
+        router.post(route("admin.brands.update", brand.id), {
+            _method: "put",
+            name: data.name,
+            description: data.description,
+            featured: data.featured,
+            image: data.image,
+        });
     };
     return (
-        <AuthenticatedLayout header="Categories">
-            <Head title="Create Brand" />
+        <AuthenticatedLayout header="Brands">
+            <Head title="Edit Brand" />
 
-            <p>Create</p>
+            <p>Edit</p>
             <form onSubmit={submit} className="max-w-md mt-6">
                 <div className="grid gap-4">
                     <div className="grid gap-2">
@@ -79,9 +80,16 @@ export default function Create() {
                             placeholder="Image url"
                             onChange={handleImageChange}
                         />
-                        {preview && (
+                        <InputError message={errors.image} />
+                        {preview ? (
                             <img
                                 src={preview}
+                                alt="Selected image preview"
+                                className="w-32 h-32 object-cover rounded"
+                            />
+                        ) : (
+                            <img
+                                src={brand.image_url}
                                 alt="Selected image preview"
                                 className="w-32 h-32 object-cover rounded"
                             />
@@ -100,7 +108,7 @@ export default function Create() {
                         <InputError message={errors.description} />
                     </div>
                     <Button type="submit" className="w-full mt-4">
-                        Create
+                        Update
                     </Button>
                 </div>
             </form>

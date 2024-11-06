@@ -24,6 +24,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::middleware(['auth:admin', 'verified'])->group(function () {
+    Route::resource('users',\App\Http\Controllers\Admin\UserController::class);
     Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::post('brands-update/{id}',[\App\Http\Controllers\Admin\BrandController::class, 'updatehh'])->name('brands.updatehh');

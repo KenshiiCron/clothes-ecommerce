@@ -32,6 +32,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'remember_token',
     ];
 
+    protected $appends = ['image_url'];
+
     /**
      * Get the attributes that should be cast.
      *
@@ -45,6 +47,11 @@ class User extends Authenticatable implements MustVerifyEmail
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
         ];
+    }
+
+    public function getImageUrlAttribute()
+    {
+        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/user-default.png');
     }
 
     public function orders()

@@ -4,22 +4,22 @@
 namespace App\Repositories;
 
 
-use App\Contracts\CategoryContract;
-use App\Models\Category;
+use App\Contracts\UserContract;
+use App\Models\User;
 use app\Traits\UploadAble;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 
-class CategoryRepository extends BaseRepositories implements CategoryContract
+class UserRepository extends BaseRepositories implements UserContract
 {
     use UploadAble;
 
     /**
-     * @param Category $model
+     * @param User $model
      * @param array $filters
      */
     #[Pure]
-    public function __construct(Category $model, array $filters = [
+    public function __construct(User $model, array $filters = [
         \App\QueryFilter\Search::class,
     ])
     {

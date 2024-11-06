@@ -59,18 +59,17 @@ import {Badge} from "@/components/ui/badge";
 import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 
-export type Brand = {
+export type User = {
     id: string;
     name: string;
+    email: string;
+    orders: Array<any>;
     image_url: string;
-    slug: string;
-    featured: boolean;
-    description: string;
     created_at: string;
     updated_at: string;
 };
 
-export const columns: ColumnDef<Brand>[] = [
+export const columns: ColumnDef<User>[] = [
     {
         id: "select",
         header: ({table}) => (
@@ -126,6 +125,11 @@ export const columns: ColumnDef<Brand>[] = [
         cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
+        accessorKey: "email",
+        header: "Email",
+        cell: ({row}) => <div>{row.getValue("email")}</div>,
+    },
+    {
         accessorKey: "created_at",
         header: ({column}) => {
             return (
@@ -150,28 +154,37 @@ export const columns: ColumnDef<Brand>[] = [
         ),
     },
     {
-        accessorKey: "featured",
-        header: "Featured",
-        cell: ({row}) => (
-            <div className="capitalize">
-                {/* <Switch value={row.getValue("featured")} /> */}
-                <Badge
-                    variant={
-                        row.getValue("featured") == 0
-                            ? "destructive"
-                            : "secondary"
+        accessorKey: "orders",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
                     }
                 >
-                    {row.getValue("featured") == 0 ? "No" : "Yes"}
-                </Badge>
-            </div>
-        ),
+                    Orders
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: ({row}) => {
+            return (
+                <div className="capitalize">
+                    {/* <Switch value={row.getValue("orders")} /> */}
+                    <Badge
+                    >
+                        {row.getValue("orders").length}
+                    </Badge>
+                </div>
+            );
+        },
     },
     {
         id: "actions",
         enableHiding: false,
         cell: ({row}) => {
-            const brand = row.original;
+            const user = row.original;
 
             const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
 
@@ -187,15 +200,15 @@ export const columns: ColumnDef<Brand>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                            <Link href={route("admin.brands.edit", brand.id)}>
+                            <Link href={route("admin.users.edit", user.id)}>
                                 <Pencil/>
-                                <p>Edit brand</p>
+                                <p>Edit user</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <Link href={route("admin.brands.show", brand.id)}>
+                            <Link href={route("admin.users.show", user.id)}>
                                 <Eye/>
-                                <p>View brand</p>
+                                <p>View user</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
@@ -203,18 +216,18 @@ export const columns: ColumnDef<Brand>[] = [
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p>Delete brand</p>
+                                        <p>Delete user</p>
                                     </div>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete {brand.name}</AlertDialogTitle>
+                                        <AlertDialogTitle>Delete {user.name}</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete this brand,
+                                            This action cannot be undone. This will permanently delete this user,
                                             products
                                             and orders will not be deleted.
                                         </AlertDialogDescription>
@@ -223,7 +236,7 @@ export const columns: ColumnDef<Brand>[] = [
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
                                                            onClick={() => {
-                                                               destroy(route("admin.brands.destroy", brand.id));
+                                                               destroy(route("admin.users.destroy", user.id));
                                                            }}>
                                             <Trash size={16}></Trash>
                                             <p>Delete</p>
@@ -240,10 +253,10 @@ export const columns: ColumnDef<Brand>[] = [
 ];
 
 interface DataTableDemoProps {
-    brands: Brand[];
+    users: User[];
 }
 
-export default function DataTableDemo({brands}: DataTableDemoProps) {
+export default function DataTableDemo({users}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
@@ -252,7 +265,7 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data: brands,
+        data: users,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -275,13 +288,13 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
                 <Button asChild>
-                    <Link href={route("admin.brands.create")}>
+                    <Link href={route("admin.users.create")}>
                         <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4"/>
+                        <PlusCircleIcon size={20} className="ml-1"/>
                     </Link>
                 </Button>
                 <Input
-                    placeholder="Filter brands..."
+                    placeholder="Filter users..."
                     value={
                         (table.getColumn("name")?.getFilterValue() as string) ??
                         ""
