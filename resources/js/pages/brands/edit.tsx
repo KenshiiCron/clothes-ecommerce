@@ -1,15 +1,15 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import { Head, useForm } from "@inertiajs/react";
+import { Head, useForm, router } from "@inertiajs/react";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputError } from "@/components/ui/input-error";
-import {FormEventHandler, useState} from "react";
+import { FormEventHandler, useState } from "react";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
 export default function Edit({ brand }: any) {
-    const { data, setData, post, processing, errors, reset} = useForm({
+    const { data, setData, put, processing, errors, reset } = useForm({
         name: brand.name,
         description: brand.description,
         featured: brand.featured,
@@ -18,8 +18,6 @@ export default function Edit({ brand }: any) {
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
     const handleImageChange = (e: any) => {
-        e.preventDefault()
-
         const file = e.target.files[0];
         if (file) {
             setData("image", file);
@@ -29,11 +27,17 @@ export default function Edit({ brand }: any) {
     };
 
     const submit: FormEventHandler = (e) => {
-        console.log(data)
         e.preventDefault();
 
-        post(route("admin.brands.updatehh", brand.id));
-        console.log(data)
+        // put(route("admin.brands.update", brand.id));
+
+        router.post(route("admin.brands.update", brand.id), {
+            _method: "put",
+            name: data.name,
+            description: data.description,
+            featured: data.featured,
+            image: data.image,
+        });
     };
     return (
         <AuthenticatedLayout header="Brands">
@@ -72,12 +76,9 @@ export default function Edit({ brand }: any) {
                         <Input
                             id="image"
                             type="file"
+                            accept="image/*"
                             placeholder="Image url"
-                            // onChange={(e) =>
-                            //     setData("image", e.target.files[0])
-                            // }
                             onChange={handleImageChange}
-                            // required
                         />
                         <InputError message={errors.image} />
                         {preview ? (

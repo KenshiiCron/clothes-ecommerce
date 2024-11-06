@@ -28,6 +28,7 @@ export default function Create() {
         const file = e.target.files[0];
         if (file) {
             setData("image", file);
+            // @ts-ignore
             setPreview(URL.createObjectURL(file));
         }
     };
@@ -74,6 +75,7 @@ export default function Create() {
                         <Input
                             id="image"
                             type="file"
+                            accept="image/*"
                             placeholder="Image url"
                             onChange={handleImageChange}
                             required

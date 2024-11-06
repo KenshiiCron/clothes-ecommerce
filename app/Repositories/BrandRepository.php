@@ -56,6 +56,11 @@ class BrandRepository extends BaseRepositories implements BrandContract
         } else {
             $data['image'] = $model->image;
         }
+
+        if (!array_key_exists('featured', $data)) {
+            $data['featured'] = false;
+        }
+
         $model->update($data);
 
         activity()

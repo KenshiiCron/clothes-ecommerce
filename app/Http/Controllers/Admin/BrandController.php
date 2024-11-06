@@ -79,23 +79,26 @@ class BrandController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateBrandRequest $request, $id)
+    public function update(UpdateBrandRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
-        dd($request->all());
-        $brand = $this->brand->update($id,$request->validated());
-        return redirect()->route('admin.brands.index');
-    }public function updatehh(UpdateBrandRequest $request, $id)
-    {
-//        dd($request->validated());
-        $brand = $this->brand->update($id,$request->validated());
+        $brand = $this->brand->update($id, $request->validated());
         return redirect()->route('admin.brands.index');
     }
+
+   /* public function updatehh(UpdateBrandRequest $request, $id)
+    {
+        dd($request->validated());
+        $brand = $this->brand->update($id,$request->validated());
+        return redirect()->route('admin.brands.index');
+    }*/
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Brand $brand)
+    public function destroy($id)
     {
-        //
+        $this->brand->destroy($id);
+        session()->flash('success',__('messages.flash.delete'));
+        return redirect()->route('admin.brands.index');
     }
 }

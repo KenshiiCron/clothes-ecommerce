@@ -20,8 +20,8 @@ import {
     PlusCircleIcon,
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Button, buttonVariants} from "@/components/ui/button";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -31,10 +31,19 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogFooter,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
-import { Separator } from "@/components/ui/separator"
-
-import { Input } from "@/components/ui/input";
+import {Input} from "@/components/ui/input";
 
 import {
     Table,
@@ -45,10 +54,10 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { PageProps } from "@/types";
-import { Link } from "@inertiajs/react";
+import {Switch} from "@/components/ui/switch";
+import {Badge} from "@/components/ui/badge";
+import {PageProps} from "@/types";
+import {Link, useForm} from "@inertiajs/react";
 
 export type Brand = {
     id: string;
@@ -64,7 +73,7 @@ export type Brand = {
 export const columns: ColumnDef<Brand>[] = [
     {
         id: "select",
-        header: ({ table }) => (
+        header: ({table}) => (
             <Checkbox
                 checked={
                     table.getIsAllPageRowsSelected() ||
@@ -76,7 +85,7 @@ export const columns: ColumnDef<Brand>[] = [
                 aria-label="Select all"
             />
         ),
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -89,19 +98,19 @@ export const columns: ColumnDef<Brand>[] = [
     {
         accessorKey: "image_url",
         header: "Image",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="p-2">
                 <img
                     src={row.getValue("image_url")}
                     alt="image"
-                    className="w-14 h-w-14 rounded-md object-cover"
+                    className="w-14 h-14 rounded-md object-cover"
                 />
             </div>
         ),
     },
     {
         accessorKey: "name",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
@@ -110,15 +119,15 @@ export const columns: ColumnDef<Brand>[] = [
                     }
                 >
                     Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => <div>{row.getValue("name")}</div>,
+        cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
         accessorKey: "created_at",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
@@ -127,11 +136,11 @@ export const columns: ColumnDef<Brand>[] = [
                     }
                 >
                     Created at
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="lowercase">
                 {new Date(row.getValue("created_at"))
                     .toISOString()
@@ -143,7 +152,7 @@ export const columns: ColumnDef<Brand>[] = [
     {
         accessorKey: "featured",
         header: "Featured",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="capitalize">
                 {/* <Switch value={row.getValue("featured")} /> */}
                 <Badge
@@ -161,59 +170,67 @@ export const columns: ColumnDef<Brand>[] = [
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const brand = row.original;
+
+            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
+
 
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreHorizontal className="h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {/*<DropdownMenuItem*/}
-                        {/*    onClick={() => navigator.clipboard.writeText(payment.id)}*/}
-                        {/*>*/}
-                        {/*    Copy payment ID*/}
-                        {/*</DropdownMenuItem>*/}
-                        {/*<DropdownMenuSeparator />*/}
                         <DropdownMenuItem asChild>
-                            <Link
-                                href={route(
-                                    "admin.brands.edit",
-                                    brand.id
-                                )}
-                            >
-                                <Pencil></Pencil>
+                            <Link href={route("admin.brands.edit", brand.id)}>
+                                <Pencil/>
                                 <p>Edit brand</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuItem asChild>
-                            <Link
-                                href={route(
-                                    "admin.brands.show",
-                                    brand.id
-                                )}
-                            >
-                                <Eye></Eye>
+                            <Link href={route("admin.brands.show", brand.id)}>
+                                <Eye/>
                                 <p>View brand</p>
                             </Link>
                         </DropdownMenuItem>
-                        <Separator className="my-1"/>
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem asChild>
-                            <Link
-                                href={route(
-                                    "admin.brands.show",
-                                    brand.id
-                                )}
-                                className="text-red-600"
-                            >
-                                <Trash></Trash>
-                                <p>Delete brand</p>
-                            </Link>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <div
+                                        className="text-red-600  flex items-center gap-2 py-1 px-2 cursor-default hover:bg-slate-800 rounded-sm"
+                                    >
+                                        <Trash size={16}></Trash>
+                                        <p>Delete brand</p>
+                                    </div>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete {brand.name}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete this brand,
+                                            products
+                                            and orders will not be deleted.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+                                                           onClick={() => {
+                                                               destroy(route("admin.brands.destroy", brand.id));
+                                                           }}>
+                                            <Trash size={16}></Trash>
+                                            <p>Delete</p>
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
@@ -226,7 +243,7 @@ interface DataTableDemoProps {
     brands: Brand[];
 }
 
-export default function DataTableDemo({ brands }: DataTableDemoProps) {
+export default function DataTableDemo({brands}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
@@ -253,13 +270,14 @@ export default function DataTableDemo({ brands }: DataTableDemoProps) {
         },
     });
 
+
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
                 <Button asChild>
                     <Link href={route("admin.brands.create")}>
                         <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4" />
+                        <PlusCircleIcon className="ml-2 h-4 w-4"/>
                     </Link>
                 </Button>
                 <Input
@@ -313,10 +331,10 @@ export default function DataTableDemo({ brands }: DataTableDemoProps) {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                      header.column.columnDef
-                                                          .header,
-                                                      header.getContext()
-                                                  )}
+                                                    header.column.columnDef
+                                                        .header,
+                                                    header.getContext()
+                                                )}
                                         </TableHead>
                                     );
                                 })}

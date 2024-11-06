@@ -25,7 +25,7 @@ class StoreBrandRequest extends FormRequest
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
             'image' => ['nullable', 'file', 'max:5000'],
-            'featured' => ['required', 'integer'],
+            'featured' => ['required', 'boolean'],
         ];
     }
 }

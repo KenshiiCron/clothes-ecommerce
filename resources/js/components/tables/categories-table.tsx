@@ -90,7 +90,7 @@ export const columns: ColumnDef<Category>[] = [
                 <img
                     src={row.getValue("image_url")}
                     alt="image"
-                    className="w-14 h-w-14 rounded-md object-cover"
+                    className="w-14 h-14 rounded-md object-cover"
                 />
             </div>
         ),

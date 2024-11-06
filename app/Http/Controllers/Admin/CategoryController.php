@@ -75,9 +75,8 @@ class CategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update($id, Request $request)
+    public function update(UpdateCategoryRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
-        dd($request->all());
         $category = $this->category->update($id,$request->validated());
         return redirect()->route('admin.categories.index');
     }

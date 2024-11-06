@@ -20,6 +20,15 @@ return [
                 1 => "Confirmé",
                 2 => "Annulé",
             ],
+            "activity_log" => [
+                "event" => [
+                    1 => "Créer",
+                    2 => "Editer",
+                    3 => "Supprimer",
+                    4 => "Confirmer",
+                    5 => "Annuler",
+                ],
+            ],
         ]
     ]
 ];

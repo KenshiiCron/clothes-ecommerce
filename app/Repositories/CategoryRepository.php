@@ -49,14 +49,15 @@ class CategoryRepository extends BaseRepositories implements CategoryContract
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
-        if (array_key_exists('image',$data))
-        {
-            if ($model->image)
-            {
+        if (array_key_exists('image', $data) && isset($data['image'])) {
+            if ($model->image) {
                 $this->deleteOne($model->image);
             }
-            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image');
+            $data['image'] = $this->uploadOne($data['image'], (new \ReflectionClass($this->model))->getShortName() . '/image', 'public');
+        } else {
+            $data['image'] = $model->image;
         }
+        $model->update($data);
 
         activity()
             ->causedBy(auth()->user())
@@ -64,7 +65,6 @@ class CategoryRepository extends BaseRepositories implements CategoryContract
             ->event('update')
             ->log('edited: '. $this->model);
 
-        $model->update($data);
         return $model->refresh();
     }
 

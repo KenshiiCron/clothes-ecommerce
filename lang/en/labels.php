@@ -20,6 +20,15 @@
                  1 => "Confirmed",
                  2 => "Cancelled",
              ],
+         ],
+         "activity_log" => [
+             "event" => [
+                 1 => "Create",
+                 2 => "Edit",
+                 3 => "Delete",
+                 4 => "Confirm",
+                 5 => "Cancel",
+             ],
          ]
      ]
  ];
