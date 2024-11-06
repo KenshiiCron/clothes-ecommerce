@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Contracts\CategoryContract;
 use App\Contracts\OrderContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrdersRequest;
 use App\Http\Requests\UpdateOrdersRequest;
 use App\Models\Orders;
+use App\Models\User;
 use Inertia\Inertia;
+use Kossa\AlgerianCities\Wilaya;
 
 class OrdersController extends Controller
 {
@@ -35,7 +36,10 @@ class OrdersController extends Controller
      */
     public function create()
     {
-        return Inertia::render('orders/create');
+        $users = User::all();
+        $wilayas = wilayas();
+        $communes = communes();
+        return Inertia::render('orders/create',compact('users','wilayas','communes'));
     }
 
     /**
@@ -43,6 +47,7 @@ class OrdersController extends Controller
      */
     public function store(StoreOrdersRequest $request)
     {
+//        dd('here');
         $data = $request->validated();
         $this->order->new($data);
         return redirect()->route('admin.orders.index');

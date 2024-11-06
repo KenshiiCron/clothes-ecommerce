@@ -11,7 +11,7 @@ class StoreOrdersRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,7 +23,7 @@ class StoreOrdersRequest extends FormRequest
     {
         return [
             'user_id' => 'nullable|exists:users,id',
-            'order_number' => 'required|string|unique:orders,order_number',
+            'order_number' => 'sometimes|nullable|string|unique:orders,order_number',
             'name' => 'required|string',
             'address' => 'nullable|string',
             'phone' => 'required|string',
@@ -33,11 +33,13 @@ class StoreOrdersRequest extends FormRequest
             'shipping_price' => 'nullable|numeric',
             'discount' => 'nullable|numeric',
             'total_qty' => 'required|integer',
-            'wilaya_name' => 'nullable|string',
-            'commune_name' => 'nullable|string',
+            'wilaya_id' => 'nullable|exists:wilayas,id',
+            'commune_id' => 'nullable|exists:communes,id',
             'delivery_state' => 'required|integer',
             'payment_method' => 'required|integer',
             'payment_state' => 'required|integer',
         ];
+
+
     }
 }

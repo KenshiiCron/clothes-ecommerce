@@ -30,7 +30,15 @@ class OrderRepository extends BaseRepositories implements OrderContract
 
     public function new(array $data)
     {
-        return $this->model::create($data);
+        $prefix = 'CO-';
+        $month = now()->format('m');
+        $day = now()->format('d');
+        $incrementalValue = $this->model::whereDate('created_at', now()->toDateString())->count() + 1;
+        $orderNumber = sprintf('%s%s%s-%03d', $prefix, $month, $day, $incrementalValue);
+        $data['order_number'] = $orderNumber;
+        $order = $this->model::create($data);
+
+        return $order;
     }
 
     public function update($model,array $data )
