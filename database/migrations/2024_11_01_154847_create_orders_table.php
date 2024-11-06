@@ -20,11 +20,10 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->string('phone');
             $table->string('email')->nullable();
-            $table->double('total_price');
-            $table->double('sub_total_price');
-            $table->double('shipping_price')->nullable();
-            $table->double('discount')->nullable();
-            $table->integer('total_qty');
+            $table->integer('total_price');
+            $table->integer('sub_total_price');
+            $table->integer('shipping_price')->nullable();
+            $table->integer('discount')->nullable();
             $table->foreignId('wilaya_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('commune_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('delivery_state')->default(0);
