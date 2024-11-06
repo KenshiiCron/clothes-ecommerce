@@ -39,7 +39,7 @@ export default function Create() {
         post(route("admin.brands.store"));
     };
     return (
-        <AuthenticatedLayout header="Categories">
+        <AuthenticatedLayout header="Brands">
             <Head title="Create Brand" />
 
             <p>Create</p>
@@ -66,7 +66,6 @@ export default function Create() {
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
-                            required
                         />
                         <InputError message={errors.description} />
                     </div>

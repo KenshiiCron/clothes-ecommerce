@@ -5,7 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { InputError } from "@/components/ui/input-error";
 // @ts-ignore
-import AttributeValuesTable from "@/components/tables/attribute_values-table";
+import AttributeValuesTable from "@/components/tables/attribute-values-table";
 import { FormEventHandler } from "react";
 import AttributeTable from "@/components/tables/attributes-table";
 import { PageProps } from "@/types";

@@ -26,7 +26,7 @@ class Product extends Model
 
     public function orders(): HasMany
     {
-        return $this->hasMany(Orders::class);
+        return $this->hasMany(Order::class);
     }
 
     public function images(): HasMany

@@ -6,7 +6,7 @@ namespace App\Repositories;
 
 
 use App\Contracts\OrderContract;
-use App\Models\Orders;
+use App\Models\Order;
 use app\Traits\UploadAble;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
@@ -16,11 +16,11 @@ class OrderRepository extends BaseRepositories implements OrderContract
     use UploadAble;
 
     /**
-     * @param Orders $model
+     * @param Order $model
      * @param array $filters
      */
     #[Pure]
-    public function __construct(Orders $model, array $filters = [
+    public function __construct(Order $model, array $filters = [
         \App\QueryFilter\Search::class,
     ])
     {

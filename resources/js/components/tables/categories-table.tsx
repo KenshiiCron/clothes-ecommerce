@@ -44,6 +44,7 @@ import { Switch } from "@/components/ui/switch";
 import { PageProps } from "@/types";
 import { Link } from "@inertiajs/react";
 import { Badge } from "../ui/badge";
+import {CreateButton} from "@/components/elements/create-button";
 
 export type Category = {
     id: string;
@@ -242,12 +243,7 @@ export default function DataTableDemo({ categories }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button asChild>
-                    <Link href={route("admin.categories.create")}>
-                        <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
+                <CreateButton link="admin.categories.create"/>
                 <Input
                     placeholder="Filter categories..."
                     value={

@@ -6,7 +6,7 @@ use App\Contracts\OrderContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreOrdersRequest;
 use App\Http\Requests\UpdateOrdersRequest;
-use App\Models\Orders;
+use App\Models\Order;
 use App\Models\User;
 use Inertia\Inertia;
 use Kossa\AlgerianCities\Wilaya;
@@ -65,7 +65,7 @@ class OrdersController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Orders $orders)
+    public function edit(Order $orders)
     {
         //
     }
@@ -73,7 +73,7 @@ class OrdersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrdersRequest $request, Orders $orders)
+    public function update(UpdateOrdersRequest $request, Order $orders)
     {
         //
     }
