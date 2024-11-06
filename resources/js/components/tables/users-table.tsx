@@ -59,6 +59,8 @@ import {Badge} from "@/components/ui/badge";
 import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 
+import {CreateButton} from "@/components/elements/create-button";
+
 export type User = {
     id: string;
     name: string;
@@ -109,19 +111,7 @@ export const columns: ColumnDef<User>[] = [
     },
     {
         accessorKey: "name",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
+        header: "Name",
         cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
@@ -219,7 +209,7 @@ export const columns: ColumnDef<User>[] = [
                                         className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p>Delete user</p>
+                                        <p className="text-sm font-medium">Delete user</p>
                                     </div>
                                 </AlertDialogTrigger>
 
@@ -287,12 +277,7 @@ export default function DataTableDemo({users}: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button asChild>
-                    <Link href={route("admin.users.create")}>
-                        <p>Create</p>
-                        <PlusCircleIcon size={20} className="ml-1"/>
-                    </Link>
-                </Button>
+                <CreateButton link="admin.users.create"/>
                 <Input
                     placeholder="Filter users..."
                     value={

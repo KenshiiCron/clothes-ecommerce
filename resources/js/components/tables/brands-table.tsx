@@ -58,6 +58,7 @@ import {Switch} from "@/components/ui/switch";
 import {Badge} from "@/components/ui/badge";
 import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
+import {CreateButton} from "@/components/elements/create-button";
 
 export type Brand = {
     id: string;
@@ -203,10 +204,10 @@ export const columns: ColumnDef<Brand>[] = [
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p>Delete brand</p>
+                                        <p className="text-sm font-medium">Delete brand</p>
                                     </div>
                                 </AlertDialogTrigger>
 
@@ -274,12 +275,7 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button asChild>
-                    <Link href={route("admin.brands.create")}>
-                        <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4"/>
-                    </Link>
-                </Button>
+                <CreateButton link="admin.brands.create"/>
                 <Input
                     placeholder="Filter brands..."
                     value={

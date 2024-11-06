@@ -7,6 +7,7 @@ namespace App\Repositories;
 use App\Contracts\UserContract;
 use App\Models\User;
 use app\Traits\UploadAble;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use JetBrains\PhpStorm\Pure;
 
@@ -29,11 +30,11 @@ class UserRepository extends BaseRepositories implements UserContract
 
     public function new(array $data)
     {
-        if (array_key_exists('image', $data) && isset($data['image']))
-        {
-            $data['image'] = $this->uploadOne($data['image'],(new \ReflectionClass($this->model))->getShortName().'/image', 'public');
+        if (array_key_exists('image', $data) && isset($data['image'])) {
+            $data['image'] = $this->uploadOne($data['image'], ((new \ReflectionClass($this->model))->getShortName()) . '/image', 'public');
         }
 
+        $data['password'] = bcrypt($data['password']);
         $data['slug'] = Str::slug($data['name']);
 
         activity()

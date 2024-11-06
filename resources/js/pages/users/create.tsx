@@ -1,11 +1,11 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import { Head, useForm } from "@inertiajs/react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import { InputError } from "@/components/ui/input-error";
-import { Switch } from "@/components/ui/switch";
+import {Head, useForm} from "@inertiajs/react";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
+import {InputError} from "@/components/ui/input-error";
+import {Switch} from "@/components/ui/switch";
 import {
     Select,
     SelectContent,
@@ -15,10 +15,10 @@ import {
 } from "@/components/ui/select";
 import {FormEventHandler, useState} from "react";
 
-import { Eye, EyeOff } from 'lucide-react'
+import {Eye, EyeOff} from 'lucide-react'
 
 export default function Create() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {data, setData, post, processing, errors, reset} = useForm({
         name: "",
         email: "",
         password: "",
@@ -52,8 +52,8 @@ export default function Create() {
         post(route("admin.users.store"));
     };
     return (
-        <AuthenticatedLayout header="Categories">
-            <Head title="Create Brand" />
+        <AuthenticatedLayout header="Users">
+            <Head title="Create User"/>
 
             <p>Create</p>
             <form onSubmit={submit} className="max-w-md mt-6">
@@ -100,6 +100,8 @@ export default function Create() {
                         <Input
                             type={showPassword ? 'text' : 'password'}
                             placeholder="Password"
+                            value={data.password}
+                            onChange={(e) => setData("password", e.target.value)}
                             className="pr-10"
                         />
                         <Button
@@ -116,13 +118,15 @@ export default function Create() {
                                 <Eye className="h-4 w-4 text-gray-500"/>
                             )}
                         </Button>
-                        <InputError message={errors.password}/>
                     </div>
+                    <InputError message={errors.password}/>
                     <div className="relative grid gap-2">
                         <Label htmlFor="password_confirmation">Password</Label>
                         <Input
                             type={showPasswordConfirmation ? 'text' : 'password'}
-                            placeholder="Password"
+                            placeholder="Password Confirmation"
+                            value={data.password_confirmation}
+                            onChange={(e) => setData("password_confirmation", e.target.value)}
                             className="pr-10"
                         />
                         <Button
@@ -131,7 +135,7 @@ export default function Create() {
                             size="icon"
                             className="absolute right-0 top-3 h-full px-3 py-2 hover:bg-transparent"
                             onClick={togglePasswordConfirmationVisibility}
-                            aria-label={showPasswordConfirmation ? 'Hide password_confirmation' : 'Show password_confirmation'}
+                            aria-label={showPasswordConfirmation ? 'Hide password confirmation' : 'Show password confirmation'}
                         >
                             {showPasswordConfirmation ? (
                                 <EyeOff className="h-4 w-4 text-gray-500"/>
@@ -139,8 +143,8 @@ export default function Create() {
                                 <Eye className="h-4 w-4 text-gray-500"/>
                             )}
                         </Button>
-                        <InputError message={errors.password_confirmation}/>
                     </div>
+                    <InputError message={errors.password_confirmation}/>
                     <Separator className="my-4"></Separator>
                     <div className="grid gap-2">
                         <Label htmlFor="image">Image</Label>
@@ -161,7 +165,7 @@ export default function Create() {
                         )}
                         <InputError message={errors.image}/>
                     </div>
-                    <Button type="submit" className="w-full mt-4">
+                    <Button type="submit" className="w-full mt-4" disabled={processing}>
                         Create
                     </Button>
                 </div>

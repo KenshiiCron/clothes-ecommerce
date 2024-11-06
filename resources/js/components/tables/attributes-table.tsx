@@ -39,6 +39,7 @@ import {Link} from "@inertiajs/react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {Label} from "@/components/ui/label";
 import {InputError} from "@/components/ui/input-error";
+import {CreateButton} from "@/components/elements/create-button";
 
 export type Attribute = {
     id: string;
@@ -162,14 +163,7 @@ export default function DataTableDemo({ attributes }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button
-                    asChild
-                >
-                    <Link href={route('admin.attributes.create')}>
-                        <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
+                <CreateButton link="admin.attributes.create"/>
                 <Input
                     placeholder="Filter attributes..."
                     value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}

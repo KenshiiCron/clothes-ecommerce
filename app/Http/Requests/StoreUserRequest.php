@@ -24,9 +24,9 @@ class StoreUserRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'max:255'],
-            'phone' => ['sometimes', 'string', 'max:15'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:20'],
             'password' => ['required', 'string', 'min:6', 'max:255'],
-            'image' => ['nullable', 'file', 'max:5000'],
+            'image' => ['sometimes', 'nullable', 'image', 'max:5000'],
         ];
     }
 }

@@ -53,8 +53,7 @@ class UserController extends Controller
      */
     public function store(StoreUserRequest $request)
     {
-        $data = $request->validated();
-        $user = $this->user->new($data);
+        $user = $this->user->new($request->validated());
         return redirect()->route('admin.users.index');
     }
 
