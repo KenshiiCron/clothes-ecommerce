@@ -3,7 +3,7 @@ import { Head } from "@inertiajs/react";
 import UserTable from "@/components/tables/users-table";
 import { PageProps } from "@/types";
 
-export default function Categories({users}: PageProps<{ users: any }>) {
+export default function Users({users}: PageProps<{ users: any }>) {
     console.log(users);
     return (
         <AuthenticatedLayout
