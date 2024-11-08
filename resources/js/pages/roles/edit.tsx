@@ -9,15 +9,15 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { FormEventHandler } from "react";
 import {Button} from "@/components/ui/button";
 
-export default function Create({ adminPermissionsList } : any) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        name: "",
-        permissions: [],
+export default function Edit({ adminPermissionsList, role } : any) {
+    const { data, setData, put, processing, errors, reset } = useForm({
+        name: role.name,
+        permissions: role.permissions.map((permission :any) => permission.name),
     });
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        post(route("admin.roles.store"));
+        put(route("admin.roles.update", role.id));
     };
 
     const handlePermissionChange = (permission) => {
@@ -31,9 +31,9 @@ export default function Create({ adminPermissionsList } : any) {
 
     return (
         <AuthenticatedLayout header="Roles">
-            <Head title="Create Role" />
+            <Head title="Edit Role" />
 
-            <p>Create</p>
+            <p>Edit</p>
             <form className="max-w-md mt-6" onSubmit={submit}>
                 <div className="grid gap-2">
                     <Label htmlFor="name">Name</Label>
@@ -70,7 +70,7 @@ export default function Create({ adminPermissionsList } : any) {
                                                         id={permissionName}
                                                         name="permissions[]"
                                                         value={permissionName}
-                                                        // checked={data.permissions.includes(permissionName)}
+                                                        checked={data.permissions.includes(permissionName)}
                                                         onCheckedChange={() => handlePermissionChange(permissionName)}
                                                     />
                                                     <label htmlFor={permissionName} className="text-gray-700">
@@ -86,7 +86,7 @@ export default function Create({ adminPermissionsList } : any) {
                     ))}
                 </div>
                 <Button type="submit" className="w-full mt-4" disabled={processing}>
-                    Create
+                    Update
                 </Button>
             </form>
         </AuthenticatedLayout>

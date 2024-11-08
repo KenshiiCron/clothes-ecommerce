@@ -59,6 +59,10 @@ class AdminRepository extends BaseRepositories implements AdminContract
 
 
         $model->update($data);
+        if (array_key_exists('roles',$data))
+        {
+            $model->syncRoles($data['roles']);
+        }
 
         activity()
             ->causedBy(auth()->user())

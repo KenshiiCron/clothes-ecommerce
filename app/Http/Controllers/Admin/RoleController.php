@@ -61,7 +61,6 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:100|unique:roles,name',
-//            'short_label' => 'required|string|max:10',
             'permissions' => 'required|array',
         ]);
         $role_name = $request->only('name')['name'];
@@ -74,13 +73,14 @@ class RoleController extends Controller
 
     /**
      * @param $id
-     * @return Renderable
+     * @return \Inertia\Response
      */
-    public function edit($id): Renderable
+    public function edit($id): \Inertia\Response
     {
         $role = Role::findOrFail($id);
         $role->load(['permissions:id,name']);
-        return view('admin.pages.roles.edit',compact('role'));
+        $adminPermissionsList = config('permission.permissions_list.admin');
+        return Inertia::render('roles/edit',compact('role', 'adminPermissionsList'));
     }
 
     /**
@@ -92,15 +92,15 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:100|unique:roles,name,' . $request->role,
-            'short_label' => 'required|string|max:10',
             'permissions' => 'required|array',
         ]);
 
+
         $role = Role::findOrFail($id);
         $role->update($data);
-        $role->syncPermissions(Permission::whereIn('name', $data['permissions'])->where('guard_name', 'user')->get());
+        $role->syncPermissions(Permission::whereIn('name', $data['permissions'])->where('guard_name', 'admin')->get());
         session()->flash('success', __('messages.flash.update'));
-        return redirect()->back();
+        return redirect()->route('admin.roles.index');
     }
 
     /**

@@ -40,9 +40,12 @@ export type Admin = {
 
 interface DataTableDemoProps {
     admins: Admin[];
+    canCreateAdmin: boolean;
+    canEditAdmin: boolean;
+    canDeleteAdmin: boolean;
 }
 
-export default function DataTableDemo({admins}: DataTableDemoProps) {
+export default function DataTableDemo({admins , canCreateAdmin, canEditAdmin, canDeleteAdmin}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
@@ -73,7 +76,7 @@ export default function DataTableDemo({admins}: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.admins.create"/>
+                {canCreateAdmin && <CreateButton link="admin.admins.create"/>}
                 <Input
                     placeholder="Filter admins..."
                     value={

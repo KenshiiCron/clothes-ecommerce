@@ -8,12 +8,15 @@ import {InputError} from "@/components/ui/input-error";
 import {FormEventHandler, useState} from "react";
 
 import {Eye, EyeOff} from 'lucide-react'
+import {MultiSelect} from "@/components/multi-select";
 
-export default function Edit({admin}: any) {
+export default function Edit({admin , roles}: any) {
+
     const {data, setData, processing, errors, reset} = useForm({
         name: admin.name,
         email: admin.email,
         phone: admin.phone,
+        roles: admin.roles.map((role :any) => role.id),
     });
 
     // const {
@@ -40,7 +43,6 @@ export default function Edit({admin}: any) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
         router.post(route("admin.admins.update", admin.id), {
             _method: "put",
             name: data.name,
@@ -48,6 +50,7 @@ export default function Edit({admin}: any) {
             // password: data.password,
             // password_confirmation: data.password,
             phone: data.phone,
+            roles: data.roles,
         });
     };
 
@@ -63,6 +66,10 @@ export default function Edit({admin}: any) {
             phone: data.phone,
         });
     };
+
+    const handleChangeRoles = (values: any) => {
+        setData('roles', values);
+    }
     return (
         <AuthenticatedLayout header="Admins">
             <Head title="Edit Admin"/>
@@ -105,6 +112,18 @@ export default function Edit({admin}: any) {
                             required
                         />
                         <InputError message={errors.phone}/>
+                    </div>
+                    <div className="grid gap-2">
+                        <Label htmlFor="user_id">Roles</Label>
+                        <MultiSelect
+                            options={roles}
+                            onValueChange={handleChangeRoles}
+                            defaultValue={admin.roles.map((role :any) => role.id)}
+                            placeholder="Select roles"
+                            variant="inverted"
+                            animation={2}
+                        />
+                        {/*<InputError message={errors.category_id}/>*/}
                     </div>
                     <Button type="submit" className="w-full mt-4">
                         Update

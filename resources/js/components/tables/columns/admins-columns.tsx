@@ -65,7 +65,7 @@ export const columns: ColumnDef<Admin>[] = [
         accessorKey: "roles",
         header: "Roles",
         cell: ({ row }) => (
-            <div>
+            <div className="flex flex-wrap gap-1">
                 {row.getValue("roles").map((role :any, index: number) => (
                     <Badge key={index}>
                         {role.name}

@@ -33,8 +33,14 @@ class AdminController extends Controller
     public function index()
     {
         $admins = $this->admin->setRelations(['roles'])->findByFilter();
+        $canCreateAdmin = auth()->user()->can('create-admin');
+        $canEditAdmin = auth()->user()->can('edit-admin');
+        $canDeleteAdmin = auth()->user()->can('delete-admin');
         return Inertia::render('admins/index', [
             'admins' => $admins,
+            'canCreateAdmin' => $canCreateAdmin,
+            'canEditAdmin' => $canEditAdmin,
+            'canDeleteAdmin' => $canDeleteAdmin,
         ]);
     }
 
@@ -44,6 +50,7 @@ class AdminController extends Controller
     public function create()
     {
         $roles = Role::all();
+
         return Inertia::render('admins/create', [
             'roles' => $roles,
         ]);
@@ -71,8 +78,9 @@ class AdminController extends Controller
      */
     public function edit($id)
     {
-        $admin = $this->admin->findOneById($id);
-        return Inertia::render('admins/edit',compact('admin'));
+        $admin = $this->admin->setRelations(['roles'])->findOneById($id);
+        $roles = Role::all();
+        return Inertia::render('admins/edit',compact('admin','roles'));
     }
 
     /**

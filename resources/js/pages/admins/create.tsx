@@ -11,14 +11,13 @@ import {Eye, EyeOff} from 'lucide-react'
 import {MultiSelect} from "@/components/multi-select";
 
 export default function Create({roles}: any) {
-    const [selectedRoles, setSelectedRoles] = useState([]);
     const {data, setData, post, processing, errors, reset} = useForm({
         name: "",
         email: "",
         password: "",
         password_confirmation: "",
         phone: "",
-        roles: [4],
+        roles: [],
     });
     const [showPassword, setShowPassword] = useState(false)
     const togglePasswordVisibility = () => {
@@ -31,10 +30,12 @@ export default function Create({roles}: any) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log(data);
-        // return;
         post(route("admin.admins.store"));
     };
+
+    const handleChangeRoles = (values: any) => {
+        setData('roles', values);
+    }
     return (
         <AuthenticatedLayout header="Admins">
             <Head title="Create Admin"/>
@@ -82,12 +83,11 @@ export default function Create({roles}: any) {
                         <Label htmlFor="user_id">Roles</Label>
                         <MultiSelect
                             options={roles}
-                            onValueChange={setSelectedRoles}
+                            onValueChange={handleChangeRoles}
                             // defaultValue={selectedFrameworks}
                             placeholder="Select roles"
                             variant="inverted"
                             animation={2}
-                            maxCount={3}
                         />
                         {/*<InputError message={errors.category_id}/>*/}
                     </div>
