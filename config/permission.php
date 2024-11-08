@@ -199,7 +199,7 @@ return [
                 'guard' => "admin"
             ],
             'brand' => [
-                'capabilities' => ['create', 'edit', 'delete', 'view', 'view-list', 'login-as'],
+                'capabilities' => ['create', 'edit', 'delete', 'view', 'view-list'],
                 'guard' => 'admin'
             ],
             'product' => [

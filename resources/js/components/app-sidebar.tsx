@@ -95,7 +95,7 @@ const data = {
         },
         {
             title: "Roles",
-            url: "#",
+            url: "/admin/roles",
             icon: Users,
         },
     ],

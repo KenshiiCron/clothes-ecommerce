@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Pipeline;
 use Illuminate\Support\Str;
 use Illuminate\Validation\ValidationException;
+use Inertia\Inertia;
 use Spatie\Permission\Models\Permission;
 use App\Models\Role;
 
@@ -17,11 +18,11 @@ class RoleController extends Controller
 {
     /**
      * @param Request $request
-     * @return Renderable|JsonResponse
+     * @return JsonResponse|\Inertia\Response
      */
     public function index(Request $request)
     {
-        $roles = Role::with(['permissions'])->withCount('users');
+        $roles = Role::with(['permissions','users']);
 
         $roles = app(Pipeline::class)
             ->send($roles)
@@ -30,22 +31,25 @@ class RoleController extends Controller
             ])
             ->thenReturn()
             ->latest()
-            ->paginate(10)
+            ->paginate(100)
             ->withQueryString();
+
+//        dd($roles);
 
         if ($request->wantsJson()) {
             return response()->json(compact('roles'));
         }
 
-        return view('admin.pages.roles.index', compact('roles'));
+        return Inertia::render('roles/index', compact('roles'));
     }
 
     /**
-     * @return Renderable
+     * @return \Inertia\Response
      */
-    public function create(): Renderable
+    public function create(): \Inertia\Response
     {
-        return view('admin.pages.roles.create');
+        $adminPermissionsList = config('permission.permissions_list.admin');
+        return Inertia::render('roles/create', compact('adminPermissionsList'));
     }
 
 
@@ -57,15 +61,15 @@ class RoleController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|max:100|unique:roles,name',
-            'short_label' => 'required|string|max:10',
+//            'short_label' => 'required|string|max:10',
             'permissions' => 'required|array',
         ]);
         $role_name = $request->only('name')['name'];
-        $role = Role::create(['name' => $role_name,'guard_name' => 'user']);
+        $role = Role::create(['name' => $role_name,'guard_name' => 'admin']);
 
-        $role->givePermissionTo(Permission::whereIn('name', $data['permissions'])->where('guard_name', 'user')->get());
+        $role->givePermissionTo(Permission::whereIn('name', $data['permissions'])->where('guard_name', 'admin')->get());
         session()->flash('success', __('messages.flash.create'));
-        return redirect()->route('admin.pages.roles.index');
+        return redirect()->route('admin.roles.index');
     }
 
     /**
@@ -107,14 +111,14 @@ class RoleController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        if($role->name === 'Admin')
-        {
-            throw ValidationException::withMessages(['error' => 'You cant delete the Admin role']);
-        }
+//        if($role->name === 'Admin')
+//        {
+//            throw ValidationException::withMessages(['error' => 'You cant delete the Admin role']);
+//        }
 
         $role->delete();
         session()->flash('success', __('messages.flash.delete'));
-        return redirect()->route('admin.pages.roles.index');
+        return redirect()->route('admin.roles.index');
     }
 
     /**
