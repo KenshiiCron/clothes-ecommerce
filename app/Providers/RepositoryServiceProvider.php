@@ -16,7 +16,9 @@ class RepositoryServiceProvider extends ServiceProvider
         \App\Contracts\AttributeValueContract::class     => \App\Repositories\AttributeValueRepository::class,
         \App\Contracts\InventoryContract::class     => \App\Repositories\InventoryRepository::class,
         \App\Contracts\OrderContract::class     => \App\Repositories\OrderRepository::class,
-        \App\Contracts\ImageContract::class     => \App\Repositories\ImageRepository::class, \App\Contracts\AdminContract::class     => \App\Repositories\AdminRepository::class,
+        \App\Contracts\ImageContract::class     => \App\Repositories\ImageRepository::class,
+        \App\Contracts\CarouselContract::class     => \App\Repositories\CarouselRepository::class,
+        \App\Contracts\AdminContract::class     => \App\Repositories\AdminRepository::class,
     ];
 
     /**

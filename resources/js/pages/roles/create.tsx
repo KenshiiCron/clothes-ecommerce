@@ -54,13 +54,13 @@ export default function Create({ adminPermissionsList } : any) {
                         <Table key={modelIndex} className="mb-4 border rounded-lg">
                             <TableHeader>
                                 <TableRow>
-                                    <TableHead className="w-1/3 text-left font-semibold text-gray-800">{model}</TableHead>
-                                    <TableHead className="w-2/3 text-left font-semibold text-gray-800">Capabilities</TableHead>
+                                    <TableHead className="w-1/3">{model}</TableHead>
+                                    <TableHead className="w-2/3">Capabilities</TableHead>
                                 </TableRow>
                             </TableHeader>
                             <TableBody>
                                 <TableRow>
-                                    <TableCell className="w-1/3 font-medium text-gray-700">{model}</TableCell>
+                                    <TableCell className="w-1/3 font-medium">{model}</TableCell>
                                     <TableCell className="w-2/3 flex flex-wrap space-x-4">
                                         {permissions.capabilities.map((capability, capabilityIndex) => {
                                             const permissionName = `${capability}-${model}`;

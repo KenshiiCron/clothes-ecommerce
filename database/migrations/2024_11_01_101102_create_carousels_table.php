@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('description')->nullable();
+            $table->foreignId('product_id')->nullable();
             $table->string('action')->nullable();
+            $table->boolean('state')->default(true);
             $table->string('image');
             $table->timestamps();
         });

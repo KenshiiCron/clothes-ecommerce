@@ -21,7 +21,7 @@ import {
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -31,10 +31,19 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import {
+    AlertDialog,
+    AlertDialogTrigger,
+    AlertDialogContent,
+    AlertDialogHeader,
+    AlertDialogFooter,
+    AlertDialogTitle,
+    AlertDialogDescription,
+    AlertDialogCancel,
+    AlertDialogAction,
+} from "@/components/ui/alert-dialog";
 
-import { Separator } from "@/components/ui/separator"
-
-import { Input } from "@/components/ui/input";
+import {Input} from "@/components/ui/input";
 
 import {
     Table,
@@ -45,45 +54,27 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { PageProps } from "@/types";
+import {Switch} from "@/components/ui/switch";
+import {Badge} from "@/components/ui/badge";
+import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
-import {
-    AlertDialog, AlertDialogAction, AlertDialogCancel,
-    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger
-} from "@/components/ui/alert-dialog";
 import {CreateButton} from "@/components/elements/create-button";
 
-export type Order = {
-    id: String
-    user_id: number | null;
-    order_number: string;
+export type Carousel = {
+    id: string;
     name: string;
-    address?: string;
-    phone: string;
-    email?: string | null;
-    total_price: number;
-    sub_total_price: number;
-    shipping_price?: number | null;
-    discount?: number | null;
-    total_qty: number;
-    state: string;
-    wilaya_id?: number | null;
-    commune_id?: number | null;
-    delivery_state: number;
-    payment_method: number;
-    payment_state: number;
+    image_url: string;
+    slug: string;
+    state: boolean;
+    description: string;
+    created_at: string;
+    updated_at: string;
 };
 
-
-export const columns: ColumnDef<Order>[] = [
+export const columns: ColumnDef<Carousel>[] = [
     {
         id: "select",
-        header: ({ table }) => (
+        header: ({table}) => (
             <Checkbox
                 checked={
                     table.getIsAllPageRowsSelected() ||
@@ -95,7 +86,7 @@ export const columns: ColumnDef<Order>[] = [
                 aria-label="Select all"
             />
         ),
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -106,56 +97,26 @@ export const columns: ColumnDef<Order>[] = [
         enableHiding: false,
     },
     {
-        accessorKey: "order_number",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Order Number
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => <div>{row.getValue("order_number")}</div>,
-    },
-    {
-        accessorKey: "name",
-        header: "Name",
-        cell: ({ row }) => <div>{row.getValue("name")}</div>,
-    },
-    {
-        accessorKey: "phone",
-        header: "Phone",
-        cell: ({ row }) => (
-            <div className="capitalize">
-                {row.getValue("phone")}
+        accessorKey: "image_url",
+        header: "Image",
+        cell: ({row}) => (
+            <div className="p-2">
+                <img
+                    src={row.getValue("image_url")}
+                    alt="image"
+                    className="w-14 h-14 rounded-md object-cover"
+                />
             </div>
         ),
     },
     {
-        accessorKey: "total_price",
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Total
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
-        cell: ({ row }) => <div>{row.getValue("total_price")}</div>,
+        accessorKey: "name",
+        header: "Name",
+        cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
         accessorKey: "created_at",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
@@ -164,11 +125,11 @@ export const columns: ColumnDef<Order>[] = [
                     }
                 >
                     Created at
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="lowercase">
                 {new Date(row.getValue("created_at"))
                     .toISOString()
@@ -180,58 +141,61 @@ export const columns: ColumnDef<Order>[] = [
     {
         accessorKey: "state",
         header: "State",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="capitalize">
-                {/* <Switch value={row.getValue("featured")} /> */}
+                {/* <Switch value={row.getValue("state")} /> */}
                 <Badge
-                    // variant={
-                    //     row.getValue("featured") == 0
-                    //         ? "destructive"
-                    //         : "secondary"
-                    // }
-                    className={row.getValue("state") == 0 ? "bg-green-600/70 hover:bg-green-600/70" : "bg-red-600/70 hover:bg-red-600/70"}
+                    variant={
+                        row.getValue("state") == 0
+                            ? "destructive"
+                            : "secondary"
+                    }
                 >
-                    {row.getValue("state") == 0 ? "Accepted" : "Canceled"}
+                    {row.getValue("state") == 0 ? "Off" : "On"}
                 </Badge>
             </div>
         ),
     },
     {
+        accessorKey: "action",
+        header: "Action",
+        cell: ({row}) => (
+            row.getValue('product_id') ? (
+                <div><Link href={`admin/products/${row.getValue("product_id")}`}></Link></div>) : (
+                <div><Link href={row.getValue("action")}>{row.getValue("action")}</Link></div>)
+        ),
+    },
+
+    {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
-            const order = row.original;
+        cell: ({row}) => {
+            const brand = row.original;
             const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
-
 
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreHorizontal className="h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        {/*<DropdownMenuItem*/}
-                        {/*    onClick={() => navigator.clipboard.writeText(payment.id)}*/}
-                        {/*>*/}
-                        {/*    Copy payment ID*/}
-                        {/*</DropdownMenuItem>*/}
-                        {/*<DropdownMenuSeparator />*/}
                         <DropdownMenuItem asChild>
-                            <Link
-                                href={route(
-                                    "admin.orders.show",
-                                    order.id
-                                )}
-                            >
-                                <Eye></Eye>
-                                <p>View order</p>
+                            <Link href={route("admin.carousels.edit", brand.id)}>
+                                <Pencil/>
+                                <p>Edit brand</p>
                             </Link>
                         </DropdownMenuItem>
-                        <Separator className="my-1"/>
+                        <DropdownMenuItem asChild>
+                            <Link href={route("admin.carousels.show", brand.id)}>
+                                <Eye/>
+                                <p>View brand</p>
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem asChild>
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
@@ -239,23 +203,24 @@ export const columns: ColumnDef<Order>[] = [
                                         className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p className="text-sm">Delete Order</p>
+                                        <p className="text-sm font-medium">Delete brand</p>
                                     </div>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete Order {order.order_number}</AlertDialogTitle>
+                                        <AlertDialogTitle>Delete {brand.name}</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete this order
+                                            This action cannot be undone. This will permanently delete this brand,
+                                            products
+                                            and orders will not be deleted.
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
-
                                                            onClick={() => {
-                                                               destroy(route("admin.orders.destroy", order.id));
+                                                               destroy(route("admin.carousels.destroy", brand.id));
                                                            }}>
                                             <Trash size={16}></Trash>
                                             <p>Delete</p>
@@ -272,10 +237,10 @@ export const columns: ColumnDef<Order>[] = [
 ];
 
 interface DataTableDemoProps {
-    orders: Order[];
+    carousels: Carousel[];
 }
 
-export default function DataTableDemo({ orders }: DataTableDemoProps) {
+export default function DataTableDemo({carousels}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
@@ -284,7 +249,7 @@ export default function DataTableDemo({ orders }: DataTableDemoProps) {
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data: orders,
+        data: carousels,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -302,12 +267,13 @@ export default function DataTableDemo({ orders }: DataTableDemoProps) {
         },
     });
 
+
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.orders.create"/>
+                <CreateButton link="admin.carousels.create"/>
                 <Input
-                    placeholder="Filter orders..."
+                    placeholder="Filter carousels..."
                     value={
                         (table.getColumn("name")?.getFilterValue() as string) ??
                         ""
@@ -319,32 +285,6 @@ export default function DataTableDemo({ orders }: DataTableDemoProps) {
                     }
                     className="max-w-sm"
                 />
-                {/*<DropdownMenu>*/}
-                {/*    <DropdownMenuTrigger asChild>*/}
-                {/*        <Button variant="outline" className="ml-auto">*/}
-                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
-                {/*        </Button>*/}
-                {/*    </DropdownMenuTrigger>*/}
-                {/*    <DropdownMenuContent align="end">*/}
-                {/*        {table*/}
-                {/*            .getAllColumns()*/}
-                {/*            .filter((column) => column.getCanHide())*/}
-                {/*            .map((column) => {*/}
-                {/*                return (*/}
-                {/*                    <DropdownMenuCheckboxItem*/}
-                {/*                        key={column.id}*/}
-                {/*                        className="capitalize"*/}
-                {/*                        checked={column.getIsVisible()}*/}
-                {/*                        onCheckedChange={(value) =>*/}
-                {/*                            column.toggleVisibility(!!value)*/}
-                {/*                        }*/}
-                {/*                    >*/}
-                {/*                        {column.id}*/}
-                {/*                    </DropdownMenuCheckboxItem>*/}
-                {/*                );*/}
-                {/*            })}*/}
-                {/*    </DropdownMenuContent>*/}
-                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>

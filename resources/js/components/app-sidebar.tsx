@@ -10,6 +10,7 @@ import {
     Users,
     User,
     ShoppingBag,
+    Image
 } from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
@@ -71,8 +72,13 @@ const data = {
             icon: ShoppingBasket,
         },
         {
-            title: "Users",
-            url: "/admin/users",
+            title: "Carousels",
+            url: "/admin/carousels",
+            icon: Image,
+        },
+        {
+            title: "Accounts",
+            url: "#",
             icon: User,
             isActive: false,
             items: [

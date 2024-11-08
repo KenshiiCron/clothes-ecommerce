@@ -41,10 +41,6 @@ export default function Create() {
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
     }
-    const [showPasswordConfirmation, setShowPasswordConfirmation] = useState(false)
-    const togglePasswordConfirmationVisibility = () => {
-        setShowPasswordConfirmation(!showPasswordConfirmation)
-    }
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -123,26 +119,12 @@ export default function Create() {
                     <div className="relative grid gap-2">
                         <Label htmlFor="password_confirmation">Password</Label>
                         <Input
-                            type={showPasswordConfirmation ? 'text' : 'password'}
+                            type={showPassword ? 'text' : 'password'}
                             placeholder="Password Confirmation"
                             value={data.password_confirmation}
                             onChange={(e) => setData("password_confirmation", e.target.value)}
                             className="pr-10"
                         />
-                        <Button
-                            type="button"
-                            variant="ghost"
-                            size="icon"
-                            className="absolute right-0 top-3 h-full px-3 py-2 hover:bg-transparent"
-                            onClick={togglePasswordConfirmationVisibility}
-                            aria-label={showPasswordConfirmation ? 'Hide password confirmation' : 'Show password confirmation'}
-                        >
-                            {showPasswordConfirmation ? (
-                                <EyeOff className="h-4 w-4 text-gray-500"/>
-                            ) : (
-                                <Eye className="h-4 w-4 text-gray-500"/>
-                            )}
-                        </Button>
                     </div>
                     <InputError message={errors.password_confirmation}/>
                     <Separator className="my-4"></Separator>

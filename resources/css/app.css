@@ -68,4 +68,8 @@
     body {
         @apply bg-background text-foreground;
     }
+
+    h2 {
+        @apply text-lg font-semibold mb-4;
+    }
 }

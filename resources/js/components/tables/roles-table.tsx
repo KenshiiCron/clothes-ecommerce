@@ -14,9 +14,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react"
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 
-import { Input } from "@/components/ui/input"
+import {Input} from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/table"
 import {Link} from "@inertiajs/react";
 import {columns} from "@/components/tables/columns/roles-columns";
+import {CreateButton} from "@/components/elements/create-button";
 
 export type Role = {
     id: string,
@@ -38,7 +39,8 @@ export type Role = {
 interface DataTableDemoProps {
     roles: Role[];
 }
-export default function DataTableDemo({ roles }: DataTableDemoProps) {
+
+export default function DataTableDemo({roles}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -48,7 +50,7 @@ export default function DataTableDemo({ roles }: DataTableDemoProps) {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data : roles,
+        data: roles,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -70,12 +72,7 @@ export default function DataTableDemo({ roles }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button asChild>
-                    <Link href={route("admin.roles.create")}>
-                        <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4"/>
-                    </Link>
-                </Button>
+                <CreateButton link="admin.roles.create" />
                 <Input
                     placeholder="Filter roles..."
                     value={

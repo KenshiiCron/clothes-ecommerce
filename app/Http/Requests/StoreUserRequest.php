@@ -23,10 +23,10 @@ class StoreUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255', 'unique:users,email'],
             'phone' => ['sometimes', 'nullable', 'string', 'max:20'],
-            'password' => ['required', 'string', 'min:6', 'max:255'],
-            'image' => ['sometimes', 'nullable', 'image', 'max:5000'],
+            'password' => ['required', 'string', 'min:6', 'max:255', 'confirmed'],
+            'image' => ['sometimes', 'nullable', 'image', 'max:'.config('settings.max_upload_size')],
         ];
     }
 }

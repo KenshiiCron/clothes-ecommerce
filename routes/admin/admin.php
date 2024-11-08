@@ -27,14 +27,13 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('users',\App\Http\Controllers\Admin\UserController::class);
     Route::resource('admins',\App\Http\Controllers\Admin\AdminController::class);
     Route::resource('roles',\App\Http\Controllers\Admin\RoleController::class);
-    Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
-    Route::post('brands-update/{id}',[\App\Http\Controllers\Admin\BrandController::class, 'updatehh'])->name('brands.updatehh');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
     Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
     Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
     Route::resource('orders',\App\Http\Controllers\Admin\OrdersController::class);
+    Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -129,9 +129,15 @@ export default function Edit({user}: any) {
                             onChange={handleImageChange}
                             required
                         />
-                        {preview && (
+                        {preview ? (
                             <img
                                 src={preview}
+                                alt="Selected image preview"
+                                className="w-32 h-32 object-cover rounded"
+                            />
+                        ) : (
+                            <img
+                                src={user.image_url}
                                 alt="Selected image preview"
                                 className="w-32 h-32 object-cover rounded"
                             />
