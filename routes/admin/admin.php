@@ -32,6 +32,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
     Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
     Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
+    Route::put('attributes/attach/{id}',[\App\Http\Controllers\Admin\AttributeController::class,'attach'])->name('attributes.attach');
     Route::resource('orders',\App\Http\Controllers\Admin\OrdersController::class);
 });
 

@@ -7,6 +7,7 @@ use App\Contracts\ProductContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Http\Request;
@@ -51,13 +52,21 @@ class ProductController extends Controller
     {
         $product = $this->product->findOneById($id);
         $product_category = $product->category->only(['id', 'name']);
+        $product_attributes = $product->attributes->only(['id', 'name']);
+        $attributes = Attribute::whereNotIn('id',$product->attributes->pluck('id')->toArray())->get(['id', 'name']);
         $categories = Category::select('id', 'name')->get();
-        return Inertia::render('products/edit', compact('product','product_category','categories'));
+        return Inertia::render('products/edit', compact('product','product_category','categories','product_attributes','attributes'));
     }
 
     public function update(UpdateProductRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
-        $brand = $this->product->update($id, $request->validated());
+        $this->product->update($id, $request->validated());
         return redirect()->route('admin.products.index');
+    }
+
+    public function attach($id, Request $request){
+       $product = $this->product->findOneById($id);
+       $product->attributes()->attach($request->attribute_id);
+       return redirect()->route('admin.products.edit',$product->id);
     }
 }
