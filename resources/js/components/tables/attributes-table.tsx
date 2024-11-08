@@ -33,18 +33,13 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import { Switch } from "@/components/ui/switch"
-import { PageProps } from "@/types";
 import {Link, useForm} from "@inertiajs/react";
-import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {Label} from "@/components/ui/label";
-import {InputError} from "@/components/ui/input-error";
 import {
     AlertDialog, AlertDialogAction, AlertDialogCancel,
     AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
     AlertDialogHeader,
     AlertDialogTitle,
-    AlertDialogTrigger
+    AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {CreateButton} from "@/components/elements/create-button";
 
@@ -141,7 +136,6 @@ export const columns: ColumnDef<Attribute>[] = [
                                         <p>Delete brand</p>
                                     </div>
                                 </AlertDialogTrigger>
-
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
                                         <AlertDialogTitle>Delete {attribute.name}</AlertDialogTitle>

@@ -1,7 +1,7 @@
 import {ColumnDef} from "@tanstack/react-table";
 import {Checkbox} from "@/components/ui/checkbox";
-import {Button} from "@/components/ui/button";
-import {ArrowUpDown, MoreHorizontal} from "lucide-react";
+import {Button, buttonVariants} from "@/components/ui/button";
+import {ArrowUpDown, Eye, MoreHorizontal, Pencil, Trash} from "lucide-react";
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -11,6 +11,16 @@ import {
 } from "@/components/ui/dropdown-menu";
 import * as React from "react";
 import {Product} from "@/components/tables/products-table";
+import {Link, useForm} from "@inertiajs/react";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
+
+
 
 export const  columns: ColumnDef<Product>[] = [
     {
@@ -93,26 +103,65 @@ export const  columns: ColumnDef<Product>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const payment = row.original
-
+            const product = row.original
+            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
+            
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreHorizontal className="h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
-                        <DropdownMenuItem
-                            onClick={() => navigator.clipboard.writeText(payment.id)}
-                        >
-                            Copy payment ID
+                        <DropdownMenuItem asChild>
+                            <Link href={route("admin.products.edit", product.id)}>
+                                <Pencil/>
+                                <p>Edit product</p>
+                            </Link>
                         </DropdownMenuItem>
-                        <DropdownMenuSeparator />
-                        <DropdownMenuItem>View customer</DropdownMenuItem>
-                        <DropdownMenuItem>View payment details</DropdownMenuItem>
+                        <DropdownMenuItem asChild>
+                            <Link href={route("admin.products.show", product.id)}>
+                                <Eye/>
+                                <p>View product</p>
+                            </Link>
+                        </DropdownMenuItem>
+                        <DropdownMenuSeparator/>
+                        <DropdownMenuItem asChild>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <div
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
+                                    >
+                                        <Trash size={16}></Trash>
+                                        <p className="text-sm font-medium">Delete product</p>
+                                    </div>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete {product.name}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete this product,
+                                            products
+                                            and orders will not be deleted.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+                                                           onClick={() => {
+                                                               destroy(route("admin.products.destroy", product.id));
+                                                           }}>
+                                            <Trash size={16}></Trash>
+                                            <p>Delete</p>
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
+                        </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>
             )

@@ -21,12 +21,9 @@ export type Category = {
     name: string
 }
 
-
 interface createCategory{
     categories: Category[]
 }
-
-
 
 export default function Create({categories} : createCategory) {
     const { data, setData, post, processing, errors, reset } = useForm({
