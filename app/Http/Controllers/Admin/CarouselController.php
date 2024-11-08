@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use App\Models\Carousel;
 use App\Http\Requests\StoreCarouselRequest;
 use App\Http\Requests\UpdateCarouselRequest;
+use App\Models\Product;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class CarouselController extends Controller
@@ -44,14 +46,16 @@ class CarouselController extends Controller
      */
     public function create()
     {
-        return Inertia::render('carousels/create');
+        $products = Product::select('id', 'name')->get();
+        return Inertia::render('carousels/create', compact('products'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCarouselRequest $request)
+    public function store(Request $request)
     {
+        dd($request->all());
         $data = $request->validated();
         $carousel = $this->carousel->new($data);
         return redirect()->route('admin.carousels.index');
@@ -71,7 +75,8 @@ class CarouselController extends Controller
     public function edit($id)
     {
         $carousel = $this->carousel->findOneById($id);
-        return Inertia::render('carousels/edit',compact('carousel'));
+        $products = Product::select('id', 'name')->get();
+        return Inertia::render('carousels/edit', compact('carousel', 'products'));
     }
 
     /**

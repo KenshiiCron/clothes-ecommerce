@@ -27,6 +27,7 @@ import {
 } from "@/components/ui/table"
 import {Link} from "@inertiajs/react";
 import {columns} from "@/components/tables/columns/products-columns";
+import {CreateButton} from "@/components/elements/create-button";
 
 export type Product = {
     id: string,
@@ -35,9 +36,6 @@ export type Product = {
     created_at: string,
     updated_at: string
 }
-
-
-
 
 interface DataTableDemoProps {
     products: Product[];
@@ -74,12 +72,7 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button asChild>
-                    <Link href={route("admin.products.create")}>
-                        <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4"/>
-                    </Link>
-                </Button>
+                <CreateButton link="admin.products.create" />
                 <Input
                     placeholder="Filter brands..."
                     value={

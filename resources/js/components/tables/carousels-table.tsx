@@ -17,7 +17,7 @@ import {
     ArrowUpDown,
     Trash, Eye,
     MoreHorizontal, Pencil,
-    PlusCircleIcon,
+    PlusCircleIcon, ExternalLink,
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
@@ -64,8 +64,9 @@ export type Carousel = {
     id: string;
     name: string;
     image_url: string;
-    slug: string;
     state: boolean;
+    action: string;
+    product_id: number;
     description: string;
     created_at: string;
     updated_at: string;
@@ -104,7 +105,7 @@ export const columns: ColumnDef<Carousel>[] = [
                 <img
                     src={row.getValue("image_url")}
                     alt="image"
-                    className="w-14 h-14 rounded-md object-cover"
+                    className="w-24 h-14 rounded-md object-cover"
                 />
             </div>
         ),
@@ -158,19 +159,27 @@ export const columns: ColumnDef<Carousel>[] = [
     },
     {
         accessorKey: "action",
-        header: "Action",
-        cell: ({row}) => (
-            row.getValue('product_id') ? (
-                <div><Link href={`admin/products/${row.getValue("product_id")}`}></Link></div>) : (
-                <div><Link href={row.getValue("action")}>{row.getValue("action")}</Link></div>)
-        ),
+        header: "URL",
+        cell: ({row}) => {
+            return (row.getValue("action") && (<div><a href={row.getValue("action")}
+                                      target="_blank" className="overflow-ellipsis"><ExternalLink className="text-primary" size={20}/></a></div>)
+            );
+        },
     },
-
+    {
+        accessorKey: "product_id",
+        header: "Product",
+        cell: ({row}) => {
+            return (row.getValue("product_id") && (<div><Link href={`prodcuts/${row.getValue("product_id")}`}
+                                      target="_blank"><ExternalLink className="text-primary" size={20}/></Link></div>)
+            );
+        },
+    },
     {
         id: "actions",
         enableHiding: false,
         cell: ({row}) => {
-            const brand = row.original;
+            const carousel = row.original;
             const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
 
             return (
@@ -184,15 +193,9 @@ export const columns: ColumnDef<Carousel>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                            <Link href={route("admin.carousels.edit", brand.id)}>
+                            <Link href={route("admin.carousels.edit", carousel.id)}>
                                 <Pencil/>
-                                <p>Edit brand</p>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route("admin.carousels.show", brand.id)}>
-                                <Eye/>
-                                <p>View brand</p>
+                                <p>Edit carousel</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
@@ -203,15 +206,15 @@ export const columns: ColumnDef<Carousel>[] = [
                                         className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p className="text-sm font-medium">Delete brand</p>
+                                        <p className="text-sm font-medium">Delete carousel</p>
                                     </div>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete {brand.name}</AlertDialogTitle>
+                                        <AlertDialogTitle>Delete {carousel.name}</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete this brand,
+                                            This action cannot be undone. This will permanently delete this carousel,
                                             products
                                             and orders will not be deleted.
                                         </AlertDialogDescription>
@@ -220,7 +223,7 @@ export const columns: ColumnDef<Carousel>[] = [
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
                                                            onClick={() => {
-                                                               destroy(route("admin.carousels.destroy", brand.id));
+                                                               destroy(route("admin.carousels.destroy", carousel.id));
                                                            }}>
                                             <Trash size={16}></Trash>
                                             <p>Delete</p>

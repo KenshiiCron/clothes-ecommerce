@@ -5,20 +5,37 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {InputError} from "@/components/ui/input-error";
 import {Switch} from "@/components/ui/switch";
-import {FormEventHandler, useState} from "react";
+import {FormEventHandler, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState} from "react";
 import {Textarea} from "@/components/ui/textarea";
 import {Card, CardContent} from "@/components/ui/card";
-import {LinkIcon, PackageIcon, XIcon} from "lucide-react";
+import {Check, ChevronsUpDown, LinkIcon, PackageIcon, XIcon} from "lucide-react";
 import {Separator} from "@/components/ui/separator";
-import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
+import {RadioGroup, RadioGroupItem} from "@/components/ui/radio-group"
+import {
+    Command,
+    CommandEmpty,
+    CommandGroup,
+    CommandInput,
+    CommandItem,
+    CommandList,
+} from "@/components/ui/command"
+import {
+    Popover,
+    PopoverContent,
+    PopoverTrigger,
+} from "@/components/ui/popover"
+import {cn} from "@/lib/utils";
+import {Product} from "@/components/tables/products-table";
 
 
-export default function Create() {
+export default function Create({products}: any) {
     const {data, setData, post, processing, errors, reset} = useForm({
         name: "",
         description: "",
         state: true,
         image: null,
+        action: "",
+        product_id: "",
     });
 
     const [preview, setPreview] = useState(data.image);
@@ -31,17 +48,20 @@ export default function Create() {
         }
     };
 
+    const [open, setOpen] = useState(false)
+    const [productId, setProductId] = useState("")
+
     const [selectedOption, setSelectedOption] = useState('nothing')
 
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("admin.brands.store"));
+        post(route("admin.carousels.store"));
     };
     return (
-        <AuthenticatedLayout header="Brands">
-            <Head title="Create Brand"/>
+        <AuthenticatedLayout header="Carousels">
+            <Head title="Create Carousel"/>
 
             <h2>Create</h2>
             <form onSubmit={submit} className="max-w-md mt-6">
@@ -62,7 +82,7 @@ export default function Create() {
                         <Label htmlFor="description">Description</Label>
                         <Textarea
                             id="description"
-                            placeholder="Brand description"
+                            placeholder="Carousel description"
                             value={data.description}
                             onChange={(e) =>
                                 setData("description", e.target.value)
@@ -108,6 +128,7 @@ export default function Create() {
                                 <Label
                                     htmlFor="nothing"
                                     className="cursor-pointer"
+                                    onClick={() => {setData("action", ""); setData("product_id", "")}}
                                 >
                                     <Card className={`h-full ${selectedOption === 'nothing' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
@@ -120,6 +141,7 @@ export default function Create() {
                                 <Label
                                     htmlFor="product"
                                     className="cursor-pointer"
+                                    onClick={() => {setData("action", ""); setData("product_id", "")}}
                                 >
                                     <Card className={`h-full ${selectedOption === 'product' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
@@ -132,8 +154,9 @@ export default function Create() {
                                 <Label
                                     htmlFor="link"
                                     className="cursor-pointer"
+                                    onClick={() => {setData("action", ""); setData("product_id", "")}}
                                 >
-                                    <Card className={`h-full ${selectedOption === 'link' && 'border-primary'}`}>
+                                    <Card className={`h-full ${selectedOption === 'link' && 'border-primary'}`} >
                                         <CardContent className="flex flex-col items-center justify-center p-6">
                                             <RadioGroupItem value="link" id="link" className="sr-only"/>
                                             <LinkIcon className="h-6 w-6 mb-2"/>
@@ -145,17 +168,60 @@ export default function Create() {
                         </RadioGroup>
                         <div className="mt-6">
                             {selectedOption === 'nothing' ?
-                                (<p className="text-sm text-muted-foreground">No additional input
+                                (<p className="text-sm text-muted-foreground">No additional information
                                     required.</p>) : selectedOption === 'product' ?
                                     (<div className="space-y-2">
                                         <Label htmlFor="productName">Product Name</Label>
-                                        <Input id="productName" placeholder="Enter product name"/>
-                                        <Label htmlFor="productPrice">Product Price</Label>
-                                        <Input id="productPrice" type="number" placeholder="Enter price"/>
-                                    </div>) : <div className="space-y-2">
-                                        <Label htmlFor="linkUrl">Link URL</Label>
-                                        <Input id="linkUrl" type="url" placeholder="Enter URL"/>
-                                    </div>}
+                                        <Popover open={open} onOpenChange={setOpen}>
+                                            <PopoverTrigger asChild>
+                                                <Button
+                                                    variant="outline"
+                                                    role="combobox"
+                                                    aria-expanded={open}
+                                                    className="justify-between w-full"
+                                                >
+                                                    {productId
+                                                        ? products.find((product: { id: string; name: string; }) => product.id === productId)?.label
+                                                        : "Select product..."}
+                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
+                                                </Button>
+                                            </PopoverTrigger>
+                                            <PopoverContent className="w-full p-0">
+                                                <Command>
+                                                    <CommandInput placeholder="Search product..."/>
+                                                    <CommandList>
+                                                        <CommandEmpty>No product found.</CommandEmpty>
+                                                        <CommandGroup>
+                                                            {products.map((product: { id: string; name: string; }) => (
+                                                                <CommandItem
+                                                                    key={product.id}
+                                                                    value={product.name}
+                                                                    onSelect={() => {
+                                                                        setProductId(product.id)
+                                                                        setData("product_id", product.id)
+                                                                        setOpen(false)
+                                                                    }}
+                                                                >
+                                                                    <Check
+                                                                        className={cn(
+                                                                            "mr-2 h-4 w-4",
+                                                                            productId === product.id ? "opacity-100" : "opacity-0"
+                                                                        )}
+                                                                    />
+                                                                    {product.name}
+                                                                </CommandItem>
+                                                            ))}
+                                                        </CommandGroup>
+                                                    </CommandList>
+                                                </Command>
+                                            </PopoverContent>
+                                        </Popover>
+                                    </div>) : (<div className="space-y-2">
+                                        <Label htmlFor="action">Link URL</Label>
+                                        <Input id="action" type="url" placeholder="Enter URL"
+                                               value={data.action}
+                                               onChange={(e) => setData("action", e.target.value)}/>
+                                    </div>)}
                         </div>
 
                     </div>
