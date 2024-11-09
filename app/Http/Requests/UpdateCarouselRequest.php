@@ -11,7 +11,7 @@ class UpdateCarouselRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,11 @@ class UpdateCarouselRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'description' => ['sometimes', 'nullable', 'string', 'max:1000'],
+            'product_id' => ['nullable', 'integer', 'exists:products,id'],
+            'action' => ['nullable', 'string', 'max:2048'],
+            'image' => ['nullable', 'image', 'max:'.config('settings.max_upload_size')],
         ];
     }
 }

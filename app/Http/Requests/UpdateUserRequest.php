@@ -23,10 +23,10 @@ class UpdateUserRequest extends FormRequest
     {
         return [
             'name' => ['required', 'string', 'max:255'],
-            'email' => ['required', 'string', 'max:255'],
-            'image' => ['nullable', 'file', 'max:5000'],
-            'password' => ['required', 'string', 'min:6', 'max:255'],
-            'password-confirmation' => ['required', 'string', 'min:6', 'max:255'],
+            'email' => ['required', 'string', 'max:255', 'unique:users,email'],
+            'phone' => ['sometimes', 'nullable', 'string', 'max:20'],
+            'image' => ['nullable', 'file', 'max:'.config('settings.max_upload_size')],
+            'password' => ['required', 'string', 'min:6', 'max:255', 'confirmed'],
         ];
     }
 }

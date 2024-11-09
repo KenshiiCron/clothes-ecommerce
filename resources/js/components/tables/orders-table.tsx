@@ -56,6 +56,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
+import {CreateButton} from "@/components/elements/create-button";
 
 export type Order = {
     id: String
@@ -304,12 +305,7 @@ export default function DataTableDemo({ orders }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <Button asChild>
-                    <Link href={route("admin.orders.create")}>
-                        <p>Create</p>
-                        <PlusCircleIcon className="ml-2 h-4 w-4" />
-                    </Link>
-                </Button>
+                <CreateButton link="admin.orders.create"/>
                 <Input
                     placeholder="Filter orders..."
                     value={

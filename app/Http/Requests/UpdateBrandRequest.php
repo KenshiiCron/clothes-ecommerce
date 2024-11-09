@@ -24,7 +24,7 @@ class UpdateBrandRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['nullable', 'string', 'max:255'],
-            'image' => ['nullable', 'image', 'max:5000'],
+            'image' => ['nullable', 'image', 'max:'.config('settings.max_upload_size')],
             'featured' => ['required', 'boolean'],
         ];
     }

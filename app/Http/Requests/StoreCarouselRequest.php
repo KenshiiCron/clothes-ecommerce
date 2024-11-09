@@ -24,8 +24,9 @@ class StoreCarouselRequest extends FormRequest
         return [
             'name' => ['required', 'string', 'max:255'],
             'description' => ['sometimes', 'nullable', 'string', 'max:1000'],
-            'action' => ['sometimes', 'nullable', 'string', 'max:255'],
-            'image' => ['required', 'file', 'image', 'max:5000'],
+            'product_id' => ['nullable', 'integer', 'exists:products,id'],
+            'action' => ['nullable', 'string', 'max:2048'],
+            'image' => ['required', 'image', 'max:'.config('settings.max_upload_size')],
         ];
     }
 }

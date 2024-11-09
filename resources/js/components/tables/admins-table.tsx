@@ -1,8 +1,6 @@
-"use client"
+import * as React from "react";
 
-import * as React from "react"
 import {
-    ColumnDef,
     ColumnFiltersState,
     SortingState,
     VisibilityState,
@@ -12,11 +10,12 @@ import {
     getPaginationRowModel,
     getSortedRowModel,
     useReactTable,
-} from "@tanstack/react-table"
-import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react"
-import { Button } from "@/components/ui/button"
+} from "@tanstack/react-table";
 
-import { Input } from "@/components/ui/input"
+import {Button} from "@/components/ui/button";
+
+import {Input} from "@/components/ui/input";
+
 import {
     Table,
     TableBody,
@@ -24,33 +23,38 @@ import {
     TableHead,
     TableHeader,
     TableRow,
-} from "@/components/ui/table"
-import {Link} from "@inertiajs/react";
-import {columns} from "@/components/tables/columns/products-columns";
+} from "@/components/ui/table";
+
+import {columns} from "@/components/tables/columns/admins-columns";
 import {CreateButton} from "@/components/elements/create-button";
 
-export type Product = {
-    id: string,
-    image_url: string,
-    name: string,
-    created_at: string,
-    updated_at: string
-}
+export type Admin = {
+    id: string;
+    name: string;
+    email: string;
+    phone: string;
+    roles: Array<any>;
+    created_at: string;
+    updated_at: string;
+};
 
 interface DataTableDemoProps {
-    products: Product[];
+    admins: Admin[];
+    canCreateAdmin: boolean;
+    canEditAdmin: boolean;
+    canDeleteAdmin: boolean;
 }
-export default function DataTableDemo({ products }: DataTableDemoProps) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
-    const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
-        []
-    )
+
+export default function DataTableDemo({admins , canCreateAdmin, canEditAdmin, canDeleteAdmin}: DataTableDemoProps) {
+    const [sorting, setSorting] = React.useState<SortingState>([]);
+    const [columnFilters, setColumnFilters] =
+        React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] =
-        React.useState<VisibilityState>({})
-    const [rowSelection, setRowSelection] = React.useState({})
+        React.useState<VisibilityState>({});
+    const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data : products,
+        data: admins,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -66,15 +70,15 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
             columnVisibility,
             rowSelection,
         },
-    })
+    });
 
 
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.products.create" />
+                {canCreateAdmin && <CreateButton link="admin.admins.create"/>}
                 <Input
-                    placeholder="Filter brands..."
+                    placeholder="Filter admins..."
                     value={
                         (table.getColumn("name")?.getFilterValue() as string) ??
                         ""
@@ -86,6 +90,32 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
                     }
                     className="max-w-sm"
                 />
+                {/*<DropdownMenu>*/}
+                {/*    <DropdownMenuTrigger asChild>*/}
+                {/*        <Button variant="outline" className="ml-auto">*/}
+                {/*            Columns <ChevronDown className="ml-2 h-4 w-4" />*/}
+                {/*        </Button>*/}
+                {/*    </DropdownMenuTrigger>*/}
+                {/*    <DropdownMenuContent align="end">*/}
+                {/*        {table*/}
+                {/*            .getAllColumns()*/}
+                {/*            .filter((column) => column.getCanHide())*/}
+                {/*            .map((column) => {*/}
+                {/*                return (*/}
+                {/*                    <DropdownMenuCheckboxItem*/}
+                {/*                        key={column.id}*/}
+                {/*                        className="capitalize"*/}
+                {/*                        checked={column.getIsVisible()}*/}
+                {/*                        onCheckedChange={(value) =>*/}
+                {/*                            column.toggleVisibility(!!value)*/}
+                {/*                        }*/}
+                {/*                    >*/}
+                {/*                        {column.id}*/}
+                {/*                    </DropdownMenuCheckboxItem>*/}
+                {/*                );*/}
+                {/*            })}*/}
+                {/*    </DropdownMenuContent>*/}
+                {/*</DropdownMenu>*/}
             </div>
             <div className="rounded-md border">
                 <Table>
@@ -98,11 +128,12 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
                                             {header.isPlaceholder
                                                 ? null
                                                 : flexRender(
-                                                    header.column.columnDef.header,
+                                                    header.column.columnDef
+                                                        .header,
                                                     header.getContext()
                                                 )}
                                         </TableHead>
-                                    )
+                                    );
                                 })}
                             </TableRow>
                         ))}
@@ -112,7 +143,9 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
                             table.getRowModel().rows.map((row) => (
                                 <TableRow
                                     key={row.id}
-                                    data-state={row.getIsSelected() && "selected"}
+                                    data-state={
+                                        row.getIsSelected() && "selected"
+                                    }
                                 >
                                     {row.getVisibleCells().map((cell) => (
                                         <TableCell key={cell.id}>
@@ -162,5 +195,5 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
                 </div>
             </div>
         </div>
-    )
+    );
 }

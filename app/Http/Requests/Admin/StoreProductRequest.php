@@ -25,7 +25,7 @@ class StoreProductRequest extends FormRequest
             'category_id' => ['required','exists:categories,id'],
             'name' => ['required', 'string', 'max:255'],
             'description' => ['string','sometimes'],
-            'image' => ['nullable', 'file', 'max:5000'],
+            'image' => ['nullable', 'file', 'max:'.config('settings.max_upload_size')],
         ];
     }
 }

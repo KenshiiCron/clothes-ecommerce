@@ -14,9 +14,9 @@ import {
     useReactTable,
 } from "@tanstack/react-table"
 import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react"
-import { Button } from "@/components/ui/button"
+import {Button} from "@/components/ui/button"
 
-import { Input } from "@/components/ui/input"
+import {Input} from "@/components/ui/input"
 import {
     Table,
     TableBody,
@@ -26,21 +26,21 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {Link} from "@inertiajs/react";
-import {columns} from "@/components/tables/columns/products-columns";
+import {columns} from "@/components/tables/columns/roles-columns";
 import {CreateButton} from "@/components/elements/create-button";
 
-export type Product = {
+export type Role = {
     id: string,
-    image_url: string,
     name: string,
-    created_at: string,
+    permissions: Array<any>,
     updated_at: string
 }
 
 interface DataTableDemoProps {
-    products: Product[];
+    roles: Role[];
 }
-export default function DataTableDemo({ products }: DataTableDemoProps) {
+
+export default function DataTableDemo({roles}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -50,7 +50,7 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
     const [rowSelection, setRowSelection] = React.useState({})
 
     const table = useReactTable({
-        data : products,
+        data: roles,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -72,9 +72,9 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.products.create" />
+                <CreateButton link="admin.roles.create" />
                 <Input
-                    placeholder="Filter brands..."
+                    placeholder="Filter roles..."
                     value={
                         (table.getColumn("name")?.getFilterValue() as string) ??
                         ""

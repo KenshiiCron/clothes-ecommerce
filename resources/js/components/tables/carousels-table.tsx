@@ -17,7 +17,7 @@ import {
     ArrowUpDown,
     Trash, Eye,
     MoreHorizontal, Pencil,
-    PlusCircleIcon,
+    PlusCircleIcon, ExternalLink,
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
@@ -60,18 +60,19 @@ import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 import {CreateButton} from "@/components/elements/create-button";
 
-export type Brand = {
+export type Carousel = {
     id: string;
     name: string;
     image_url: string;
-    slug: string;
-    featured: boolean;
+    state: boolean;
+    action: string;
+    product_id: number;
     description: string;
     created_at: string;
     updated_at: string;
 };
 
-export const columns: ColumnDef<Brand>[] = [
+export const columns: ColumnDef<Carousel>[] = [
     {
         id: "select",
         header: ({table}) => (
@@ -104,26 +105,14 @@ export const columns: ColumnDef<Brand>[] = [
                 <img
                     src={row.getValue("image_url")}
                     alt="image"
-                    className="w-14 h-14 rounded-md object-cover"
+                    className="w-24 h-14 rounded-md object-cover"
                 />
             </div>
         ),
     },
     {
         accessorKey: "name",
-        header: ({column}) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4"/>
-                </Button>
-            );
-        },
+        header: "Name",
         cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
@@ -151,28 +140,46 @@ export const columns: ColumnDef<Brand>[] = [
         ),
     },
     {
-        accessorKey: "featured",
-        header: "Featured",
+        accessorKey: "state",
+        header: "State",
         cell: ({row}) => (
             <div className="capitalize">
-                {/* <Switch value={row.getValue("featured")} /> */}
+                {/* <Switch value={row.getValue("state")} /> */}
                 <Badge
                     variant={
-                        row.getValue("featured") == 0
+                        row.getValue("state") == 0
                             ? "destructive"
                             : "secondary"
                     }
                 >
-                    {row.getValue("featured") == 0 ? "No" : "Yes"}
+                    {row.getValue("state") == 0 ? "Off" : "On"}
                 </Badge>
             </div>
         ),
     },
     {
+        accessorKey: "action",
+        header: "URL",
+        cell: ({row}) => {
+            return (row.getValue("action") && (<div><a href={row.getValue("action")}
+                                      target="_blank" className="overflow-ellipsis"><ExternalLink className="text-primary" size={20}/></a></div>)
+            );
+        },
+    },
+    {
+        accessorKey: "product_id",
+        header: "Product",
+        cell: ({row}) => {
+            return (row.getValue("product_id") && (<div><Link href={`prodcuts/${row.getValue("product_id")}`}
+                                      target="_blank"><ExternalLink className="text-primary" size={20}/></Link></div>)
+            );
+        },
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({row}) => {
-            const brand = row.original;
+            const carousel = row.original;
             const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
 
             return (
@@ -186,15 +193,9 @@ export const columns: ColumnDef<Brand>[] = [
                     <DropdownMenuContent align="end">
                         <DropdownMenuLabel>Actions</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                            <Link href={route("admin.brands.edit", brand.id)}>
+                            <Link href={route("admin.carousels.edit", carousel.id)}>
                                 <Pencil/>
-                                <p>Edit brand</p>
-                            </Link>
-                        </DropdownMenuItem>
-                        <DropdownMenuItem asChild>
-                            <Link href={route("admin.brands.show", brand.id)}>
-                                <Eye/>
-                                <p>View brand</p>
+                                <p>Edit carousel</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
@@ -202,18 +203,18 @@ export const columns: ColumnDef<Brand>[] = [
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p className="text-sm font-medium">Delete brand</p>
+                                        <p className="text-sm font-medium">Delete carousel</p>
                                     </div>
                                 </AlertDialogTrigger>
 
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete {brand.name}</AlertDialogTitle>
+                                        <AlertDialogTitle>Delete {carousel.name}</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete this brand,
+                                            This action cannot be undone. This will permanently delete this carousel,
                                             products
                                             and orders will not be deleted.
                                         </AlertDialogDescription>
@@ -222,7 +223,7 @@ export const columns: ColumnDef<Brand>[] = [
                                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                                         <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
                                                            onClick={() => {
-                                                               destroy(route("admin.brands.destroy", brand.id));
+                                                               destroy(route("admin.carousels.destroy", carousel.id));
                                                            }}>
                                             <Trash size={16}></Trash>
                                             <p>Delete</p>
@@ -239,10 +240,10 @@ export const columns: ColumnDef<Brand>[] = [
 ];
 
 interface DataTableDemoProps {
-    brands: Brand[];
+    carousels: Carousel[];
 }
 
-export default function DataTableDemo({brands}: DataTableDemoProps) {
+export default function DataTableDemo({carousels}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
@@ -251,7 +252,7 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
     const [rowSelection, setRowSelection] = React.useState({});
 
     const table = useReactTable({
-        data: brands,
+        data: carousels,
         columns,
         onSortingChange: setSorting,
         onColumnFiltersChange: setColumnFilters,
@@ -273,9 +274,9 @@ export default function DataTableDemo({brands}: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.brands.create" />
+                <CreateButton link="admin.carousels.create"/>
                 <Input
-                    placeholder="Filter brands..."
+                    placeholder="Filter carousels..."
                     value={
                         (table.getColumn("name")?.getFilterValue() as string) ??
                         ""

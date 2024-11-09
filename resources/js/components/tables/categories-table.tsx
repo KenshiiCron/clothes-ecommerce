@@ -17,10 +17,10 @@ import {
     MoreHorizontal,
     PlusCircleIcon,
     Pencil,
-    Eye
+    Eye, Trash
 } from "lucide-react";
 
-import { Button } from "@/components/ui/button";
+import {Button, buttonVariants} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 import {
     DropdownMenu,
@@ -42,9 +42,16 @@ import {
 } from "@/components/ui/table";
 import { Switch } from "@/components/ui/switch";
 import { PageProps } from "@/types";
-import { Link } from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import { Badge } from "../ui/badge";
 import {CreateButton} from "@/components/elements/create-button";
+import {
+    AlertDialog, AlertDialogAction, AlertDialogCancel,
+    AlertDialogContent, AlertDialogDescription, AlertDialogFooter,
+    AlertDialogHeader,
+    AlertDialogTitle,
+    AlertDialogTrigger
+} from "@/components/ui/alert-dialog";
 
 export type Category = {
     id: string;
@@ -99,19 +106,7 @@ export const columns: ColumnDef<Category>[] = [
     {
         accessorKey: "name",
 
-        header: ({ column }) => {
-            return (
-                <Button
-                    variant="ghost"
-                    onClick={() =>
-                        column.toggleSorting(column.getIsSorted() === "asc")
-                    }
-                >
-                    Name
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
-                </Button>
-            );
-        },
+        header: 'Name',
         cell: ({ row }) => (
             <div className="lowercase">{row.getValue("name")}</div>
         ),
@@ -163,7 +158,7 @@ export const columns: ColumnDef<Category>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const category = row.original;
-
+            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -201,6 +196,40 @@ export const columns: ColumnDef<Category>[] = [
                                 <Eye></Eye>
                                 <p>View category</p>
                             </Link>
+                        </DropdownMenuItem>
+
+                        <DropdownMenuItem asChild>
+                            <AlertDialog>
+                                <AlertDialogTrigger asChild>
+                                    <div
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
+                                    >
+                                        <Trash size={16}></Trash>
+                                        <p className="text-sm font-medium">Delete Category</p>
+                                    </div>
+                                </AlertDialogTrigger>
+
+                                <AlertDialogContent>
+                                    <AlertDialogHeader>
+                                        <AlertDialogTitle>Delete {category.name}</AlertDialogTitle>
+                                        <AlertDialogDescription>
+                                            This action cannot be undone. This will permanently delete this category,
+                                            products
+                                            and orders will not be deleted.
+                                        </AlertDialogDescription>
+                                    </AlertDialogHeader>
+                                    <AlertDialogFooter>
+                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
+                                                           onClick={() => {
+                                                               destroy(route("admin.categories.destroy", category.id));
+                                                           }}>
+                                            <Trash size={16}></Trash>
+                                            <p>Delete</p>
+                                        </AlertDialogAction>
+                                    </AlertDialogFooter>
+                                </AlertDialogContent>
+                            </AlertDialog>
                         </DropdownMenuItem>
                     </DropdownMenuContent>
                 </DropdownMenu>

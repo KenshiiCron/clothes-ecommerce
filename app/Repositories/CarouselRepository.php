@@ -46,11 +46,13 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
     {
         $model = $model instanceof $this->model ? $model : $this->findOneById($model);
 
-        if (array_key_exists('image', $data)) {
+        if (array_key_exists('image', $data) && isset($data['image'])) {
             if ($model->image) {
                 $this->deleteOne($model->image);
             }
-            $data['image'] = $this->uploadOne($data['image'], (new ReflectionClass($this->model))->getShortName() . '/image');
+            $data['image'] = $this->uploadOne($data['image'], (new \ReflectionClass($this->model))->getShortName() . '/image', 'public');
+        } else {
+            $data['image'] = $model->image;
         }
 
         $model->update($data);

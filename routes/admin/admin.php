@@ -5,14 +5,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
-Route::get('/', function () {
-    return Inertia::render('welcome', [
-        'canLogin' => Route::has('login'),
-        'canRegister' => Route::has('register'),
-        'laravelVersion' => Application::VERSION,
-        'phpVersion' => PHP_VERSION,
-    ]);
-});
+Route::permanentRedirect('/','/admin/dashboard');
 
 Route::get('/dashboard', function () {
     return Inertia::render('dashboard');
@@ -25,15 +18,16 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
 });
 Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('users',\App\Http\Controllers\Admin\UserController::class);
-    Route::get('/products', [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
+    Route::resource('admins',\App\Http\Controllers\Admin\AdminController::class);
+    Route::resource('roles',\App\Http\Controllers\Admin\RoleController::class);
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
-    Route::post('brands-update/{id}',[\App\Http\Controllers\Admin\BrandController::class, 'updatehh'])->name('brands.updatehh');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
     Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
     Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
     Route::put('attributes/attach/{id}',[\App\Http\Controllers\Admin\AttributeController::class,'attach'])->name('attributes.attach');
     Route::resource('orders',\App\Http\Controllers\Admin\OrdersController::class);
+    Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
 });
 
 require __DIR__.'/auth.php';

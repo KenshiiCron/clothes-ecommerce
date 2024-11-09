@@ -11,7 +11,7 @@ class StoreAdminRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -22,7 +22,12 @@ class StoreAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            //
+            'name' => ['required', 'string', 'max:255'],
+            'email' => ['required', 'string', 'max:255'],
+            'phone' => ['sometimes' , 'nullable'],
+            'password' => ['required', 'string', 'min:6', 'max:255', 'confirmed'],
+            'roles' => ['required', 'array'],
+            'roles.*' => ['required', 'integer', 'max:255'],
         ];
     }
 }

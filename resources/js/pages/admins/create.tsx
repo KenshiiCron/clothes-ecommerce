@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import {Head, router, useForm} from "@inertiajs/react";
+import {Head, useForm} from "@inertiajs/react";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
@@ -8,38 +8,17 @@ import {InputError} from "@/components/ui/input-error";
 import {FormEventHandler, useState} from "react";
 
 import {Eye, EyeOff} from 'lucide-react'
+import {MultiSelect} from "@/components/multi-select";
 
-export default function Edit({user}: any) {
-    const {data, setData, processing, errors, reset} = useForm({
-        name: user.name,
-        email: user.email,
-        phone: user.phone,
-        image: null,
-    });
-
-    const {
-        data: pwdData,
-        setData: pwdSetData,
-        put,
-        processing: pwdProcessing,
-        errors: pwdErrors,
-        reset: pwdReset
-    } = useForm({
-        old_password: "",
+export default function Create({roles}: any) {
+    const {data, setData, post, processing, errors, reset} = useForm({
+        name: "",
+        email: "",
         password: "",
         password_confirmation: "",
+        phone: "",
+        roles: [],
     });
-
-    const [preview, setPreview] = useState(data.image ? data.image : null);
-    const handleImageChange = (e: any) => {
-        const file = e.target.files[0];
-        if (file) {
-            setData("image", file);
-            // @ts-ignore
-            setPreview(URL.createObjectURL(file));
-        }
-    };
-
     const [showPassword, setShowPassword] = useState(false)
     const togglePasswordVisibility = () => {
         setShowPassword(!showPassword)
@@ -51,36 +30,17 @@ export default function Edit({user}: any) {
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-
-        router.post(route("admin.users.update", user.id), {
-            _method: "put",
-            name: data.name,
-            email: data.email,
-            password: data.password,
-            password_confirmation: data.password,
-            phone: data.phone,
-            image: data.image,
-        });
+        post(route("admin.admins.store"));
     };
 
-    const submitChangePassword: FormEventHandler = (e) => {
-        e.preventDefault();
-
-        router.post(route("admin.users.update", user.id), {
-            _method: "put",
-            name: data.name,
-            email: data.email,
-            password: data.password,
-            password_confirmation: data.password,
-            phone: data.phone,
-            image: data.image,
-        });
-    };
+    const handleChangeRoles = (values: any) => {
+        setData('roles', values);
+    }
     return (
-        <AuthenticatedLayout header="Categories">
-            <Head title="Edit Brand"/>
+        <AuthenticatedLayout header="Admins">
+            <Head title="Create Admin"/>
 
-            <p>Edit</p>
+            <p>Create</p>
             <form onSubmit={submit} className="max-w-md mt-6">
                 <div className="grid gap-4">
                     <div className="grid gap-2">
@@ -120,46 +80,25 @@ export default function Edit({user}: any) {
                         <InputError message={errors.phone}/>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="image">Image</Label>
-                        <Input
-                            id="image"
-                            type="file"
-                            accept="image/*"
-                            placeholder="Image url"
-                            onChange={handleImageChange}
-                            required
+                        <Label htmlFor="user_id">Roles</Label>
+                        <MultiSelect
+                            options={roles}
+                            onValueChange={handleChangeRoles}
+                            // defaultValue={selectedFrameworks}
+                            placeholder="Select roles"
+                            variant="inverted"
+                            animation={2}
                         />
-                        {preview ? (
-                            <img
-                                src={preview}
-                                alt="Selected image preview"
-                                className="w-32 h-32 object-cover rounded"
-                            />
-                        ) : (
-                            <img
-                                src={user.image_url}
-                                alt="Selected image preview"
-                                className="w-32 h-32 object-cover rounded"
-                            />
-                        )}
-                        <InputError message={errors.image}/>
+                        {/*<InputError message={errors.category_id}/>*/}
                     </div>
-                    <Button type="submit" className="w-full mt-4">
-                        Update
-                    </Button>
-                </div>
-            </form>
-            <Separator className="my-12 max-w-md"></Separator>
-            <p>Edit Password</p>
-            <form onSubmit={submitChangePassword} className="max-w-md mt-6">
-                <div className="grid gap-4">
+                    <Separator className="my-4"></Separator>
                     <div className="relative grid gap-2">
-                        <Label htmlFor="old_password">Old Password</Label>
+                        <Label htmlFor="password">Password</Label>
                         <Input
                             type={showPassword ? 'text' : 'password'}
-                            placeholder="Old Password"
-                            value={pwdData.old_password}
-                            onChange={(e) => pwdSetData("old_password", e.target.value)}
+                            placeholder="Password"
+                            value={data.password}
+                            onChange={(e) => setData("password", e.target.value)}
                             className="pr-10"
                         />
                         <Button
@@ -168,7 +107,7 @@ export default function Edit({user}: any) {
                             size="icon"
                             className="absolute right-0 top-3 h-full px-3 py-2 hover:bg-transparent"
                             onClick={togglePasswordVisibility}
-                            aria-label={showPassword ? 'Hide old password' : 'Show old password'}
+                            aria-label={showPassword ? 'Hide password' : 'Show password'}
                         >
                             {showPassword ? (
                                 <EyeOff className="h-4 w-4 text-gray-500"/>
@@ -177,14 +116,14 @@ export default function Edit({user}: any) {
                             )}
                         </Button>
                     </div>
-                    <InputError message={pwdErrors.old_password}/>
+                    <InputError message={errors.password}/>
                     <div className="relative grid gap-2">
-                        <Label htmlFor="password_confirmation">New Password</Label>
+                        <Label htmlFor="password_confirmation">Password confirmation</Label>
                         <Input
                             type={showPasswordConfirmation ? 'text' : 'password'}
-                            placeholder="New Password"
-                            value={pwdData.password}
-                            onChange={(e) => pwdSetData("password", e.target.value)}
+                            placeholder="Password Confirmation"
+                            value={data.password_confirmation}
+                            onChange={(e) => setData("password_confirmation", e.target.value)}
                             className="pr-10"
                         />
                         <Button
@@ -202,23 +141,11 @@ export default function Edit({user}: any) {
                             )}
                         </Button>
                     </div>
-                    <InputError message={pwdErrors.password}/>
-                    <div className="relative grid gap-2">
-                        <Label htmlFor="password_confirmation">Password</Label>
-                        <Input
-                            type={showPasswordConfirmation ? 'text' : 'password'}
-                            placeholder="Password Confirmation"
-                            value={pwdData.password_confirmation}
-                            onChange={(e) => pwdSetData("password_confirmation", e.target.value)}
-                            className="pr-10"
-                        />
-                    </div>
-                    <InputError message={pwdErrors.password_confirmation}/>
-                    <Button type="submit" className="w-full mt-4">
-                        Update Password
+                    <InputError message={errors.password_confirmation}/>
+                    <Button type="submit" className="w-full mt-4" disabled={processing}>
+                        Create
                     </Button>
                 </div>
-
             </form>
         </AuthenticatedLayout>
     );
