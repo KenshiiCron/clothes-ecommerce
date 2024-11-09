@@ -169,6 +169,7 @@ export default function Create({categories} : createCategory) {
                                 icon={EyeIcon}
                                 onChange={() => toggleSelection('state')}
                             />
+
                             <CardCheckbox
                                 id="featured"
                                 checked={selections.featured}
