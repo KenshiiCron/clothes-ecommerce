@@ -14,6 +14,8 @@ import {
 } from "@/components/ui/select";
 import {FormEventHandler, useState} from "react";
 import { Textarea } from "@/components/ui/textarea";
+import { Card, CardContent } from "@/components/ui/card";
+import { EyeIcon, StarIcon, FlameIcon } from "lucide-react";
 
 
 export type Category = {
@@ -42,6 +44,42 @@ export default function Create({categories} : createCategory) {
             setPreview(URL.createObjectURL(file));
         }
     };
+
+    const [selections, setSelections] = useState({
+        state: true,
+        featured: false,
+        limited: false,
+    })
+
+    const toggleSelection = (option: keyof typeof selections) => {
+        setSelections(prev => ({ ...prev, [option]: !prev[option] }))
+    }
+
+    const CardCheckbox = ({
+                              id,
+                              checked,
+                              label,
+                              icon: Icon,
+                              onChange
+                          }: {
+        id: keyof typeof selections;
+        checked: boolean;
+        label: string;
+        icon: React.ElementType;
+        onChange: () => void;
+    }) => (
+        <Card
+            className={`cursor-pointer transition-all ${checked ? 'border-primary' : ''}`}
+            onClick={onChange}
+        >
+            <CardContent className="flex flex-col items-center justify-center p-6 space-y-2">
+                <Icon className={`h-6 w-6 mb-1 ${checked ? 'text-primary' : ''}`} />
+                <Label htmlFor={id} className={`text-sm font-medium cursor-pointer ${checked ? 'text-primary' : ''}`}>
+                    {label}
+                </Label>
+            </CardContent>
+        </Card>
+    )
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
@@ -119,6 +157,33 @@ export default function Create({categories} : createCategory) {
                             />
                         )}
                         <InputError message={errors.image}/>
+                    </div>
+
+                    <div className="grid gap-2">
+                        <Label>Options</Label>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <CardCheckbox
+                                id="state"
+                                checked={selections.state}
+                                label="State"
+                                icon={EyeIcon}
+                                onChange={() => toggleSelection('state')}
+                            />
+                            <CardCheckbox
+                                id="featured"
+                                checked={selections.featured}
+                                label="Featured"
+                                icon={StarIcon}
+                                onChange={() => toggleSelection('featured')}
+                            />
+                            <CardCheckbox
+                                id="limited"
+                                checked={selections.limited}
+                                label="Limited"
+                                icon={FlameIcon}
+                                onChange={() => toggleSelection('limited')}
+                            />
+                        </div>
                     </div>
                     <Button type="submit" className="w-full mt-4">
                         Create

@@ -30,6 +30,13 @@
                  4 => "Confirm",
                  5 => "Cancel",
              ],
+         ],
+         "carousel" => [
+             "type" => [
+                 1 => "Nothing",
+                 2 => "Product",
+                 3 => "Link",
+             ],
          ]
      ]
  ];

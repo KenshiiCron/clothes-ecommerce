@@ -33,6 +33,23 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
             $data['image'] = $this->uploadOne($data['image'], (new \ReflectionClass($this->model))->getShortName() . '/image', 'public');
         }
 
+        $data['type'] = intval($data['type']);
+
+        switch ($data['type']) {
+            case 0:
+                $data['action'] = null;
+                $data['product_id'] = null;
+                break;
+            case 1:
+                $data['action'] = null;
+                break;
+            case 2:
+                $data['product_id'] = null;
+                break;
+            default:
+                dd('error');
+        }
+
         activity()
             ->causedBy(auth()->user())
             ->performedOn($this->model)
@@ -53,6 +70,23 @@ class CarouselRepository extends BaseRepositories implements CarouselContract
             $data['image'] = $this->uploadOne($data['image'], (new \ReflectionClass($this->model))->getShortName() . '/image', 'public');
         } else {
             $data['image'] = $model->image;
+        }
+
+        $data['type'] = intval($data['type']);
+
+        switch ($data['type']) {
+            case 0:
+                $data['action'] = null;
+                $data['product_id'] = null;
+                break;
+            case 1:
+                $data['action'] = null;
+                break;
+            case 2:
+                $data['product_id'] = null;
+                break;
+            default:
+                dd('error');
         }
 
         $model->update($data);

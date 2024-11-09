@@ -18,6 +18,7 @@ return new class extends Migration
             $table->foreignId('product_id')->nullable()->constrained()->cascadeOnDelete();
             $table->string('action')->nullable();
             $table->boolean('state')->default(true);
+            $table->integer('type')->default(0);
             $table->string('image');
             $table->timestamps();
         });

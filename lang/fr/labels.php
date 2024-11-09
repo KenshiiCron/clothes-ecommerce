@@ -30,6 +30,13 @@ return [
                     5 => "Annuler",
                 ],
             ],
+            "carousel" => [
+                "type" => [
+                    1 => "Rien",
+                    2 => "Produit",
+                    3 => "Lien",
+                ],
+            ],
         ]
     ]
 ];

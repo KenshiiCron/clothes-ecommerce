@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Carousel\Type;
 use Illuminate\Database\Eloquent\Model;
 
 class Carousel extends Model
@@ -9,6 +10,7 @@ class Carousel extends Model
     protected $fillable = [
         'name',
         'description',
+        'type',
         'product_id',
         'action',
         'state',
@@ -18,7 +20,8 @@ class Carousel extends Model
     protected $appends = ['image_url'];
 
     protected $casts = [
-        'state' => 'boolean'
+        'state' => 'boolean',
+        'type' => Type::class,
     ];
 
     public function getImageUrlAttribute()

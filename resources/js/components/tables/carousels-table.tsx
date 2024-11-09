@@ -64,6 +64,7 @@ export type Carousel = {
     id: string;
     name: string;
     image_url: string;
+    type: number;
     state: boolean;
     action: string;
     product_id: number;
@@ -170,7 +171,7 @@ export const columns: ColumnDef<Carousel>[] = [
         accessorKey: "product_id",
         header: "Product",
         cell: ({row}) => {
-            return (row.getValue("product_id") && (<div><Link href={`prodcuts/${row.getValue("product_id")}`}
+            return (row.getValue("product_id") && (<div><Link href={`products/${row.getValue("product_id")}`}
                                       target="_blank"><ExternalLink className="text-primary" size={20}/></Link></div>)
             );
         },

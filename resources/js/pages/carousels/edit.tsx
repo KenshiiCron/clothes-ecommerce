@@ -1,5 +1,5 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import {Head, useForm} from "@inertiajs/react";
+import {Head, router, useForm} from "@inertiajs/react";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
@@ -25,18 +25,19 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import {cn} from "@/lib/utils";
-import {Product} from "@/components/tables/products-table";
 
-
-export default function Create({products, carousel}: any,) {
+export default function Edit({products, carousel}: any) {
     const {data, setData, post, processing, errors, reset} = useForm({
         name: carousel.name,
-        description: carousel.name,
+        description: carousel.description,
         state: carousel.state,
         image: null,
-        action: carousel.action,
-        product_id: carousel.product_id,
+        type: carousel.type,
+        action: carousel.action ? carousel.action : "",
+        product_id: carousel.product_id ? carousel.product_id : "",
     });
+
+    console.log(carousel.type.toString())
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
     const handleImageChange = (e: any) => {
@@ -49,19 +50,30 @@ export default function Create({products, carousel}: any,) {
     };
 
     const [open, setOpen] = useState(false)
-    const [productId, setProductId] = useState("")
+    const [productId, setProductId] = useState(carousel.product_id ? carousel.product_id : "")
 
-    const [selectedOption, setSelectedOption] = useState('nothing')
+    const [selectedOption, setSelectedOption] = useState(carousel.type.toString())
 
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        post(route("admin.carousels.store"));
+        // post(route("admin.carousels.update", carousel.id));
+
+        router.post(route("admin.carousels.update", carousel.id), {
+            _method: "put",
+            name: data.name,
+            description: data.description,
+            state: data.state,
+            image: data.image,
+            type: data.type,
+            action: data.action,
+            product_id: data.product_id,
+        });
     };
     return (
         <AuthenticatedLayout header="Carousels">
-            <Head title="Create Carousel"/>
+            <Head title="Edit Carousel"/>
 
             <h2>Edit</h2>
             <form onSubmit={submit} className="max-w-md mt-6">
@@ -83,11 +95,11 @@ export default function Create({products, carousel}: any,) {
                         <Textarea
                             id="description"
                             placeholder="Carousel description"
-                            value={data.description}
                             onChange={(e) =>
                                 setData("description", e.target.value)
                             }
-                        />
+                            defaultValue={data.description}
+                        ></Textarea>
                         <InputError message={errors.description}/>
                     </div>
                     <div className="grid gap-2">
@@ -98,7 +110,6 @@ export default function Create({products, carousel}: any,) {
                             accept="image/*"
                             placeholder="Image url"
                             onChange={handleImageChange}
-                            required
                         />
                         {preview ? (
                             <img
@@ -129,39 +140,42 @@ export default function Create({products, carousel}: any,) {
                     <Separator className="my-4"/>
                     <div className="grid gap-2">
                         <Label>Action <span className="text-red-400">*</span></Label>
-                        <RadioGroup onValueChange={setSelectedOption} defaultValue="nothing">
+                        <RadioGroup onValueChange={(value) => {
+                            setSelectedOption(value)
+                            setData("type", value)
+                        }} defaultValue={carousel.type.toString()}>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <Label
-                                    htmlFor="nothing"
+                                    htmlFor="0"
                                     className="cursor-pointer"
                                 >
-                                    <Card className={`h-full ${selectedOption === 'nothing' && 'border-primary'}`}>
+                                    <Card className={`h-full ${selectedOption === '0' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
-                                            <RadioGroupItem value="nothing" id="nothing" className="sr-only"/>
+                                            <RadioGroupItem value="0" id="0" className="sr-only"/>
                                             <XIcon className="h-6 w-6 mb-2"/>
                                             <span className="text-sm font-medium">Nothing</span>
                                         </CardContent>
                                     </Card>
                                 </Label>
                                 <Label
-                                    htmlFor="product"
+                                    htmlFor="1"
                                     className="cursor-pointer"
                                 >
-                                    <Card className={`h-full ${selectedOption === 'product' && 'border-primary'}`}>
+                                    <Card className={`h-full ${selectedOption === '1' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
-                                            <RadioGroupItem value="product" id="product" className="sr-only"/>
+                                            <RadioGroupItem value="1" id="1" className="sr-only"/>
                                             <PackageIcon className="h-6 w-6 mb-2"/>
                                             <span className="text-sm font-medium">Product</span>
                                         </CardContent>
                                     </Card>
                                 </Label>
                                 <Label
-                                    htmlFor="link"
+                                    htmlFor="2"
                                     className="cursor-pointer"
                                 >
-                                    <Card className={`h-full ${selectedOption === 'link' && 'border-primary'}`}>
+                                    <Card className={`h-full ${selectedOption === '2' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
-                                            <RadioGroupItem value="link" id="link" className="sr-only"/>
+                                            <RadioGroupItem value="2" id="2" className="sr-only"/>
                                             <LinkIcon className="h-6 w-6 mb-2"/>
                                             <span className="text-sm font-medium">Link</span>
                                         </CardContent>
@@ -170,9 +184,9 @@ export default function Create({products, carousel}: any,) {
                             </div>
                         </RadioGroup>
                         <div className="mt-6">
-                            {selectedOption === 'nothing' ?
+                            {selectedOption === '0' ?
                                 (<p className="text-sm text-muted-foreground">No additional information
-                                    required.</p>) : selectedOption === 'product' ?
+                                    required.</p>) : selectedOption === '1' ?
                                     (<div className="space-y-2">
                                         <Label htmlFor="productName">Product Name</Label>
                                         <Popover open={open} onOpenChange={setOpen}>
@@ -184,7 +198,10 @@ export default function Create({products, carousel}: any,) {
                                                     className="justify-between w-full"
                                                 >
                                                     {productId
-                                                        ? products.find((product: { id: string; name: string; }) => product.id === productId)?.label
+                                                        ? products.find((product: {
+                                                            id: string;
+                                                            name: string;
+                                                        }) => product.id === productId)?.name
                                                         : "Select product..."}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                                                 </Button>
@@ -229,7 +246,7 @@ export default function Create({products, carousel}: any,) {
 
                     </div>
                     <Button type="submit" className="w-full mt-4">
-                        Create
+                        Update
                     </Button>
                 </div>
             </form>
