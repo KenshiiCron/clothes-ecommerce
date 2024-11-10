@@ -22,10 +22,11 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('roles',\App\Http\Controllers\Admin\RoleController::class);
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
+    Route::put('products/attach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'attachAttribute'])->name('products.attach');
+    Route::put('products/dettach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'dettachAttribute'])->name('products.dettach');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
     Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
     Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
-    Route::put('attributes/attach/{id}',[\App\Http\Controllers\Admin\AttributeController::class,'attach'])->name('attributes.attach');
     Route::resource('orders',\App\Http\Controllers\Admin\OrdersController::class);
     Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
 });

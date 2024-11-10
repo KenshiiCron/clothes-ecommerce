@@ -57,7 +57,7 @@ export default function Edit({
 
     const updateAttribute: FormEventHandler = (e) => {
         e.preventDefault();
-        put(route("admin.attributes.update", attribute.id));
+        console.log(route("admin.attributes.update", attribute.id))
     };
     const AddValue: FormEventHandler = (e) => {
         e.preventDefault();

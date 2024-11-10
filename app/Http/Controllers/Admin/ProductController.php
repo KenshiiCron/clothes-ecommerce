@@ -13,6 +13,7 @@ use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
+use JetBrains\PhpStorm\NoReturn;
 
 class ProductController extends Controller
 {
@@ -52,7 +53,7 @@ class ProductController extends Controller
     {
         $product = $this->product->findOneById($id);
         $product_category = $product->category->only(['id', 'name']);
-        $product_attributes = $product->attributes->only(['id', 'name']);
+        $product_attributes = $product->attributes;
         $attributes = Attribute::whereNotIn('id',$product->attributes->pluck('id')->toArray())->get(['id', 'name']);
         $categories = Category::select('id', 'name')->get();
         return Inertia::render('products/edit', compact('product','product_category','categories','product_attributes','attributes'));
@@ -64,9 +65,22 @@ class ProductController extends Controller
         return redirect()->route('admin.products.index');
     }
 
-    public function attach($id, Request $request){
-       $product = $this->product->findOneById($id);
-       $product->attributes()->attach($request->attribute_id);
-       return redirect()->route('admin.products.edit',$product->id);
+    public function attachAttribute($id,Request $request)
+    {
+        $data = $request->validate([
+            'product_id' => 'required',
+        ]);
+        $product = $this->product->findOneById($data['product_id']);
+        $att = $product->attributes()->attach($id);
+        return redirect()->back();
+    }
+    public function dettachAttribute($id,Request $request)
+    {
+        $data = $request->validate([
+            'product_id' => 'required',
+        ]);
+        $product = $this->product->findOneById($data['product_id']);
+        $product->attributes()->detach($id);
+        return redirect()->back();
     }
 }

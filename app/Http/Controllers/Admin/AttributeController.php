@@ -69,7 +69,7 @@ class AttributeController extends Controller
     public function edit($id)
     {
         $attribute = $this->attribute->findOneById($id);
-        $attribute_values = $attribute->attributeValues->toArray();
+        $attribute_values = $attribute->attribute_values;
         return Inertia::render('attributes/edit',[
             'attribute' => $attribute,
             'attribute_values' => $attribute_values
@@ -82,7 +82,7 @@ class AttributeController extends Controller
     public function update(UpdateAttributeRequest $request, $id)
     {
         $data = $request->validated();
-        $attribute = $this->attribute->update($id, $data);
+        $this->attribute->update($id, $data);
         return to_route('admin.attributes.index');
     }
 
@@ -94,4 +94,6 @@ class AttributeController extends Controller
         $this->attribute->destroy($id);
         session()->flash('success',__('messages.flash.delete'));
     }
+
+
 }

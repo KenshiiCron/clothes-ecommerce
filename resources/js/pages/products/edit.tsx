@@ -1,22 +1,20 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {Head, router, useForm} from "@inertiajs/react";
+import {Head, Link, router, useForm} from "@inertiajs/react";
 import * as React from "react";
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {InputError} from "@/components/ui/input-error";
 import {Button} from "@/components/ui/button";
-import {Separator} from "@/components/ui/separator";
-import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {PlusCircleIcon} from "lucide-react";
-import AttributeValuesTable from "@/components/tables/attribute-values-table";
+
+
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {FormEventHandler, useState} from "react";
 import ProductAttributeTable from "@/components/tables/product-attribute-table"
-import {CreateButton} from "@/components/elements/create-button";
-import {PlusCircleIcon, PlusIcon} from "lucide-react";
+
+
 import {
     Dialog,
     DialogClose,
@@ -25,6 +23,7 @@ import {
     DialogTitle,
     DialogTrigger,
 } from "@/components/ui/dialog";
+import { PlusIcon } from "lucide-react";
 
 export type Product = {
     id: string,
@@ -40,7 +39,7 @@ export type Category = {
     name: string
 }
 export type Attribute = {
-    id: number,
+    id: string,
     name: string
 }
 interface EditProductProps{
@@ -70,12 +69,13 @@ export default function Edit({product,product_category,categories ,attributes,pr
         reset: resetAttachAttribute,
     } = useForm({
         product_id: product.id,
-        attribute_id: null,
+        attribute_id: '',
     });
 
     const AttachAttribute :FormEventHandler = (e) => {
         e.preventDefault();
-        submitAttachAttribute(route("admin.attribute.attach",data.attribute_id));
+        submitAttachAttribute(route("admin.products.attach",attachAttributeData.attribute_id));
+        setAttributeData('attribute_id','');
     };
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
@@ -100,6 +100,8 @@ export default function Edit({product,product_category,categories ,attributes,pr
             image: data.image,
         });
     };
+    const MemoizedProductAttributeTable = React.memo(ProductAttributeTable);
+    // @ts-ignore
     return(
         <AuthenticatedLayout header="Product">
             <Head title="Update Product"/>
@@ -110,7 +112,6 @@ export default function Edit({product,product_category,categories ,attributes,pr
                     <TabsTrigger value="images" className='w-full'>Images</TabsTrigger>
                     <TabsTrigger value="attributes" className='w-full'>Attributes</TabsTrigger>
                     <TabsTrigger value="inventory" className='w-full'>Inventory</TabsTrigger>
-                    <TabsTrigger value="images" className='w-full'>Images</TabsTrigger>
                 </TabsList>
                 <TabsContent value="general">
                     <form onSubmit={submit} className="max-w-md mt-6">
@@ -170,7 +171,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                                     placeholder="Image url"
                                     onChange={handleImageChange}
                                 />
-                                {preview && (
+                                {preview ? (
                                     <img
                                         src={preview}
                                         alt="Selected image preview"
@@ -194,12 +195,12 @@ export default function Edit({product,product_category,categories ,attributes,pr
                 <TabsContent value='attributes'>
                     <Dialog>
                         <DialogTrigger asChild>
-                            <Button className="mt-4">
+                            <Button className="mt-4 mb-4">
                                     <p>Add attribute</p>
                                     <PlusIcon size={20}/>
                             </Button>
                         </DialogTrigger>
-                        <DialogContent>
+                        <DialogContent >
                             <DialogHeader>
                                 <DialogTitle>
                                     Add an attribute to {product.name}
@@ -208,13 +209,15 @@ export default function Edit({product,product_category,categories ,attributes,pr
                             <form onSubmit={AttachAttribute} className="max-w-md mt-6">
                                 <div className="grid gap-4">
                                     <div className="grid gap-2">
-                                        <Label htmlFor="user_id">Attribute</Label>
+                                        <Label >Attribute</Label>
                                         <Select
-                                            value={String(attachAttributeData.attribute_id)}
-                                            onValueChange={(value) => setAttributeData("attribute_id",value)}
+                                            value={attachAttributeData.attribute_id}
+                                            onValueChange={(value) => {
+                                                setAttributeData("attribute_id", value)
+                                            }}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder= 'Add attribute'/>
+                                                <SelectValue placeholder='Select attribute'/>
                                             </SelectTrigger>
                                             <SelectContent>
                                                 {attributes.map((attribute) => (
@@ -234,9 +237,14 @@ export default function Edit({product,product_category,categories ,attributes,pr
                             </form>
                         </DialogContent>
                     </Dialog>
-                    <ProductAttributeTable attributes={product_attributes} product={product}/>
+
+
+                    <MemoizedProductAttributeTable attributes={product_attributes} product={product}/>
                 </TabsContent>
             </Tabs>
+
+
         </AuthenticatedLayout>
     );
+
 }

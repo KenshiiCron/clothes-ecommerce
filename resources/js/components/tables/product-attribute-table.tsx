@@ -44,7 +44,7 @@ import {
     AlertDialogTitle,
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import {Link, useForm} from "@inertiajs/react";
+import {Link, router, useForm} from "@inertiajs/react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {FormEventHandler} from "react";
 import {CreateButton} from "@/components/elements/create-button";
@@ -112,21 +112,10 @@ export const columns: ColumnDef<CombinedRow>[] = [
         enableHiding: false,
         cell: ({ row }) => {
             const { attribute, product } = row.original;
-            const {
-                data: addAttributeData,
-                setData: setAddAttributeData,
-                post: submitAddAttribute,
-                processing: processingAddAttribute,
-                errors: errorsAddAttribute,
-                reset: resetAddAttribute
-            } = useForm({
+            const { data, setData, put, processing, errors, reset } = useForm({
                 product_id: product.id,
-            })
-            const addAttribute: FormEventHandler = (e) => {
-                e.preventDefault();
-                submitAddAttribute(route("admin.attribute-values.update",attribute.id));
-            };
-
+                attribute_id: '',
+            });
             // @ts-ignore
             return (<>
                     <Dialog>
@@ -160,7 +149,8 @@ export const columns: ColumnDef<CombinedRow>[] = [
                                             <AlertDialogCancel>Cancel</AlertDialogCancel>
                                             <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
                                                                onClick={(e) => {
-                                                                   addAttribute(e);
+                                                                 // @ts-ignore
+                                                                  put(route('admin.products.dettach',attribute.id))
                                                                }}>
                                                 <Trash size={16}></Trash>
                                                 <p>Delete</p>
@@ -176,15 +166,6 @@ export const columns: ColumnDef<CombinedRow>[] = [
                                     Add attribute to this product
                                 </DialogTitle>
                             </DialogHeader>
-                            <form onSubmit={addAttribute} className="max-w-md mt-6">
-                                <div className="grid gap-4">
-                                    <DialogClose>
-                                        <Button type="submit" className="w-full">
-                                            Add
-                                        </Button>
-                                    </DialogClose>
-                                </div>
-                            </form>
                         </DialogContent>
                     </Dialog>
 
