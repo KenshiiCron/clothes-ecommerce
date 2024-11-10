@@ -53,9 +53,9 @@ class CarouselController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(StoreCarouselRequest $request)
     {
-        dd($request->all());
+//        dd($request->all());
         $data = $request->validated();
         $carousel = $this->carousel->new($data);
         return redirect()->route('admin.carousels.index');
@@ -84,7 +84,8 @@ class CarouselController extends Controller
      */
     public function update(UpdateCarouselRequest $request, $id)
     {
-        $carousel = $this->carousel->update($id, $request->validated());
+        $data = $request->validated();
+        $carousel = $this->carousel->update($id, $data);
         return redirect()->route('admin.carousels.index');
     }
 

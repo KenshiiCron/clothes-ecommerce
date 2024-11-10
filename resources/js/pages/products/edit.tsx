@@ -1,12 +1,16 @@
 
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {Head, Link, router, useForm} from "@inertiajs/react";
+import {Head, router, useForm} from "@inertiajs/react";
 import * as React from "react";
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
 import {Label} from "@/components/ui/label";
 import {Input} from "@/components/ui/input";
 import {InputError} from "@/components/ui/input-error";
 import {Button} from "@/components/ui/button";
+import {Separator} from "@/components/ui/separator";
+import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
+import {PlusCircleIcon} from "lucide-react";
+import AttributeValuesTable from "@/components/tables/attribute-values-table";
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {FormEventHandler, useState} from "react";
@@ -96,8 +100,6 @@ export default function Edit({product,product_category,categories ,attributes,pr
             image: data.image,
         });
     };
-
-    // @ts-ignore
     return(
         <AuthenticatedLayout header="Product">
             <Head title="Update Product"/>
@@ -108,6 +110,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                     <TabsTrigger value="images" className='w-full'>Images</TabsTrigger>
                     <TabsTrigger value="attributes" className='w-full'>Attributes</TabsTrigger>
                     <TabsTrigger value="inventory" className='w-full'>Inventory</TabsTrigger>
+                    <TabsTrigger value="images" className='w-full'>Images</TabsTrigger>
                 </TabsList>
                 <TabsContent value="general">
                     <form onSubmit={submit} className="max-w-md mt-6">
@@ -167,7 +170,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                                     placeholder="Image url"
                                     onChange={handleImageChange}
                                 />
-                                {preview ? (
+                                {preview && (
                                     <img
                                         src={preview}
                                         alt="Selected image preview"

@@ -28,8 +28,6 @@ interface CreateOrderProps {
 }
 
 export default function CreateOrder({users, wilayas, communes}: CreateOrderProps) {
-    // console.log(wilayas);
-    // console.log(users);
     const { data, setData, post, processing, errors, reset } = useForm({
         user_id: "",
         order_number: "",
@@ -62,7 +60,6 @@ export default function CreateOrder({users, wilayas, communes}: CreateOrderProps
 
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log(data);
         post(route("admin.orders.store"));
     };
 

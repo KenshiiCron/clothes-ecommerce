@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {InputError} from "@/components/ui/input-error";
 import {Switch} from "@/components/ui/switch";
-import {FormEventHandler, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState} from "react";
+import {FormEventHandler, useState} from "react";
 import {Textarea} from "@/components/ui/textarea";
 import {Card, CardContent} from "@/components/ui/card";
 import {Check, ChevronsUpDown, LinkIcon, PackageIcon, XIcon} from "lucide-react";
@@ -25,15 +25,15 @@ import {
     PopoverTrigger,
 } from "@/components/ui/popover"
 import {cn} from "@/lib/utils";
-import {Product} from "@/components/tables/products-table";
 
 
 export default function Create({products}: any) {
-    const {data, setData, post, processing, errors, reset} = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         name: "",
         description: "",
         state: true,
         image: null,
+        type: "0",
         action: "",
         product_id: "",
     });
@@ -51,7 +51,7 @@ export default function Create({products}: any) {
     const [open, setOpen] = useState(false)
     const [productId, setProductId] = useState("")
 
-    const [selectedOption, setSelectedOption] = useState('nothing')
+    const [selectedOption, setSelectedOption] = useState('0')
 
 
     const submit: FormEventHandler = (e) => {
@@ -123,42 +123,44 @@ export default function Create({products}: any) {
                     <Separator className="my-4"/>
                     <div className="grid gap-2">
                         <Label>Action <span className="text-red-400">*</span></Label>
-                        <RadioGroup onValueChange={setSelectedOption} defaultValue="nothing">
+                        <RadioGroup onValueChange={(value) => {
+                            setSelectedOption(value)
+                            setData("type", value)
+                        }} defaultValue="0">
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <Label
-                                    htmlFor="nothing"
+                                    htmlFor="0"
                                     className="cursor-pointer"
-                                    onClick={() => {setData("action", ""); setData("product_id", "")}}
                                 >
-                                    <Card className={`h-full ${selectedOption === 'nothing' && 'border-primary'}`}>
+                                    <Card className={`h-full ${selectedOption === '0' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
-                                            <RadioGroupItem value="nothing" id="nothing" className="sr-only"/>
+                                            <RadioGroupItem value="0" id="0" className="sr-only"/>
                                             <XIcon className="h-6 w-6 mb-2"/>
                                             <span className="text-sm font-medium">Nothing</span>
                                         </CardContent>
                                     </Card>
                                 </Label>
                                 <Label
-                                    htmlFor="product"
+                                    htmlFor="1"
                                     className="cursor-pointer"
-                                    onClick={() => {setData("action", ""); setData("product_id", "")}}
+
                                 >
-                                    <Card className={`h-full ${selectedOption === 'product' && 'border-primary'}`}>
+                                    <Card className={`h-full ${selectedOption === '1' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
-                                            <RadioGroupItem value="product" id="product" className="sr-only"/>
+                                            <RadioGroupItem value="1" id="1" className="sr-only"/>
                                             <PackageIcon className="h-6 w-6 mb-2"/>
                                             <span className="text-sm font-medium">Product</span>
                                         </CardContent>
                                     </Card>
                                 </Label>
                                 <Label
-                                    htmlFor="link"
+                                    htmlFor="2"
                                     className="cursor-pointer"
-                                    onClick={() => {setData("action", ""); setData("product_id", "")}}
+
                                 >
-                                    <Card className={`h-full ${selectedOption === 'link' && 'border-primary'}`} >
+                                    <Card className={`h-full ${selectedOption === '2' && 'border-primary'}`}>
                                         <CardContent className="flex flex-col items-center justify-center p-6">
-                                            <RadioGroupItem value="link" id="link" className="sr-only"/>
+                                            <RadioGroupItem value="2" id="2" className="sr-only"/>
                                             <LinkIcon className="h-6 w-6 mb-2"/>
                                             <span className="text-sm font-medium">Link</span>
                                         </CardContent>
@@ -167,9 +169,9 @@ export default function Create({products}: any) {
                             </div>
                         </RadioGroup>
                         <div className="mt-6">
-                            {selectedOption === 'nothing' ?
+                            {selectedOption === '0' ?
                                 (<p className="text-sm text-muted-foreground">No additional information
-                                    required.</p>) : selectedOption === 'product' ?
+                                    required.</p>) : selectedOption === '1' ?
                                     (<div className="space-y-2">
                                         <Label htmlFor="productName">Product Name</Label>
                                         <Popover open={open} onOpenChange={setOpen}>
@@ -181,7 +183,10 @@ export default function Create({products}: any) {
                                                     className="justify-between w-full"
                                                 >
                                                     {productId
-                                                        ? products.find((product: { id: string; name: string; }) => product.id === productId)?.label
+                                                        ? products.find((product: {
+                                                            id: string;
+                                                            name: string;
+                                                        }) => product.id === productId)?.name
                                                         : "Select product..."}
                                                     <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50"/>
                                                 </Button>
@@ -225,7 +230,7 @@ export default function Create({products}: any) {
                         </div>
 
                     </div>
-                    <Button type="submit" className="w-full mt-4">
+                    <Button type="submit" className="w-full mt-4" disabled={processing}>
                         Create
                     </Button>
                 </div>

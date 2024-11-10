@@ -1,22 +1,15 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import { Head, useForm } from "@inertiajs/react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { InputError } from "@/components/ui/input-error";
-import { Switch } from "@/components/ui/switch";
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select";
+import {Head, useForm} from "@inertiajs/react";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {InputError} from "@/components/ui/input-error";
+import {Switch} from "@/components/ui/switch";
 import {FormEventHandler, useState} from "react";
-import { Textarea } from "@/components/ui/textarea";
+import {Textarea} from "@/components/ui/textarea";
 
 export default function Create() {
-    const { data, setData, post, processing, errors, reset } = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         name: "",
         description: "",
         featured: true,
@@ -40,7 +33,7 @@ export default function Create() {
     };
     return (
         <AuthenticatedLayout header="Brands">
-            <Head title="Create Brand" />
+            <Head title="Create Brand"/>
 
             <p>Create</p>
             <form onSubmit={submit} className="max-w-md mt-6">
@@ -55,7 +48,7 @@ export default function Create() {
                             onChange={(e) => setData("name", e.target.value)}
                             required
                         />
-                        <InputError message={errors.name} />
+                        <InputError message={errors.name}/>
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="description">Description</Label>
@@ -67,7 +60,7 @@ export default function Create() {
                                 setData("description", e.target.value)
                             }
                         />
-                        <InputError message={errors.description} />
+                        <InputError message={errors.description}/>
                     </div>
                     <div className="grid gap-2">
                         <Label htmlFor="image">Image</Label>
@@ -85,7 +78,7 @@ export default function Create() {
                                 className="w-32 h-32 object-cover rounded"
                             />
                         )}
-                        <InputError message={errors.image} />
+                        <InputError message={errors.image}/>
                     </div>
                     <div className="grid gap-2">
                         <div className="flex items-center space-x-3">
@@ -96,9 +89,9 @@ export default function Create() {
                                 onCheckedChange={(e) => setData("featured", e)}
                             />
                         </div>
-                        <InputError message={errors.description} />
+                        <InputError message={errors.description}/>
                     </div>
-                    <Button type="submit" className="w-full mt-4">
+                    <Button type="submit" className="w-full mt-4" disabled={processing}>
                         Create
                     </Button>
                 </div>

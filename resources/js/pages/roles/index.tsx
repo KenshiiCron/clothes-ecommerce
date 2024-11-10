@@ -4,7 +4,6 @@ import RoleTable from "@/components/tables/roles-table";
 import { PageProps } from "@/types";
 
 export default function Roles({roles}: PageProps<{ roles: any }>) {
-    console.log(roles);
     return (
         <AuthenticatedLayout
             header="Roles"

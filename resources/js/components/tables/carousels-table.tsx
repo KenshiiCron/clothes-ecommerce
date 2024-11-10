@@ -15,16 +15,16 @@ import {
 
 import {
     ArrowUpDown,
-    Trash, Eye,
-    MoreHorizontal, Pencil,
-    PlusCircleIcon, ExternalLink,
+    Trash,
+    MoreHorizontal,
+    Pencil,
+    ExternalLink,
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
@@ -54,23 +54,10 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import {Switch} from "@/components/ui/switch";
 import {Badge} from "@/components/ui/badge";
-import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 import {CreateButton} from "@/components/elements/create-button";
-
-export type Carousel = {
-    id: string;
-    name: string;
-    image_url: string;
-    state: boolean;
-    action: string;
-    product_id: number;
-    description: string;
-    created_at: string;
-    updated_at: string;
-};
+import Carousel from "@/types/carousel";
 
 export const columns: ColumnDef<Carousel>[] = [
     {
@@ -170,7 +157,7 @@ export const columns: ColumnDef<Carousel>[] = [
         accessorKey: "product_id",
         header: "Product",
         cell: ({row}) => {
-            return (row.getValue("product_id") && (<div><Link href={`prodcuts/${row.getValue("product_id")}`}
+            return (row.getValue("product_id") && (<div><Link href={`products/${row.getValue("product_id")}`}
                                       target="_blank"><ExternalLink className="text-primary" size={20}/></Link></div>)
             );
         },
@@ -180,7 +167,7 @@ export const columns: ColumnDef<Carousel>[] = [
         enableHiding: false,
         cell: ({row}) => {
             const carousel = row.original;
-            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
+            const {delete: destroy} = useForm({});
 
             return (
                 <DropdownMenu>

@@ -9,7 +9,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
 
 export default function Edit({ brand }: any) {
-    const { data, setData, put, processing, errors, reset } = useForm({
+    const { data, setData, errors} = useForm({
         name: brand.name,
         description: brand.description,
         featured: brand.featured,

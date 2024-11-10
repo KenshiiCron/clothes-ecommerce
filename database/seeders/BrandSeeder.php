@@ -13,10 +13,11 @@ class BrandSeeder extends Seeder
      */
     public function run(): void
     {
-        Brand::create([
-            'name' => "Brand",
-            'slug' => 'brand',
-            'description' => 'premium brand',
+        Brand::updateOrCreate([
+            'name'      => 'Test Brand',
+            'slug'     => 'test-brand',
+            'description'     => 'Test Brand Description',
+            'featured'     => true,
         ]);
     }
 }
