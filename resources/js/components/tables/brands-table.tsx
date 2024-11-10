@@ -16,15 +16,14 @@ import {
 import {
     ArrowUpDown,
     Trash, Eye,
-    MoreHorizontal, Pencil,
-    PlusCircleIcon,
+    MoreHorizontal,
+    Pencil,
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
 import {Checkbox} from "@/components/ui/checkbox";
 import {
     DropdownMenu,
-    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuItem,
     DropdownMenuLabel,
@@ -54,22 +53,12 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import {Switch} from "@/components/ui/switch";
 import {Badge} from "@/components/ui/badge";
-import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 import {CreateButton} from "@/components/elements/create-button";
+import Brand from "@/types/brand";
 
-export type Brand = {
-    id: string;
-    name: string;
-    image_url: string;
-    slug: string;
-    featured: boolean;
-    description: string;
-    created_at: string;
-    updated_at: string;
-};
+
 
 export const columns: ColumnDef<Brand>[] = [
     {
@@ -173,7 +162,7 @@ export const columns: ColumnDef<Brand>[] = [
         enableHiding: false,
         cell: ({row}) => {
             const brand = row.original;
-            const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
+            const {delete: destroy} = useForm({});
 
             return (
                 <DropdownMenu>
@@ -202,7 +191,7 @@ export const columns: ColumnDef<Brand>[] = [
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
                                         <p className="text-sm font-medium">Delete brand</p>
@@ -238,11 +227,11 @@ export const columns: ColumnDef<Brand>[] = [
     },
 ];
 
-interface DataTableDemoProps {
+interface BrandTableProps {
     brands: Brand[];
 }
 
-export default function DataTableDemo({brands}: DataTableDemoProps) {
+export default function BrandTable({brands}: BrandTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);

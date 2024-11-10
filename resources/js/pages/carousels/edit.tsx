@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {InputError} from "@/components/ui/input-error";
 import {Switch} from "@/components/ui/switch";
-import {FormEventHandler, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState} from "react";
+import {FormEventHandler, useState} from "react";
 import {Textarea} from "@/components/ui/textarea";
 import {Card, CardContent} from "@/components/ui/card";
 import {Check, ChevronsUpDown, LinkIcon, PackageIcon, XIcon} from "lucide-react";
@@ -27,7 +27,7 @@ import {
 import {cn} from "@/lib/utils";
 
 export default function Edit({products, carousel}: any) {
-    const {data, setData, post, processing, errors, reset} = useForm({
+    const {data, setData, errors} = useForm({
         name: carousel.name,
         description: carousel.description,
         state: carousel.state,
@@ -36,8 +36,6 @@ export default function Edit({products, carousel}: any) {
         action: carousel.action ? carousel.action : "",
         product_id: carousel.product_id ? carousel.product_id : "",
     });
-
-    console.log(carousel.type.toString())
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
     const handleImageChange = (e: any) => {

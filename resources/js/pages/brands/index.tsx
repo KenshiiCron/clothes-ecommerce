@@ -4,7 +4,6 @@ import BrandTable from "@/components/tables/brands-table";
 import { PageProps } from "@/types";
 
 export default function Categories({brands}: PageProps<{ brands: any }>) {
-    console.log(brands);
     return (
         <AuthenticatedLayout
             header="Brands"

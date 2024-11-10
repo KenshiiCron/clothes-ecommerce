@@ -5,7 +5,7 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {InputError} from "@/components/ui/input-error";
 import {Switch} from "@/components/ui/switch";
-import {FormEventHandler, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal, useState} from "react";
+import {FormEventHandler, useState} from "react";
 import {Textarea} from "@/components/ui/textarea";
 import {Card, CardContent} from "@/components/ui/card";
 import {Check, ChevronsUpDown, LinkIcon, PackageIcon, XIcon} from "lucide-react";
@@ -28,7 +28,7 @@ import {cn} from "@/lib/utils";
 
 
 export default function Create({products}: any) {
-    const {data, setData, post, processing, errors, reset} = useForm({
+    const {data, setData, post, processing, errors} = useForm({
         name: "",
         description: "",
         state: true,
@@ -230,7 +230,7 @@ export default function Create({products}: any) {
                         </div>
 
                     </div>
-                    <Button type="submit" className="w-full mt-4">
+                    <Button type="submit" className="w-full mt-4" disabled={processing}>
                         Create
                     </Button>
                 </div>

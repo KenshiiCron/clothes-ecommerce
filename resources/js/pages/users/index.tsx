@@ -4,7 +4,6 @@ import UserTable from "@/components/tables/users-table";
 import { PageProps } from "@/types";
 
 export default function Users({users}: PageProps<{ users: any }>) {
-    console.log(users);
     return (
         <AuthenticatedLayout
             header="Users"

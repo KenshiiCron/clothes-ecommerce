@@ -63,8 +63,6 @@ export default function Edit({product,product_category,categories}:EditProductPr
             image: data.image,
         });
     };
-    console.log(product.category_id)
-    // @ts-ignore
     return(
         <AuthenticatedLayout header="Product">
             <Head title="Update Product"/>

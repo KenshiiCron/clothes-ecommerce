@@ -5,7 +5,6 @@ import { PageProps } from "@/types";
 import {useState} from "react";
 
 export default function Attribute({attributes}: PageProps<{ attributes: any }>) {
-    console.log(attributes);
     return (
         <AuthenticatedLayout
             header="Attributes"

@@ -61,9 +61,7 @@ export default function Edit({
     };
     const AddValue: FormEventHandler = (e) => {
         e.preventDefault();
-        console.log(processingAddValue);
         submitAddValue(route("admin.attribute-values.store"));
-        console.log(processingAddValue);
     };
     return (
         <AuthenticatedLayout header="Attributes">

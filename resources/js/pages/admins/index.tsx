@@ -4,7 +4,6 @@ import AdminTable from "@/components/tables/admins-table";
 import { PageProps } from "@/types";
 
 export default function Admins({admins , canCreateAdmin, canEditAdmin, canDeleteAdmin}: PageProps<{ admins: any , canCreateAdmin: boolean,  canEditAdmin: boolean, canDeleteAdmin: boolean}>) {
-    console.log(admins);
     return (
         <AuthenticatedLayout
             header="Admins"

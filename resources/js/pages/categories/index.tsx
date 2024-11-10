@@ -5,7 +5,6 @@ import { PageProps } from "@/types";
 import {useState} from "react";
 
 export default function Categories({categories}: PageProps<{ categories: any }>) {
-    console.log(categories);
     return (
         <AuthenticatedLayout
             header="Categories"
