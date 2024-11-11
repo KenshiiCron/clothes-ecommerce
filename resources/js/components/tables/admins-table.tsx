@@ -25,7 +25,7 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import {columns} from "@/components/tables/columns/admins-columns";
+import {setColumns} from "@/components/tables/columns/admins-columns";
 import {CreateButton} from "@/components/elements/create-button";
 
 export type Admin = {
@@ -52,7 +52,7 @@ export default function DataTableDemo({admins , canCreateAdmin, canEditAdmin, ca
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
-
+    const columns = setColumns(canEditAdmin, canDeleteAdmin);
     const table = useReactTable({
         data: admins,
         columns,

@@ -26,7 +26,7 @@ import {
     TableRow,
 } from "@/components/ui/table"
 import {Link} from "@inertiajs/react";
-import {columns} from "@/components/tables/columns/roles-columns";
+import {setColumns} from "@/components/tables/columns/roles-columns";
 import {CreateButton} from "@/components/elements/create-button";
 
 export type Role = {
@@ -38,9 +38,14 @@ export type Role = {
 
 interface DataTableDemoProps {
     roles: Role[];
+    canCreate: boolean;
+    canDelete: boolean;
+    canEdit: boolean;
 }
 
-export default function DataTableDemo({roles}: DataTableDemoProps) {
+export default function DataTableDemo({roles , canCreate, canDelete, canEdit}: DataTableDemoProps) {
+    console.log({canCreate, canEdit, canDelete})
+    const columns = setColumns(canEdit, canDelete);
     const [sorting, setSorting] = React.useState<SortingState>([])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
@@ -72,7 +77,7 @@ export default function DataTableDemo({roles}: DataTableDemoProps) {
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.roles.create" />
+                {canCreate && <CreateButton link="admin.roles.create"/>}
                 <Input
                     placeholder="Filter roles..."
                     value={

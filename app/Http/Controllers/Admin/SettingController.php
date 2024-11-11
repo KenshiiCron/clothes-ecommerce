@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Setting;
 use App\Http\Requests\StoreSettingRequest;
 use App\Http\Requests\UpdateSettingRequest;
+use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class SettingController extends Controller
 {
@@ -13,54 +16,24 @@ class SettingController extends Controller
      */
     public function index()
     {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     */
-    public function store(StoreSettingRequest $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     */
-    public function show(Setting $setting)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(Setting $setting)
-    {
-        //
+        return Inertia::render('settings/index', [
+            'settings' => config('settings')
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateSettingRequest $request, Setting $setting)
+    public function update(Request $request)
     {
-        //
+        $keys = $request->except('_token');
+        foreach ($keys as $key => $value)
+        {
+            Setting::set($key, $value);
+        }
+        session()->flash("success","Réglages enregistrés avec succès");
+        return redirect()->back();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(Setting $setting)
-    {
-        //
-    }
 }

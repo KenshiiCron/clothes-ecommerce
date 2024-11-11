@@ -40,7 +40,13 @@ class RoleController extends Controller
             return response()->json(compact('roles'));
         }
 
-        return Inertia::render('roles/index', compact('roles'));
+
+        return Inertia::render('roles/index', [
+            'roles' => $roles,
+            'canCreate' => auth()->user()->can('create-role'),
+            'canDelete' => auth()->user()->can('delete-role'),
+            'canEdit' => auth()->user()->can('edit-role'),
+        ]);
     }
 
     /**

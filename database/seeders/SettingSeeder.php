@@ -114,11 +114,19 @@ class SettingSeeder extends Seeder
 
         //        Delivery Companies API Keys (bcrypt encrypted)
         [
-            'key' => 'yalidine_api_key',
+            'key' => 'yalidine_delivery',
+            'value' => "",
+        ],
+        [
+            'key' => 'zr_delivery',
+            'value' => "",
+        ],
+        [
+            'key' => 'yalidine_api_id',
             'value' => '',
         ],
         [
-            'key' => 'yalidine_api_secret',
+            'key' => 'yalidine_api_token',
             'value' => '',
         ],
         [
@@ -126,7 +134,7 @@ class SettingSeeder extends Seeder
             'value' => '',
         ],
         [
-            'key' => 'zr_express_api_secret',
+            'key' => 'zr_express_api_token',
             'value' => '',
         ],
         [
