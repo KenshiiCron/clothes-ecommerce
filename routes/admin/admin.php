@@ -34,6 +34,11 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
     Route::get('settings',[App\Http\Controllers\Admin\SettingController::class,'index'])->name('settings.index');
     Route::post('settings',[App\Http\Controllers\Admin\SettingController::class,'update'])->name('settings.update');
+
+
+//    Test Routes
+    Route::get('tests',[App\Http\Controllers\Admin\TestController::class,'index'])->name('tests.index');
+    Route::post('tests/test',[App\Http\Controllers\Admin\TestController::class,'test'])->name('tests.test');
 });
 
 require __DIR__.'/auth.php';

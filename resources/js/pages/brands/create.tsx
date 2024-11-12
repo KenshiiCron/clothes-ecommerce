@@ -7,6 +7,7 @@ import {InputError} from "@/components/ui/input-error";
 import {Switch} from "@/components/ui/switch";
 import {FormEventHandler, useState} from "react";
 import {Textarea} from "@/components/ui/textarea";
+import {__, trans_choice} from "@/helpers/localization-helper";
 
 export default function Create() {
     const {data, setData, post, processing, errors} = useForm({
@@ -39,11 +40,11 @@ export default function Create() {
             <form onSubmit={submit} className="max-w-md mt-6">
                 <div className="grid gap-4">
                     <div className="grid gap-2">
-                        <Label htmlFor="name">Name</Label>
+                        <Label htmlFor="name">{__('labels.fields.name')}</Label>
                         <Input
                             id="name"
                             type="text"
-                            placeholder="Brand name"
+                            placeholder={__('labels.fields.name')}
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
                             required

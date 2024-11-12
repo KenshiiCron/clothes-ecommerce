@@ -10,7 +10,8 @@ import {
     Users,
     User,
     ShoppingBag,
-    Image
+    Image,
+    Code
 } from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
@@ -91,6 +92,11 @@ const data = {
                     url: "/admin/admins",
                 },
             ]
+        },
+        {
+            title: "Tests",
+            url: "/admin/tests",
+            icon: Code,
         },
     ],
     navSecondary: [

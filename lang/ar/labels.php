@@ -13,6 +13,24 @@ return [
         "log" => "{1}سجل|[2.*]سجلات",
         "setting" => "{1}إعداد|[2.*]إعدادات",
     ],
+
+    "fields" => [
+        "name" => "الاسم",
+        "description" => "الوصف",
+        "image" => "الصورة",
+        "featured" => "مميز",
+        "created_at" => "تاريخ الإنشاء",
+        "updated_at" => "تاريخ التعديل",
+        "action" => "الإجراء",
+        "state" => "الحالة",
+        "email" => "البريد الإلكتروني",
+        "phone" => "الهاتف",
+        "password" => "كلمة المرور",
+        "remember_me" => "تذكرني",
+        "remember_password" => "تذكر كلمة المرور",
+        "confirm_password" => "تأكيد كلمة المرور",
+    ],
+
     "enum" => [
         "order" => [
             "state" => [

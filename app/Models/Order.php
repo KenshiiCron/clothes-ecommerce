@@ -25,6 +25,7 @@ class Order extends Model
         'delivery_state',
         'payment_method',
         'payment_state',
+        'tracking',
     ];
 
     public function user()

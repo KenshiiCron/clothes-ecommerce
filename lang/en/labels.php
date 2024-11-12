@@ -13,6 +13,24 @@
          "log" => "{1}Log|[2.*]Logs",
          "setting" => "{1}Setting|[2.*]Settings",
      ],
+
+     "fields" => [
+         "name" => "Name",
+         "description" => "Description",
+         "image" => "Image",
+         "featured" => "Featured",
+         "created_at" => "Created at",
+         "updated_at" => "Updated at",
+         "action" => "Action",
+         "state" => "State",
+         "email" => "Email",
+         "phone" => "Phone",
+         "password" => "Password",
+         "remember_me" => "Remember me",
+         "remember_password" => "Remember password",
+         "confirm_password" => "Confirm password",
+     ],
+
      "enum" => [
          "order" => [
              "state" => [

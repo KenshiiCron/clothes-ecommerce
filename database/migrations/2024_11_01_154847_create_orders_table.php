@@ -29,6 +29,7 @@ return new class extends Migration
             $table->integer('delivery_state')->default(0);
             $table->integer('payment_method')->default(0);
             $table->integer('payment_state')->default(0);
+            $table->string('tracking')->nullable();
             $table->timestamps();
         });
     }

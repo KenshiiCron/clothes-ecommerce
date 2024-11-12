@@ -13,6 +13,24 @@ return [
         "log" => "{1}Journal|[2.*]Journaux",
         "setting" => "{1}Paramètre|[2.*]Paramètres",
     ],
+
+    "fields" => [
+        "name" => "Nom",
+        "description" => "Description",
+        "image" => "Image",
+        "featured" => "Mis en avant",
+        "created_at" => "Créé le",
+        "updated_at" => "Mis à jour le",
+        "action" => "Action",
+        "state" => "État",
+        "email" => "Email",
+        "phone" => "Téléphone",
+        "password" => "Mot de passe",
+        "remember_me" => "Se souvenir de moi",
+        "remember_password" => "Se souvenir du mot de passe",
+        "confirm_password" => "Confirmer le mot de passe",
+    ],
+
     "enum" => [
         "order" => [
             "state" => [
