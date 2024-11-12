@@ -39,6 +39,11 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
 //    Test Routes
     Route::get('tests',[App\Http\Controllers\Admin\TestController::class,'index'])->name('tests.index');
     Route::post('tests/test',[App\Http\Controllers\Admin\TestController::class,'test'])->name('tests.test');
+    Route::get('shipping', function () {
+        $deliveryService = app()->make(\App\Services\Delivery\DeliveryServiceInterface::class, ['service' => 'yalidine']);
+        $prices = $deliveryService->getShippingPrices();
+        return response()->json($prices);
+    });
 });
 
 require __DIR__.'/auth.php';

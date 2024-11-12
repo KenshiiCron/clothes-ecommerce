@@ -94,10 +94,5 @@ class ZRExpressRepository extends BaseRepositories implements DeliveryContract
             'test' => true
         ]);
 
-        if ($response->successful()) {
-            return response()->json(['message' => 'Colis added successfully', 'data' => $response->json()]);
-        } else {
-            return response()->json(['message' => 'Failed to add Colis', 'error' => $response->json()], $response->status());
-        }
     }
 }
