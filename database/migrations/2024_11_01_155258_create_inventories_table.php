@@ -13,9 +13,10 @@ return new class extends Migration
     {
         Schema::create('inventories', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('product_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('quantity');
             $table->integer('price');
-            $table->integer('old_price');
+            $table->integer('old_price')->nullable();
             $table->string('sku')->nullable();
             $table->timestamps();
         });

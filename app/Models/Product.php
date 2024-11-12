@@ -39,6 +39,11 @@ class Product extends Model
         return $this->hasMany(Image::class);
     }
 
+    public function inventories(): HasMany
+    {
+        return $this->hasMany(Inventory::class);
+    }
+
     public function getImageUrlAttribute()
     {
         return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/image-default.jpg');

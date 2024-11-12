@@ -60,14 +60,14 @@ export type Product = {
     name: string;
 }
 
-interface CombinedRow {
+interface ProductAttributeRow {
     attribute: Attribute;
     product: Product;
 }
 
 
 // @ts-ignore
-export const columns: ColumnDef<CombinedRow>[] = [
+export const columns: ColumnDef<ProductAttributeRow>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -187,7 +187,7 @@ export default function DataTableDemo({ attributes,product }: DataTableDemoProps
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
-    const data: CombinedRow[] = attributes.map(attribute => ({
+    const data: ProductAttributeRow[] = attributes.map(attribute => ({
         attribute,
         product,
     }));

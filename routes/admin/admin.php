@@ -23,6 +23,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
     Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
     Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
+    Route::resource('inventories',\App\Http\Controllers\Admin\InventoryController::class);
     Route::put('products/attach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'attachAttribute'])->name('products.attach');
     Route::put('products/dettach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'dettachAttribute'])->name('products.dettach');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);

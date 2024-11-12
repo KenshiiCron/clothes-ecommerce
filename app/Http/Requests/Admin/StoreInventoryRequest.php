@@ -22,9 +22,11 @@ class StoreInventoryRequest extends FormRequest
     public function rules(): array
     {
         return [
+            'product_id' => 'required|exists:products,id',
             'quantity' => ['required', 'numeric', 'min:1'],
             'price' => ['required', 'numeric', 'min:1'],
-            'sku' => ['required', 'string', 'max:255'],
+            'old_price' => ['nullable', 'numeric', 'min:1'],
+            'sku' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

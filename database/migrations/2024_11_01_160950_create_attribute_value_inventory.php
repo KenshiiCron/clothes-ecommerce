@@ -11,7 +11,7 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('inventory_attribute_values', function (Blueprint $table) {
+        Schema::create('attribute_value_inventory', function (Blueprint $table) {
             $table->id();
             $table->foreignId('inventory_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->foreignId('attribute_value_id')->constrained()->cascadeOnDelete()->cascadeOnUpdate();
@@ -24,6 +24,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('inventory_attribute_values');
+        Schema::dropIfExists('inventory_attribute_value');
     }
 };

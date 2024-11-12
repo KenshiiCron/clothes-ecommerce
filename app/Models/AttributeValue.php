@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class AttributeValue extends Model
@@ -14,8 +15,8 @@ class AttributeValue extends Model
         return $this->belongsTo(Attribute::class);
     }
 
-    public function inventories(): HasMany{
-        return $this->hasMany(Inventory::class);
+    public function inventories(): BelongsToMany{
+        return $this->belongsToMany(Inventory::class);
     }
 
 }

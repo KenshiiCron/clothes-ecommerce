@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Contracts\InventoryContract;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreInventoryRequest;
 use App\Http\Requests\Admin\UpdateInventoryRequest;
@@ -10,8 +11,17 @@ use App\Models\Inventory;
 class InventoryController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * @var InventoryContract
      */
+    protected InventoryContract $inventory;
+
+    /**
+     * @param InventoryContract $inventory
+     */
+    public function __construct(InventoryContract $inventory)
+    {
+        $this->inventory = $inventory;
+    }
     public function index()
     {
         //
@@ -30,7 +40,17 @@ class InventoryController extends Controller
      */
     public function store(StoreInventoryRequest $request)
     {
-        //
+        if(isset($request->values)){
+           $values = $request->values;
+        };
+        unset($request['values']);
+        $data = $request->validated();
+        $inventory = $this->inventory->new($data);
+        foreach ($values as $key => $value) {
+            $inventory->attribute_values()->attach($value['id']);
+        }
+        $request->session()->flash('success', 'Product created successfully.');
+        return redirect()->route('admin.products.edit',$inventory->product_id);
     }
 
     /**

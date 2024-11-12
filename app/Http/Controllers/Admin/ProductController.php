@@ -53,10 +53,33 @@ class ProductController extends Controller
     {
         $product = $this->product->findOneById($id);
         $product_category = $product->category->only(['id', 'name']);
-        $product_attributes = $product->attributes;
+        $product_attributes = $product->attributes->sortBy('id');
+        $inventories = $product->inventories;
+        $inventories_values = collect([]);
+        $attributes_values = [];
+        foreach ($inventories as $inventory) {
+            foreach ($inventory->attribute_values as $value) {
+                $inventories_values->push($value);
+            }
+        }
+        foreach($product_attributes as $attribute) {
+            $attributes_values[] = [
+                'id' => $attribute->id,
+                'values' => $attribute->attribute_values->map(function ($value) {
+                    return [
+                        'attribute_id' => $value->attribute_id,
+                        'id' => $value->id,
+                        'value' => $value->value
+                    ];
+                })->toArray()
+            ];
+        }
+
+
         $attributes = Attribute::whereNotIn('id',$product->attributes->pluck('id')->toArray())->get(['id', 'name']);
         $categories = Category::select('id', 'name')->get();
-        return Inertia::render('products/edit', compact('product','product_category','categories','product_attributes','attributes'));
+        return Inertia::render('products/edit', compact('product','product_category','categories','product_attributes','attributes'
+            ,'attributes_values','inventories'));
     }
 
     public function update(UpdateProductRequest $request, $id): \Illuminate\Http\RedirectResponse
