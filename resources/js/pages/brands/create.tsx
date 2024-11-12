@@ -33,10 +33,10 @@ export default function Create() {
         post(route("admin.brands.store"));
     };
     return (
-        <AuthenticatedLayout header="Brands">
-            <Head title="Create Brand"/>
+        <AuthenticatedLayout header={trans_choice('labels.models.brand', 2)}>
+            <Head title={`${__('labels.actions.create')} ${trans_choice('labels.models.brand', 2)}`}/>
 
-            <p>Create</p>
+            <p>{__('actions.create')}</p>
             <form onSubmit={submit} className="max-w-md mt-6">
                 <div className="grid gap-4">
                     <div className="grid gap-2">
@@ -44,7 +44,7 @@ export default function Create() {
                         <Input
                             id="name"
                             type="text"
-                            placeholder={__('labels.fields.name')}
+                            placeholder={trans_choice('labels.models.brand', 1)}
                             value={data.name}
                             onChange={(e) => setData("name", e.target.value)}
                             required
@@ -52,10 +52,10 @@ export default function Create() {
                         <InputError message={errors.name}/>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="description">Description</Label>
+                        <Label htmlFor="description">{__('labels.fields.description')}</Label>
                         <Textarea
                             id="description"
-                            placeholder="Brand description"
+                            placeholder={__('labels.fields.description')}
                             value={data.description}
                             onChange={(e) =>
                                 setData("description", e.target.value)
@@ -64,12 +64,12 @@ export default function Create() {
                         <InputError message={errors.description}/>
                     </div>
                     <div className="grid gap-2">
-                        <Label htmlFor="image">Image</Label>
+                        <Label htmlFor="image">{__('labels.fields.image')}</Label>
                         <Input
                             id="image"
                             type="file"
                             accept="image/*"
-                            placeholder="Image url"
+                            placeholder={__('labels.fields.image')}
                             onChange={handleImageChange}
                         />
                         {preview && (
@@ -83,17 +83,17 @@ export default function Create() {
                     </div>
                     <div className="grid gap-2">
                         <div className="flex items-center space-x-3">
-                            <Label htmlFor="featured">Featured</Label>
+                            <Label htmlFor="featured">{__('labels.fields.featured')}</Label>
                             <Switch
                                 id="featured"
                                 checked={data.featured}
                                 onCheckedChange={(e) => setData("featured", e)}
                             />
                         </div>
-                        <InputError message={errors.description}/>
+                        <InputError message={errors.featured}/>
                     </div>
                     <Button type="submit" className="w-full mt-4" disabled={processing}>
-                        Create
+                        {__('actions.create')}
                     </Button>
                 </div>
             </form>

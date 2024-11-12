@@ -31,11 +31,29 @@ class AppServiceProvider extends ServiceProvider
 
                 if (File::exists($langPath)) {
                     $translations = json_decode(File::get($langPath), true);
+                    $translations = $this->flattenArray($translations);  // Flatten the array
                 }
 
                 return $translations;
             },
             'locale' => App::getLocale(),
         ]);
+    }
+
+    private function flattenArray($array, $prefix = '')
+    {
+        $result = [];
+
+        foreach ($array as $key => $value) {
+            $newKey = $prefix ? "$prefix.$key" : $key;
+
+            if (is_array($value)) {
+                $result += $this->flattenArray($value, $newKey);
+            } else {
+                $result[$newKey] = $value;
+            }
+        }
+
+        return $result;
     }
 }
