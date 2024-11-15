@@ -24,7 +24,7 @@ class UpdateInventoryRequest extends FormRequest
         return [
             'quantity' => ['required', 'numeric', 'min:1'],
             'price' => ['required', 'numeric', 'min:1'],
-            'sku' => ['required', 'string', 'max:255'],
+            'sku' => ['nullable', 'string', 'max:255'],
         ];
     }
 }

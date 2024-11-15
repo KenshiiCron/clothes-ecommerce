@@ -72,16 +72,28 @@ class InventoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInventoryRequest $request, Inventory $inventory)
+    public function update($id,UpdateInventoryRequest $request)
     {
-        //
+        if(isset($request->values)){
+            $values = $request->values;
+        };
+        unset($request['values']);
+        $data = $request->validated();
+        $inventory = $this->inventory->update($id,$data);
+        $inventory->attribute_values()->detach();
+        foreach ($values as $key => $value) {
+            $inventory->attribute_values()->attach($value['id']);
+        }
+        $request->session()->flash('success', 'Product created successfully.');
+        return redirect()->route('admin.products.edit',$inventory->product_id);
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Inventory $inventory)
+    public function destroy($id)
     {
-        //
+        $this->inventory->destroy($id);
+        session()->flash('success',__('messages.flash.delete'));
     }
 }

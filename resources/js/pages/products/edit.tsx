@@ -1,3 +1,4 @@
+
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {Head, Link, router, useForm} from "@inertiajs/react";
 import * as React from "react";
@@ -7,10 +8,12 @@ import {Input} from "@/components/ui/input";
 import {InputError} from "@/components/ui/input-error";
 import {Button} from "@/components/ui/button";
 
+
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {FormEventHandler, useEffect, useState} from "react";
 import ProductAttributeTable from "@/components/tables/product-attribute-table"
+
 
 import {
     Dialog,
@@ -50,7 +53,10 @@ export type Product = {
     image_url: string,
     name: string,
     created_at: string,
-    updated_at: string
+    updated_at: string,
+    category: Category,
+    attributes: Attribute[],
+    inventories: Inventory[]
 }
 export type Category = {
     id: number,
@@ -79,10 +85,6 @@ export type AttributesValues = {
      id:string,
      value?: string,
  }
-export type InventoryValue = {
-    attribute_id: string,
-    value: string,
-}
 
 interface EditProductProps{
     product: Product,
@@ -92,13 +94,10 @@ interface EditProductProps{
     product_attributes: Attribute[],
     attributes_values: AttributesValues[];
     inventories: Inventory [];
-    inventories_values: InventoryValue[],
 }
 
 
 export default function Edit({product,product_category,categories ,attributes,product_attributes, inventories,attributes_values}:EditProductProps){
-    const [shouldClose,setShouldClose] = useState(false);
-
     const { data, setData, put, processing, errors, reset } = useForm({
         category_id : product.category_id,
         name: product.name,
@@ -132,6 +131,8 @@ export default function Edit({product,product_category,categories ,attributes,pr
         price: 0,
         values: [] as Value[]
     });
+
+
 
     const AttachAttribute :FormEventHandler = (e) => {
         e.preventDefault();
@@ -236,7 +237,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                             <div className="grid gap-2">
                                 <Label htmlFor="user_id">Category</Label>
                                 <Select
-                                    value={String(data.category_id)}
+                                    value={product.category_id}
                                     onValueChange={(value) => setData("category_id", value)}
                                 >
                                     <SelectTrigger>
@@ -332,7 +333,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                     </Dialog>
 
 
-                    <MemoizedProductAttributeTable attributes={product_attributes} product={product}/>
+                    <MemoizedProductAttributeTable attributes={product.attributes} product_id={product.id}/>
                 </TabsContent>
                 <TabsContent value='inventory'>
                     <Dialog >
@@ -383,7 +384,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                                                         <Label>{att.name}</Label>
                                                         <Select
                                                             onValueChange={(value) => {
-                                                                console.log(att.id)
+                                                                console.log(value)
                                                                 const exists = inventoryData.values.some((item :Value) => item.attribute_id == att.id);
                                                                 if (exists) {
                                                                     const updatedValues = inventoryData.values.map((item : Value) =>
@@ -405,7 +406,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                                                             }}
                                                         >
                                                             <SelectTrigger>
-                                                                <SelectValue placeholder='Select a value'/>
+                                                                <SelectValue placeholder={'Select a value'}/>
                                                             </SelectTrigger>
                                                             <SelectContent>
                                                                 {att.values.map((v) => (
@@ -430,7 +431,7 @@ export default function Edit({product,product_category,categories ,attributes,pr
                             </form>
                         </DialogContent>
                     </Dialog>
-                    <MemoizedInventoryTable product_attributes={product_attributes} inventories={inventories}/>
+                    <MemoizedInventoryTable product_attributes={product.attributes} inventories={inventories} attributes_values={attributes_values}/>
                 </TabsContent>
             </Tabs>
 

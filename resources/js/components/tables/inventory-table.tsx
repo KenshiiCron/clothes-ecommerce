@@ -34,7 +34,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import {Link, router, useForm} from "@inertiajs/react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {FormEventHandler} from "react";
+import {FormEventHandler, useMemo} from "react";
 import {CreateButton} from "@/components/elements/create-button";
 
 import setColumns from '@/components/tables/columns/inventories-columns'
@@ -47,10 +47,6 @@ export type Attribute = {
 };
 
 
-export type Product = {
-    id: string;
-    name: string;
-}
 
 export type Inventory = {
     id: string;
@@ -60,18 +56,24 @@ export type Inventory = {
     created_at:string;
 }
 
-
-export type InventoryValue = {
-    attribute_id: string,
-    value: string,
+export type AttributesValues = {
+    id:string,
+    name:string,
+    values: Value[]
 }
-// @ts-ignore
+export type Value = {
+    attribute_id:string,
+    id:string,
+    value?: string,
+}
+
 interface DataTableDemoProps {
     inventories: Inventory [];
     product_attributes: Attribute[];
+    attributes_values: AttributesValues[]
 }
 
-export default function DataTableDemo({ product_attributes,inventories}: DataTableDemoProps) {
+export default function DataTableDemo({ product_attributes,inventories,attributes_values}: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
@@ -80,12 +82,13 @@ export default function DataTableDemo({ product_attributes,inventories}: DataTab
     // @ts-ignore
 
 
-    const columns = setColumns(product_attributes)
-    const data = inventories.map(inventory => ({
+    const columns = useMemo(() => setColumns(product_attributes,attributes_values), [product_attributes]);
+
+    const data = useMemo(() => inventories.map(inventory => ({
         inventory,
         product_attributes,
-    }));
-
+    })), [inventories, product_attributes]);
+    // @ts-ignore
     const table = useReactTable({
         data: data,
         columns,

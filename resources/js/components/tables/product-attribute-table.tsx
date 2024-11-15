@@ -46,23 +46,13 @@ import {
 } from "@/components/ui/alert-dialog";
 import {Link, router, useForm} from "@inertiajs/react";
 import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {FormEventHandler} from "react";
-import {CreateButton} from "@/components/elements/create-button";
-
-export type Attribute = {
-    id: string;
-    name: string;
-};
+import {Product , Attribute} from "@/pages/products/edit";
 
 
-export type Product = {
-    id: string;
-    name: string;
-}
 
 interface ProductAttributeRow {
     attribute: Attribute;
-    product: Product;
+    product_id: string;
 }
 
 
@@ -111,9 +101,9 @@ export const columns: ColumnDef<ProductAttributeRow>[] = [
         id: "actions",
         enableHiding: false,
         cell: ({ row }) => {
-            const { attribute, product } = row.original;
+            const { attribute, product_id } = row.original;
             const { data, setData, put, processing, errors, reset } = useForm({
-                product_id: product.id,
+                product_id: product_id,
                 attribute_id: '',
             });
             // @ts-ignore
@@ -178,18 +168,20 @@ export const columns: ColumnDef<ProductAttributeRow>[] = [
 
 interface DataTableDemoProps {
     attributes: Attribute[];
-    product : Product;
+    product_id : string;
 }
 
-export default function DataTableDemo({ attributes,product }: DataTableDemoProps) {
+export default function DataTableDemo({ attributes,product_id }: DataTableDemoProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>([]);
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
-    const data: ProductAttributeRow[] = attributes.map(attribute => ({
+    const attributes_array = Object.values(attributes);
+
+    const data: ProductAttributeRow[] =attributes.map(attribute => ({
         attribute,
-        product,
+        product_id,
     }));
     const table = useReactTable({
         data: data,

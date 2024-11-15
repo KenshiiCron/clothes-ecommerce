@@ -51,9 +51,7 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = $this->product->findOneById($id);
-        $product_category = $product->category->only(['id', 'name']);
-        $product_attributes = $product->attributes->sortBy('id');
+        $product = $this->product->setRelations(['category','attributes'])->findOneById($id);
         $inventories = $product->inventories;
         $inventories_values = collect([]);
         $attributes_values = [];
@@ -62,7 +60,7 @@ class ProductController extends Controller
                 $inventories_values->push($value);
             }
         }
-        foreach($product_attributes as $attribute) {
+        foreach($product->attributes as $attribute) {
             $attributes_values[] = [
                 'id' => $attribute->id,
                 'values' => $attribute->attribute_values->map(function ($value) {
@@ -78,7 +76,7 @@ class ProductController extends Controller
 
         $attributes = Attribute::whereNotIn('id',$product->attributes->pluck('id')->toArray())->get(['id', 'name']);
         $categories = Category::select('id', 'name')->get();
-        return Inertia::render('products/edit', compact('product','product_category','categories','product_attributes','attributes'
+        return Inertia::render('products/edit', compact('product','categories','attributes'
             ,'attributes_values','inventories'));
     }
 
@@ -100,10 +98,16 @@ class ProductController extends Controller
     public function dettachAttribute($id,Request $request)
     {
         $data = $request->validate([
-            'product_id' => 'required',
+            'product_id' => 'required','exists:products,id'
         ]);
         $product = $this->product->findOneById($data['product_id']);
         $product->attributes()->detach($id);
         return redirect()->back();
+    }
+
+    public function destroy($id)
+    {
+        $this->product->destroy($id);
+        session()->flash('success',__('messages.flash.delete'));
     }
 }
