@@ -1,4 +1,3 @@
-
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {Head, Link, router, useForm} from "@inertiajs/react";
 import * as React from "react";
@@ -8,12 +7,10 @@ import {Input} from "@/components/ui/input";
 import {InputError} from "@/components/ui/input-error";
 import {Button} from "@/components/ui/button";
 
-
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
 import {FormEventHandler, useEffect, useState} from "react";
 import ProductAttributeTable from "@/components/tables/product-attribute-table"
-
 
 import {
     Dialog,
@@ -25,6 +22,26 @@ import {
 } from "@/components/ui/dialog";
 import { PlusIcon } from "lucide-react";
 import InventoryTable from "@/components/tables/inventory-table";
+
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import {
+    ClassicEditor,
+    Bold,
+    Essentials,
+    Heading,
+    Indent,
+    IndentBlock,
+    Italic,
+    List,
+    FontColor,
+    FontBackgroundColor,
+    Paragraph,
+    Table,
+    Undo,
+    EventInfo
+} from 'ckeditor5';
+
+import 'ckeditor5/ckeditor5.css';
 
 export type Product = {
     id: string,
@@ -186,17 +203,36 @@ export default function Edit({product,product_category,categories ,attributes,pr
 
                             <div className="grid gap-2">
                                 <Label htmlFor="description">Description</Label>
-                                <Textarea
-                                    id="description"
-                                    placeholder="Product description"
-                                    value={data.description}
-                                    onChange={(e) =>
-                                        setData("description", e.target.value)
-                                    }
-
+                                <CKEditor
+                                    editor={ClassicEditor}
+                                    data={data.description}
+                                    onChange={(e: EventInfo, editor: ClassicEditor) => setData("description", editor.getData())}
+                                    config={{
+                                        toolbar: [
+                                            'undo', 'redo', '|',
+                                            'heading', '|', 'bold', 'italic', 'fontColor', 'fontBackgroundColor', '|',
+                                            'insertTable', '|',
+                                            'bulletedList', 'numberedList', 'indent', 'outdent'
+                                        ],
+                                        plugins: [
+                                            Bold,
+                                            Essentials,
+                                            Heading,
+                                            Indent,
+                                            IndentBlock,
+                                            Italic,
+                                            FontColor,
+                                            FontBackgroundColor,
+                                            List,
+                                            Paragraph,
+                                            Table,
+                                            Undo
+                                        ],
+                                    }}
                                 />
                                 <InputError message={errors.description}/>
                             </div>
+
                             <div className="grid gap-2">
                                 <Label htmlFor="user_id">Category</Label>
                                 <Select
@@ -204,11 +240,12 @@ export default function Edit({product,product_category,categories ,attributes,pr
                                     onValueChange={(value) => setData("category_id", value)}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={product_category.name} defaultValue={String(product_category.id)}/>
+                                        <SelectValue placeholder={product_category.name}
+                                                     defaultValue={String(product_category.id)}/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((category) => (
-                                            <SelectItem key={category.id} value={String(category.id)} >
+                                            <SelectItem key={category.id} value={String(category.id)}>
                                                 {category.name}
                                             </SelectItem>
                                         ))}

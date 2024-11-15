@@ -1,10 +1,10 @@
 import AuthenticatedLayout from "@/layouts/authenticated-layout";
-import { Head, useForm } from "@inertiajs/react";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { InputError } from "@/components/ui/input-error";
-import { Switch } from "@/components/ui/switch";
+import {Head, useForm} from "@inertiajs/react";
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {InputError} from "@/components/ui/input-error";
+import {Switch} from "@/components/ui/switch";
 import {
     Select,
     SelectContent,
@@ -13,9 +13,29 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import {FormEventHandler, useState} from "react";
-import { Textarea } from "@/components/ui/textarea";
-import { Card, CardContent } from "@/components/ui/card";
-import { EyeIcon, StarIcon, FlameIcon } from "lucide-react";
+import {Textarea} from "@/components/ui/textarea";
+import {Card, CardContent} from "@/components/ui/card";
+import {EyeIcon, StarIcon, FlameIcon} from "lucide-react";
+
+import {CKEditor} from '@ckeditor/ckeditor5-react';
+import {
+    ClassicEditor,
+    Bold,
+    Essentials,
+    Heading,
+    Indent,
+    IndentBlock,
+    Italic,
+    List,
+    FontColor,
+    FontBackgroundColor,
+    Paragraph,
+    Table,
+    Undo,
+    EventInfo
+} from 'ckeditor5';
+
+import 'ckeditor5/ckeditor5.css';
 
 
 export type Category = {
@@ -23,13 +43,13 @@ export type Category = {
     name: string
 }
 
-interface createCategory{
+interface createCategory {
     categories: Category[]
 }
 
-export default function Create({categories} : createCategory) {
-    const { data, setData, post, processing, errors, reset } = useForm({
-        category_id : "",
+export default function Create({categories}: createCategory) {
+    const {data, setData, post, processing, errors, reset} = useForm({
+        category_id: "",
         name: "",
         description: "",
         image: null,
@@ -52,16 +72,10 @@ export default function Create({categories} : createCategory) {
     })
 
     const toggleSelection = (option: keyof typeof selections) => {
-        setSelections(prev => ({ ...prev, [option]: !prev[option] }))
+        setSelections(prev => ({...prev, [option]: !prev[option]}))
     }
 
-    const CardCheckbox = ({
-                              id,
-                              checked,
-                              label,
-                              icon: Icon,
-                              onChange
-                          }: {
+    const CardCheckbox = ({id, checked, label, icon: Icon, onChange}: {
         id: keyof typeof selections;
         checked: boolean;
         label: string;
@@ -73,7 +87,7 @@ export default function Create({categories} : createCategory) {
             onClick={onChange}
         >
             <CardContent className="flex flex-col items-center justify-center p-6 space-y-2">
-                <Icon className={`h-6 w-6 mb-1 ${checked ? 'text-primary' : ''}`} />
+                <Icon className={`h-6 w-6 mb-1 ${checked ? 'text-primary' : ''}`}/>
                 <Label htmlFor={id} className={`text-sm font-medium cursor-pointer ${checked ? 'text-primary' : ''}`}>
                     {label}
                 </Label>
@@ -89,7 +103,7 @@ export default function Create({categories} : createCategory) {
     // @ts-ignore
     return (
         <AuthenticatedLayout header="Products">
-            <Head title="Create Product" />
+            <Head title="Create Product"/>
 
             <p>Create</p>
             <form onSubmit={submit} className="max-w-md mt-6">
@@ -109,17 +123,36 @@ export default function Create({categories} : createCategory) {
 
                     <div className="grid gap-2">
                         <Label htmlFor="description">Description</Label>
-                        <Textarea
-                            id="description"
-                            placeholder="Product description"
-                            value={data.description}
-                            onChange={(e) =>
-                                setData("description", e.target.value)
-                            }
-
+                        <CKEditor
+                            editor={ClassicEditor}
+                            data={data.description}
+                            onChange={(e: EventInfo, editor: ClassicEditor) => setData("description", editor.getData())}
+                            config={{
+                                toolbar: [
+                                    'undo', 'redo', '|',
+                                    'heading', '|', 'bold', 'italic', 'fontColor', 'fontBackgroundColor', '|',
+                                    'insertTable', '|',
+                                    'bulletedList', 'numberedList', 'indent', 'outdent'
+                                ],
+                                plugins: [
+                                    Bold,
+                                    Essentials,
+                                    Heading,
+                                    Indent,
+                                    IndentBlock,
+                                    Italic,
+                                    FontColor,
+                                    FontBackgroundColor,
+                                    List,
+                                    Paragraph,
+                                    Table,
+                                    Undo
+                                ],
+                            }}
                         />
                         <InputError message={errors.description}/>
                     </div>
+
                     <div className="grid gap-2">
                         <Label htmlFor="user_id">Category</Label>
                         <Select
