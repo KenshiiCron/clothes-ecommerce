@@ -22,7 +22,10 @@ class UpdateImageRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'path' => ['required', 'image', 'mimes:jpeg,jpg,png', 'max:2048'],
+            'images' => ['sometimes', 'nullable', 'array'],
+            'images.*' => ['sometimes', 'nullable', 'image', 'max:' . config('settings.max_upload_size')],
+            'deleted_images' => ['sometimes', 'nullable', 'array'],
+            'deleted_images.*' => ['sometimes', 'nullable'],
         ];
     }
 }

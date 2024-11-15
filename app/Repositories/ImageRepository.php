@@ -4,7 +4,6 @@
 namespace App\Repositories;
 
 
-
 use App\Contracts\ImageContract;
 use App\Models\Image;
 use app\Traits\UploadAble;
@@ -29,11 +28,20 @@ class ImageRepository extends BaseRepositories implements ImageContract
 
     public function new(array $data)
     {
+        if (array_key_exists('path', $data) && isset($data['path'])) {
+            $data['path'] = $this->uploadOne($data['path'], ((new \ReflectionClass($this->model))->getShortName()) . '/path', 'public');
+        }
 
         return $this->model::create($data);
     }
 
+    public function destroy($model): void
+    {
+        $model = $this->findOneById($model);
 
+        $this->deleteOne($model->path, 'public');
 
+        $model->delete();
+    }
 
 }
