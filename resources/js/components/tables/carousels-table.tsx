@@ -193,7 +193,7 @@ export const columns: ColumnDef<Carousel>[] = [
                                         className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p className="text-sm font-medium">Delete carousel</p>
+                                        <p className="text-sm">Delete carousel</p>
                                     </div>
                                 </AlertDialogTrigger>
 

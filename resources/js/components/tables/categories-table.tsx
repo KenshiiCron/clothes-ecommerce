@@ -197,15 +197,15 @@ export const columns: ColumnDef<Category>[] = [
                                 <p>View category</p>
                             </Link>
                         </DropdownMenuItem>
-
+                        <DropdownMenuSeparator/>
                         <DropdownMenuItem asChild>
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p className="text-sm font-medium">Delete Category</p>
+                                        <p className="text-sm">View category</p>
                                     </div>
                                 </AlertDialogTrigger>
 

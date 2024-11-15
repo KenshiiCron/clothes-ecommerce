@@ -105,7 +105,7 @@ export const  columns: ColumnDef<Product>[] = [
         cell: ({ row }) => {
             const product = row.original
             const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
-            
+
             return (
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild>
@@ -133,10 +133,10 @@ export const  columns: ColumnDef<Product>[] = [
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-default cursor-pointer rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p className="text-sm font-medium">Delete product</p>
+                                        <p className="text-sm">Delete product</p>
                                     </div>
                                 </AlertDialogTrigger>
 

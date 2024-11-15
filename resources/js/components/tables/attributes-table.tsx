@@ -11,7 +11,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table";
-import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon, Trash} from "lucide-react";
+import {ArrowUpDown, ChevronDown, MoreHorizontal, Pencil, PlusCircleIcon, Trash} from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -42,6 +42,7 @@ import {
     AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import {CreateButton} from "@/components/elements/create-button";
+import {__, trans_choice} from "@/helpers/localization-helper";
 
 export type Attribute = {
     id: string;
@@ -119,10 +120,11 @@ export const columns: ColumnDef<Attribute>[] = [
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                        <DropdownMenuLabel>Actions</DropdownMenuLabel>
+                        <DropdownMenuLabel>{trans_choice('labels.fields.action', 2)}</DropdownMenuLabel>
                         <DropdownMenuItem asChild>
-                            <Link href={route('admin.attributes.edit', attribute.id)}>
-                                <p>Edit attribute</p>
+                            <Link href={route("admin.attributes.edit", attribute.id)}>
+                                <Pencil/>
+                                <p>{__('actions.edit')} {trans_choice('labels.models.attribute', 1).toLowerCase()}</p>
                             </Link>
                         </DropdownMenuItem>
                         <DropdownMenuSeparator/>
@@ -130,28 +132,28 @@ export const columns: ColumnDef<Attribute>[] = [
                             <AlertDialog>
                                 <AlertDialogTrigger asChild>
                                     <div
-                                        className="text-red-600  flex items-center gap-2 py-1 px-2 cursor-default hover:bg-slate-800 rounded-sm"
+                                        className="text-red-600 flex items-center gap-2 py-1 px-2 cursor-pointer rounded-sm"
                                     >
                                         <Trash size={16}></Trash>
-                                        <p>Delete brand</p>
+                                        <p className="text-sm">{__('actions.delete')} {trans_choice('labels.models.attribute', 1).toLowerCase()}</p>
                                     </div>
                                 </AlertDialogTrigger>
+
                                 <AlertDialogContent>
                                     <AlertDialogHeader>
-                                        <AlertDialogTitle>Delete {attribute.name}</AlertDialogTitle>
+                                        <AlertDialogTitle>{__('actions.delete')} {attribute.name}</AlertDialogTitle>
                                         <AlertDialogDescription>
-                                            This action cannot be undone. This will permanently delete this attribute,
-                                            products and values related to have this attribute will be affected.
+                                            {__('static.texts.delete_attribute')}
                                         </AlertDialogDescription>
                                     </AlertDialogHeader>
                                     <AlertDialogFooter>
-                                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                        <AlertDialogCancel>{__('actions.cancel')}</AlertDialogCancel>
                                         <AlertDialogAction className={buttonVariants({variant: 'destructive'})}
                                                            onClick={() => {
                                                                destroy(route("admin.attributes.destroy", attribute.id));
                                                            }}>
                                             <Trash size={16}></Trash>
-                                            <p>Delete</p>
+                                            <p>{__('actions.delete')}</p>
                                         </AlertDialogAction>
                                     </AlertDialogFooter>
                                 </AlertDialogContent>

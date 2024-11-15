@@ -1,4 +1,13 @@
 {
+    "static": {
+        "words": {
+            "yes": "Oui",
+            "no": "Non"
+        },
+        "texts": {
+            "delete_brand": "Cette action ne peut pas être annulée. Cela supprimera définitivement cette marque, les produits et les commandes ne seront pas supprimés."
+        }
+    },
     "actions": {
         "create": "Créer",
         "edit": "Modifier",
@@ -6,7 +15,17 @@
         "delete": "Supprimer",
         "view": "Voir",
         "view-list": "Voir la liste",
-        "force-delete": "Suppression forcée"
+        "force-delete": "Suppression forcée",
+        "select": "Sélectionner",
+        "select_all": "Sélectionner tout",
+        "select_rows": "Sélectionner la ligne",
+        "search": "Rechercher",
+        "clear": "Effacer",
+        "show": "Afficher",
+        "hide": "Masquer",
+        "cancel": "Annuler",
+        "close": "Fermer",
+        "confirm": "Confirmer"
     },
     "auth": {
         "failed": "Ces identifiants ne correspondent pas à nos enregistrements.",
@@ -34,7 +53,7 @@
             "featured": "En vedette",
             "created_at": "Créé le",
             "updated_at": "Mis à jour le",
-            "action": "Action",
+            "action": "Action|Actions",
             "state": "État",
             "email": "E-mail",
             "phone": "Téléphone",

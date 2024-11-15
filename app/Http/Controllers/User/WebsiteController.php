@@ -15,8 +15,10 @@ class WebsiteController extends Controller
             abort(400);
         }
 
+
         App::setLocale($locale);
         Session::put('locale', $locale);
+
         return redirect()->back();
     }
 }

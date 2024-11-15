@@ -17,11 +17,11 @@ import {
     ArrowUpDown,
     Trash, Eye,
     MoreHorizontal, Pencil,
-    PlusCircleIcon,
+    PlusCircleIcon, DollarSign, Check, Ellipsis, LucideCross, X,
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox";
+import {Checkbox} from "@/components/ui/checkbox";
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -32,9 +32,9 @@ import {
     DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import { Separator } from "@/components/ui/separator"
+import {Separator} from "@/components/ui/separator"
 
-import { Input } from "@/components/ui/input";
+import {Input} from "@/components/ui/input";
 
 import {
     Table,
@@ -45,9 +45,9 @@ import {
     TableRow,
 } from "@/components/ui/table";
 
-import { Switch } from "@/components/ui/switch";
-import { Badge } from "@/components/ui/badge";
-import { PageProps } from "@/types";
+import {Switch} from "@/components/ui/switch";
+import {Badge} from "@/components/ui/badge";
+import {PageProps} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 import {
     AlertDialog, AlertDialogAction, AlertDialogCancel,
@@ -57,6 +57,7 @@ import {
     AlertDialogTrigger
 } from "@/components/ui/alert-dialog";
 import {CreateButton} from "@/components/elements/create-button";
+import {Card, CardContent, CardHeader, CardTitle} from "@/components/ui/card";
 
 export type Order = {
     id: String
@@ -71,7 +72,7 @@ export type Order = {
     shipping_price?: number | null;
     discount?: number | null;
     total_qty: number;
-    state: string;
+    state: number;
     wilaya_id?: number | null;
     commune_id?: number | null;
     delivery_state: number;
@@ -83,7 +84,7 @@ export type Order = {
 export const columns: ColumnDef<Order>[] = [
     {
         id: "select",
-        header: ({ table }) => (
+        header: ({table}) => (
             <Checkbox
                 checked={
                     table.getIsAllPageRowsSelected() ||
@@ -95,7 +96,7 @@ export const columns: ColumnDef<Order>[] = [
                 aria-label="Select all"
             />
         ),
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <Checkbox
                 checked={row.getIsSelected()}
                 onCheckedChange={(value) => row.toggleSelected(!!value)}
@@ -107,7 +108,7 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         accessorKey: "order_number",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
@@ -116,21 +117,21 @@ export const columns: ColumnDef<Order>[] = [
                     }
                 >
                     Order Number
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => <div>{row.getValue("order_number")}</div>,
+        cell: ({row}) => <div>{row.getValue("order_number")}</div>,
     },
     {
         accessorKey: "name",
         header: "Name",
-        cell: ({ row }) => <div>{row.getValue("name")}</div>,
+        cell: ({row}) => <div>{row.getValue("name")}</div>,
     },
     {
         accessorKey: "phone",
         header: "Phone",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="capitalize">
                 {row.getValue("phone")}
             </div>
@@ -138,7 +139,7 @@ export const columns: ColumnDef<Order>[] = [
     },
     {
         accessorKey: "total_price",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
@@ -147,15 +148,15 @@ export const columns: ColumnDef<Order>[] = [
                     }
                 >
                     Total
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => <div>{row.getValue("total_price")}</div>,
+        cell: ({row}) => <Badge>{row.getValue("total_price")} DA</Badge>,
     },
     {
         accessorKey: "created_at",
-        header: ({ column }) => {
+        header: ({column}) => {
             return (
                 <Button
                     variant="ghost"
@@ -164,11 +165,11 @@ export const columns: ColumnDef<Order>[] = [
                     }
                 >
                     Created at
-                    <ArrowUpDown className="ml-2 h-4 w-4" />
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
                 </Button>
             );
         },
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="lowercase">
                 {new Date(row.getValue("created_at"))
                     .toISOString()
@@ -180,7 +181,7 @@ export const columns: ColumnDef<Order>[] = [
     {
         accessorKey: "state",
         header: "State",
-        cell: ({ row }) => (
+        cell: ({row}) => (
             <div className="capitalize">
                 {/* <Switch value={row.getValue("featured")} /> */}
                 <Badge
@@ -189,9 +190,11 @@ export const columns: ColumnDef<Order>[] = [
                     //         ? "destructive"
                     //         : "secondary"
                     // }
-                    className={row.getValue("state") == 0 ? "bg-green-600/70 hover:bg-green-600/70" : "bg-red-600/70 hover:bg-red-600/70"}
+                    className={`text-slate-950 ${row.getValue("state") == 0 ? "bg-yellow-400 hover:bg-yellow-400" : row.getValue("state") == 1 ? "bg-green-400 hover:bg-green-400" : "bg-red-400 hover:bg-red-400"}`}
                 >
-                    {row.getValue("state") == 0 ? "Accepted" : "Canceled"}
+                    {
+                        row.getValue("state") == 0 ? "Pending" : row.getValue("state") == 1 ? "Accepted" : row.getValue("state") == 2 ? "Cancelled" : "Rejected"
+                    }
                 </Badge>
             </div>
         ),
@@ -199,7 +202,7 @@ export const columns: ColumnDef<Order>[] = [
     {
         id: "actions",
         enableHiding: false,
-        cell: ({ row }) => {
+        cell: ({row}) => {
             const order = row.original;
             const {data, setData, delete: destroy, processing, errors, reset} = useForm({});
 
@@ -209,7 +212,7 @@ export const columns: ColumnDef<Order>[] = [
                     <DropdownMenuTrigger asChild>
                         <Button variant="ghost" className="h-8 w-8 p-0">
                             <span className="sr-only">Open menu</span>
-                            <MoreHorizontal className="h-4 w-4" />
+                            <MoreHorizontal className="h-4 w-4"/>
                         </Button>
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
@@ -271,11 +274,23 @@ export const columns: ColumnDef<Order>[] = [
     },
 ];
 
-interface DataTableDemoProps {
+interface OrdersTableProps {
     orders: Order[];
+    totalOrders: number;
+    totalPending: number;
+    totalConfirmed: number;
+    totalCancelled: number;
+    totalRejected: number;
 }
 
-export default function DataTableDemo({ orders }: DataTableDemoProps) {
+export default function OrdersTable({
+                                        orders,
+                                        totalOrders,
+                                        totalPending,
+                                        totalConfirmed,
+                                        totalCancelled,
+                                        totalRejected
+                                    }: OrdersTableProps) {
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);
@@ -345,6 +360,79 @@ export default function DataTableDemo({ orders }: DataTableDemoProps) {
                 {/*            })}*/}
                 {/*    </DropdownMenuContent>*/}
                 {/*</DropdownMenu>*/}
+            </div>
+            <div
+                className="grid gap-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 xl:grid-cols-6 2xl:grid-cols-7 my-6">
+                <Card className="border-primary bg-primary/10">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-md font-medium">
+                            Total Orders
+                        </CardTitle>
+                        <Ellipsis size={20}/>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalOrders}</div>
+                        {/*<p className="text-xs text-muted-foreground">*/}
+                        {/*    +20.1% from last month*/}
+                        {/*</p>*/}
+                    </CardContent>
+                </Card>
+                <Card className="border-yellow-400 bg-yellow-400/10">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-md font-medium">
+                            Orders Pending
+                        </CardTitle>
+                        <Ellipsis size={20}/>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalPending}</div>
+                        {/*<p className="text-xs text-muted-foreground">*/}
+                        {/*    +20.1% from last month*/}
+                        {/*</p>*/}
+                    </CardContent>
+                </Card>
+                <Card className="border-green-400 bg-green-400/10">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-md font-medium">
+                            Orders Confirmed
+                        </CardTitle>
+                        <Check size={20}/>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalConfirmed}</div>
+                        {/*<p className="text-xs text-muted-foreground">*/}
+                        {/*    +20.1% from last month*/}
+                        {/*</p>*/}
+                    </CardContent>
+                </Card>
+                <Card className="border-red-600 bg-red-600/10">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-md font-medium">
+                            Orders Cancelled
+                        </CardTitle>
+                        <X size={20}/>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalCancelled}</div>
+                        {/*<p className="text-xs text-muted-foreground">*/}
+                        {/*    +20.1% from last month*/}
+                        {/*</p>*/}
+                    </CardContent>
+                </Card>
+                <Card className="border-red-600 bg-red-600/10">
+                    <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                        <CardTitle className="text-md font-medium">
+                            Orders Rejected
+                        </CardTitle>
+                        <Trash size={20}/>
+                    </CardHeader>
+                    <CardContent>
+                        <div className="text-2xl font-bold">{totalRejected}</div>
+                        {/*<p className="text-xs text-muted-foreground">*/}
+                        {/*    +20.1% from last month*/}
+                        {/*</p>*/}
+                    </CardContent>
+                </Card>
             </div>
             <div className="rounded-md border">
                 <Table>

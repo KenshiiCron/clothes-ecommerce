@@ -1,12 +1,31 @@
 {
+    "static": {
+        "words": {
+            "yes": "Yes",
+            "no": "No"
+        },
+        "texts": {
+            "delete_brand": "This action cannot be undone. This will permanently delete this brand, products and orders will not be deleted."
+        }
+    },
     "actions": {
         "create": "Create",
         "edit": "Edit",
         "update": "Update",
         "delete": "Delete",
         "view": "View",
-        "view-list": "View List",
-        "force-delete": "Force Delete"
+        "view-list": "View list",
+        "force-delete": "Force delete",
+        "select": "Select",
+        "select_all": "Select all",
+        "select_rows": "Select row",
+        "search": "Search",
+        "clear": "Clear",
+        "show": "Show",
+        "hide": "Hide",
+        "cancel": "Cancel",
+        "close": "Close",
+        "confirm": "Confirm"
     },
     "auth": {
         "failed": "These credentials do not match our records.",
@@ -34,7 +53,7 @@
             "featured": "Featured",
             "created_at": "Created at",
             "updated_at": "Updated at",
-            "action": "Action",
+            "action": "Action|Actions",
             "state": "State",
             "email": "Email",
             "phone": "Phone",

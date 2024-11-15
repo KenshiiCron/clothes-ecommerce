@@ -11,7 +11,7 @@ use App\Models\User;
 use Inertia\Inertia;
 use Kossa\AlgerianCities\Wilaya;
 
-class OrdersController extends Controller
+class OrderController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -28,7 +28,21 @@ class OrdersController extends Controller
     public function index()
     {
         $orders = $this->order->findByFilter();
-        return Inertia::render('orders/index', compact('orders'));
+
+        $totalOrders = count($orders);
+        $totalPending = count($orders->filter(function ($order) {
+            return $order->state == 0;
+        }));
+        $totalConfirmed = count($orders->filter(function ($order) {
+            return $order->state == 1;
+        }));
+        $totalCancelled = count($orders->filter(function ($order) {
+            return $order->state == 2;
+        }));
+        $totalRejected = count($orders->filter(function ($order) {
+            return $order->state == 3;
+        }));
+        return Inertia::render('orders/index', compact('orders', 'totalOrders','totalPending', 'totalConfirmed', 'totalCancelled', 'totalRejected'));
     }
 
     /**

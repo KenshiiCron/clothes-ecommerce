@@ -30,7 +30,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
     Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
     Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
-    Route::resource('orders',\App\Http\Controllers\Admin\OrdersController::class);
+    Route::resource('orders',\App\Http\Controllers\Admin\OrderController::class);
     Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
     Route::get('settings',[App\Http\Controllers\Admin\SettingController::class,'index'])->name('settings.index');
     Route::post('settings',[App\Http\Controllers\Admin\SettingController::class,'update'])->name('settings.update');
