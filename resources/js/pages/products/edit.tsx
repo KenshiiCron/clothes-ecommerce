@@ -89,7 +89,7 @@ export type AttributesValues = {
 interface EditProductProps{
     product: Product,
     categories: Category[],
-    product_category: Category,
+
     attributes: Attribute[],
     product_attributes: Attribute[],
     attributes_values: AttributesValues[];
@@ -97,7 +97,7 @@ interface EditProductProps{
 }
 
 
-export default function Edit({product,product_category,categories ,attributes,product_attributes, inventories,attributes_values}:EditProductProps){
+export default function Edit({product,categories ,attributes,product_attributes, inventories,attributes_values}:EditProductProps){
     const { data, setData, put, processing, errors, reset } = useForm({
         category_id : product.category_id,
         name: product.name,
@@ -241,8 +241,8 @@ export default function Edit({product,product_category,categories ,attributes,pr
                                     onValueChange={(value) => setData("category_id", value)}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={product_category.name}
-                                                     defaultValue={String(product_category.id)}/>
+                                        <SelectValue placeholder={product.category.name}
+                                                     defaultValue={String(product.category.id)}/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((category) => (
