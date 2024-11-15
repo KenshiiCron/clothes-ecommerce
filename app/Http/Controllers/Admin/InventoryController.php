@@ -9,6 +9,7 @@ use App\Http\Requests\Admin\UpdateInventoryRequest;
 use App\Models\Inventory;
 
 class InventoryController extends Controller
+
 {
     /**
      * @var InventoryContract

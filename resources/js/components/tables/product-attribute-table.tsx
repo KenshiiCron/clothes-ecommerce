@@ -177,7 +177,6 @@ export default function DataTableDemo({ attributes,product_id }: DataTableDemoPr
     const [columnVisibility, setColumnVisibility] = React.useState<VisibilityState>({});
     const [rowSelection, setRowSelection] = React.useState({});
 
-    const attributes_array = Object.values(attributes);
 
     const data: ProductAttributeRow[] =attributes.map(attribute => ({
         attribute,

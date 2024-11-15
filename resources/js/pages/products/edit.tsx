@@ -11,7 +11,7 @@ import {Button} from "@/components/ui/button";
 
 import {Textarea} from "@/components/ui/textarea";
 import {Select, SelectContent, SelectItem, SelectTrigger, SelectValue} from "@/components/ui/select";
-import {FormEventHandler, useEffect, useState} from "react";
+import {FormEventHandler, useEffect, useRef, useState} from "react";
 import ProductAttributeTable from "@/components/tables/product-attribute-table"
 
 
@@ -71,7 +71,8 @@ export type Inventory = {
     product_id: string;
     quantity: number;
     price: number;
-    created_at: string
+    created_at: string;
+    attribute_values: Value[]
 }
 
 
@@ -81,7 +82,7 @@ export type AttributesValues = {
     values: Value[]
 }
  export type Value = {
-     attribute_id:string,
+     attribute_id?:string,
      id:string,
      value?: string,
  }
@@ -89,7 +90,6 @@ export type AttributesValues = {
 interface EditProductProps{
     product: Product,
     categories: Category[],
-
     attributes: Attribute[],
     product_attributes: Attribute[],
     attributes_values: AttributesValues[];
@@ -97,7 +97,9 @@ interface EditProductProps{
 }
 
 
-export default function Edit({product,categories ,attributes,product_attributes, inventories,attributes_values}:EditProductProps){
+export default function Edit({product,categories ,attributes,attributes_values}:EditProductProps){
+
+    const exitInventoryRef = useRef<HTMLInputElement>(null);
     const { data, setData, put, processing, errors, reset } = useForm({
         category_id : product.category_id,
         name: product.name,
@@ -143,8 +145,11 @@ export default function Edit({product,categories ,attributes,product_attributes,
 
     const AddInventory :FormEventHandler = (e) => {
         e.preventDefault();
-        //console.log(inventoryData.values)
         submitAddInventory(route("admin.inventories.store"));
+        console.log((!errorsAddInventory.price || !errorsAddInventory.quantity || inventoryData.quantity != 0 || inventoryData.price != 0) && !processingAddInventory)
+        if((!errorsAddInventory.price || !errorsAddInventory.quantity || inventoryData.quantity != 0 || inventoryData.price != 0) && !processingAddInventory){
+            setIsOpen(false)
+        }
         resetAddInventory('values','quantity','price');
     };
 
@@ -173,7 +178,8 @@ export default function Edit({product,categories ,attributes,product_attributes,
 
     const MemoizedProductAttributeTable = React.memo(ProductAttributeTable);
     const MemoizedInventoryTable = React.memo(InventoryTable);
-
+    const [isOpen, setIsOpen] = useState(false);
+    // @ts-ignore
     // @ts-ignore
     return(
         <AuthenticatedLayout header="Product">
@@ -237,12 +243,10 @@ export default function Edit({product,categories ,attributes,product_attributes,
                             <div className="grid gap-2">
                                 <Label htmlFor="user_id">Category</Label>
                                 <Select
-                                    value={product.category_id}
                                     onValueChange={(value) => setData("category_id", value)}
                                 >
                                     <SelectTrigger>
-                                        <SelectValue placeholder={product.category.name}
-                                                     defaultValue={String(product.category.id)}/>
+                                        <SelectValue placeholder={product.category.name}/>
                                     </SelectTrigger>
                                     <SelectContent>
                                         {categories.map((category) => (
@@ -336,8 +340,8 @@ export default function Edit({product,categories ,attributes,product_attributes,
                     <MemoizedProductAttributeTable attributes={product.attributes} product_id={product.id}/>
                 </TabsContent>
                 <TabsContent value='inventory'>
-                    <Dialog >
-                        <DialogTrigger asChild>
+                    <Dialog modal={true} open={isOpen} onOpenChange={setIsOpen}>
+                        <DialogTrigger asChild >
                             <Button className="mt-4 mb-4">
                                 <p>Add inventory</p>
                                 <PlusIcon size={20}/>
@@ -379,6 +383,7 @@ export default function Edit({product,categories ,attributes,product_attributes,
                                         </div>
                                         {
                                             attributes_values.map((att) => {
+
                                                 return (
                                                     <div className="grid gap-2">
                                                         <Label>{att.name}</Label>
@@ -422,16 +427,25 @@ export default function Edit({product,categories ,attributes,product_attributes,
                                                 )
                                             })
                                         }
-                                        <DialogClose>
-                                            <Button type="submit" className="w-full">
-                                                Add
-                                            </Button>
-                                        </DialogClose>
+                                    {errorsAddInventory.price || errorsAddInventory.quantity || inventoryData.quantity == 0 || inventoryData.price == 0?
+                                        (
+                                                <Button type="submit" className="w-full" disabled={processingAddInventory} >
+                                                    Add
+                                                </Button>
+                                        ):(
+                                            <DialogClose>
+                                                <Button type="submit" className="w-full" disabled={processingAddInventory}>
+                                                    Add
+                                                </Button>
+                                            </DialogClose>
+                                        )
+                                    }
+
                                     </div>
                             </form>
                         </DialogContent>
                     </Dialog>
-                    <MemoizedInventoryTable product_attributes={product.attributes} inventories={inventories} attributes_values={attributes_values}/>
+                    <MemoizedInventoryTable product_attributes={product.attributes} inventories={product.inventories} attributes_values={attributes_values}/>
                 </TabsContent>
             </Tabs>
 

@@ -4,9 +4,11 @@ namespace App\Http\Controllers\Admin;
 
 
 use App\Contracts\ProductContract;
+use App\Exports\ProductExports;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Imports\ProductImport;
 use App\Models\Attribute;
 use App\Models\Category;
 use App\Models\Product;
@@ -14,6 +16,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\NoReturn;
+use Maatwebsite\Excel\Facades\Excel;
 
 class ProductController extends Controller
 {
@@ -51,18 +54,16 @@ class ProductController extends Controller
 
     public function edit($id)
     {
-        $product = $this->product->setRelations(['category','attributes'])->findOneById($id);
-        $inventories = $product->inventories;
-        $inventories_values = collect([]);
+        $product = $this->product->setRelations([
+            'inventories.attribute_values',
+            'category',
+            'attributes',
+        ])->findOneById($id);
         $attributes_values = [];
-        foreach ($inventories as $inventory) {
-            foreach ($inventory->attribute_values as $value) {
-                $inventories_values->push($value);
-            }
-        }
         foreach($product->attributes as $attribute) {
             $attributes_values[] = [
                 'id' => $attribute->id,
+                'name' => $attribute->name,
                 'values' => $attribute->attribute_values->map(function ($value) {
                     return [
                         'attribute_id' => $value->attribute_id,
@@ -73,11 +74,10 @@ class ProductController extends Controller
             ];
         }
 
-
         $attributes = Attribute::whereNotIn('id',$product->attributes->pluck('id')->toArray())->get(['id', 'name']);
         $categories = Category::select('id', 'name')->get();
         return Inertia::render('products/edit', compact('product','categories','attributes'
-            ,'attributes_values','inventories'));
+            ,'attributes_values'));
     }
 
     public function update(UpdateProductRequest $request, $id): \Illuminate\Http\RedirectResponse
@@ -92,7 +92,7 @@ class ProductController extends Controller
             'product_id' => 'required',
         ]);
         $product = $this->product->findOneById($data['product_id']);
-        $att = $product->attributes()->attach($id);
+        $product->attributes()->attach($id);
         return redirect()->back();
     }
     public function dettachAttribute($id,Request $request)
@@ -105,9 +105,24 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
+    public function importProducts(Request $request)
+    {
+        $request->validate([
+            'file' => ['required', 'mimes:xls,xlsx,csv', 'max:'.config('settings.max_upload_size')],
+        ]);
+
+        Excel::import(new ProductImport,$request->file('file'));
+    }
+
+    public function exportsProducts()
+    {
+        return Excel::download(new ProductExports, 'export-products.xlsx');
+    }
+
     public function destroy($id)
     {
         $this->product->destroy($id);
         session()->flash('success',__('messages.flash.delete'));
     }
+
 }

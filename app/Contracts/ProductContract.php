@@ -10,4 +10,6 @@ interface ProductContract extends Base\CrudContract
 
     public function destroy($model);
 
+
+
 }

@@ -21,51 +21,11 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table";
-import {
-    AlertDialog,
-    AlertDialogAction,
-    AlertDialogCancel,
-    AlertDialogContent,
-    AlertDialogDescription,
-    AlertDialogFooter,
-    AlertDialogHeader,
-    AlertDialogTitle,
-    AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
-import {Link, router, useForm} from "@inertiajs/react";
-import {Dialog, DialogClose, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
-import {FormEventHandler, useMemo} from "react";
-import {CreateButton} from "@/components/elements/create-button";
+import { useMemo} from "react";
 
 import setColumns from '@/components/tables/columns/inventories-columns'
-import {Checkbox} from "@/components/ui/checkbox";
-import {ArrowUpDown} from "lucide-react";
 
-export type Attribute = {
-    id: string;
-    name: string;
-};
-
-
-
-export type Inventory = {
-    id: string;
-    product_id: string;
-    quantity: number;
-    price: number;
-    created_at:string;
-}
-
-export type AttributesValues = {
-    id:string,
-    name:string,
-    values: Value[]
-}
-export type Value = {
-    attribute_id:string,
-    id:string,
-    value?: string,
-}
+import {Attribute, AttributesValues, Inventory} from "@/pages/products/edit";
 
 interface DataTableDemoProps {
     inventories: Inventory [];

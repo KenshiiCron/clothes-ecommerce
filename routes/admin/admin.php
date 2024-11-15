@@ -26,6 +26,8 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('inventories',\App\Http\Controllers\Admin\InventoryController::class);
     Route::put('products/attach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'attachAttribute'])->name('products.attach');
     Route::put('products/dettach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'dettachAttribute'])->name('products.dettach');
+    Route::post('products/import',[\App\Http\Controllers\Admin\ProductController::class,'importProducts'])->name('products.import');
+    Route::get('products/export',[\App\Http\Controllers\Admin\ProductController::class,'exportsProducts'])->name('products.export');
     Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
     Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
     Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);

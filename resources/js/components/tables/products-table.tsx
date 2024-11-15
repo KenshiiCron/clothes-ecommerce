@@ -13,7 +13,7 @@ import {
     getSortedRowModel,
     useReactTable,
 } from "@tanstack/react-table"
-import {ArrowUpDown, ChevronDown, MoreHorizontal, PlusCircleIcon} from "lucide-react"
+import {ArrowUpDown, ChevronDown, Download, File, MoreHorizontal, PlusCircleIcon, Upload} from "lucide-react"
 import { Button } from "@/components/ui/button"
 
 import { Input } from "@/components/ui/input"
@@ -25,9 +25,20 @@ import {
     TableHeader,
     TableRow,
 } from "@/components/ui/table"
-import {Link} from "@inertiajs/react";
+import {Link, useForm} from "@inertiajs/react";
 import {columns} from "@/components/tables/columns/products-columns";
 import {CreateButton} from "@/components/elements/create-button";
+import {FormEventHandler, useRef} from "react";
+import {
+    Dialog, DialogClose,
+    DialogContent,
+    DialogDescription,
+    DialogHeader,
+    DialogTitle,
+    DialogTrigger
+} from "@/components/ui/dialog";
+import {Simulate} from "react-dom/test-utils";
+import submit = Simulate.submit;
 
 export type Product = {
     id: string,
@@ -67,12 +78,63 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
             rowSelection,
         },
     })
-
-
+    const { data, setData, post, processing, errors, reset } = useForm({
+        file: '',
+    });
+    const { get :submitExport,  data: exportData} = useForm({
+    });
+    const exportProducts: FormEventHandler = (e)=>{
+        e.preventDefault()
+        console.log(route('admin.products.export'))
+        submitExport(route('admin.products.export'))
+    }
+    const importProducts: FormEventHandler = (e)=>{
+        e.preventDefault();
+        post(route('admin.products.import'))
+        console.log(data.file)
+    }
     return (
         <div className="w-full">
             <div className="flex justify-between items-center py-4">
-                <CreateButton link="admin.products.create" />
+                <div className='flex gap-2 w-full'>
+                    <CreateButton link="admin.products.create" />
+                    <Dialog>
+                        <DialogTrigger>
+                            <Button >
+                                <p>Import File</p>
+                                <Upload/>
+                            </Button>
+                        </DialogTrigger>
+                        <DialogContent>
+                            <DialogHeader>
+                                <DialogTitle>
+                                    Import products
+                                </DialogTitle>
+                            </DialogHeader>
+                            <DialogDescription>
+                                Upload an excel file to insert products
+                            </DialogDescription>
+                            <form onSubmit={importProducts} className='w-full'>
+                                <Input id='file' type='file'
+                                       onChange={(e) => {
+                                           // @ts-ignore
+                                           setData('file',e.target.files[0])
+                                       }}/>
+                                <DialogClose>
+                                    <Button type='submit' className='w-full mt-2' >
+                                        Import
+                                    </Button>
+                                </DialogClose>
+                            </form>
+                        </DialogContent>
+                    </Dialog>
+                </div>
+                <form onSubmit={exportProducts}>
+                    <Button className='mr-2' type='submit'>
+                        <p>Export Products</p>
+                        <Download/>
+                    </Button>
+                </form>
                 <Input
                     placeholder="Filter brands..."
                     value={
@@ -86,8 +148,10 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
                     }
                     className="max-w-sm"
                 />
+
             </div>
             <div className="rounded-md border">
+
                 <Table>
                     <TableHeader>
                         {table.getHeaderGroups().map((headerGroup) => (
