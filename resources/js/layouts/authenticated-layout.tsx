@@ -2,16 +2,19 @@ import {PropsWithChildren, ReactNode, useEffect} from "react";
 import {AppSidebar} from "@/components/app-sidebar";
 import {SidebarInset, SidebarProvider, SidebarTrigger} from "@/components/ui/sidebar";
 import {Separator} from "@/components/ui/separator";
+
 import {Breadcrumb, BreadcrumbItem, BreadcrumbList, BreadcrumbPage,} from "@/components/ui/breadcrumb";
 import AppearanceDropdown from "@/components/appearance-dropdown";
 
-export default function AuthenticatedLayout({
+export default function AuthenticatedLayout(
+    {
+
                                                 header,
                                                 children
                                             }: PropsWithChildren<{
     header?: ReactNode;
-}>) {
 
+}>) {
     return (
         <SidebarProvider>
             <AppSidebar/>

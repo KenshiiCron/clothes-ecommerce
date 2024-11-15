@@ -61,10 +61,16 @@ class OrderController extends Controller
      */
     public function store(StoreOrdersRequest $request)
     {
-//        dd('here');
         $data = $request->validated();
         $this->order->new($data);
-        return redirect()->route('admin.orders.index');
+//        $msg = trans('static.words.yes');
+//        dd($msg);
+        session()->flash('toast', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => __('messages.flash.create',['resource'=>'order']),
+        ]);
+        return Inertia::location(route('admin.orders.index'));
     }
 
     /**

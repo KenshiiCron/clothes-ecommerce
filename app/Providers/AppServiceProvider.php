@@ -38,6 +38,13 @@ class AppServiceProvider extends ServiceProvider
                 return $translations;
             },
             'locale' => App::getLocale(),
+
+//            'errors' => session()->get('errors'),
+
+            'toast' => function () {
+                return session()->get('toast');
+            },
+
         ]);
     }
 
