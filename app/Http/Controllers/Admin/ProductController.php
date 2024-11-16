@@ -16,6 +16,7 @@ use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 use Inertia\Response;
 use JetBrains\PhpStorm\NoReturn;
@@ -68,6 +69,7 @@ class ProductController extends Controller
             'inventories.attribute_values',
             'category',
             'attributes',
+            'images'
         ])->findOneById($id);
         $attributes_values = [];
         foreach($product->attributes as $attribute) {
@@ -90,7 +92,7 @@ class ProductController extends Controller
             ,'attributes_values'));
     }
 
-    public function update(UpdateProductRequest $request, $id): \Illuminate\Http\RedirectResponse
+    public function update(UpdateProductRequest $request, $id): \Symfony\Component\HttpFoundation\Response
     {
         $this->product->update($id, $request->validated());
 
@@ -109,6 +111,7 @@ class ProductController extends Controller
 
         if (array_key_exists('deleted_images', $data)) {
             foreach ($data['deleted_images'] as $deletedImage) {
+                Storage::disk('public')->delete($deletedImage['path']);
                 Image::find($deletedImage['id'])->delete();
             }
         }

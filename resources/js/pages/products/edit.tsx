@@ -190,7 +190,6 @@ export default function Edit({product, categories, attributes, attributes_values
     const MemoizedInventoryTable = React.memo(InventoryTable);
 
     // Images Tab
-
     const {
         data: imagesData,
         setData: setImagesData,
@@ -203,24 +202,20 @@ export default function Edit({product, categories, attributes, attributes_values
         deleted_images: [],
         images: [],
     });
-
     const [deletedImages, setDeletedImages] = useState<Image[]>([]);
     const [oldImages, setOldImages] = useState<Image[]>(
-        product.images?.map((image) => image)
+        product.images.map((image) => image)
     );
     const [images, setImages] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
     const fileInputRef = useRef<HTMLInputElement>(null);
-
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const files = Array.from(e.target.files || []);
         setImages((prevImages) => [...prevImages, ...files]);
         setImagesData("images", files);
-
         const newPreviews = files.map((file) => URL.createObjectURL(file));
         setPreviews((prevPreviews) => [...prevPreviews, ...newPreviews]);
     };
-
     const removeOldImage = (index: number) => {
         setOldImages((prevOldImages) => {
             const newOldImages = [...prevOldImages];
@@ -236,14 +231,12 @@ export default function Edit({product, categories, attributes, attributes_values
             return newOldImages;
         });
     };
-
     const removeImage = (index: number) => {
         setImages((prevImages) => {
             const newImages = [...prevImages];
             newImages.splice(index, 1);
             return newImages;
         });
-
         setPreviews((prevPreviews) => {
             const newPreviews = [...prevPreviews];
             URL.revokeObjectURL(newPreviews[index]);
@@ -251,8 +244,7 @@ export default function Edit({product, categories, attributes, attributes_values
             return newPreviews;
         });
     };
-
-    const handleUpload : FormEventHandler = (e) => {
+    const handleUpload: FormEventHandler = (e) => {
         e.preventDefault();
         submitImages(route("admin.products.images", product.id));
     };
