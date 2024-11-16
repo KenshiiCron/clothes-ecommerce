@@ -9,7 +9,15 @@ class Image extends Model
 {
     protected $fillable = [
         'path',
+        'product_id',
     ];
+
+    protected $appends = ['image_url'];
+
+    public function getImageUrlAttribute()
+    {
+        return isset($this->path) ? asset('storage/' . $this->path) : asset('assets/front/images/image-default.jpg');
+    }
 
     public function product() : BelongsTo
     {

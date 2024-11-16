@@ -9,5 +9,4 @@ interface ImageContract extends Base\CrudContract
     public function update($model, array $data);
 
     public function destroy($model);
-
 }

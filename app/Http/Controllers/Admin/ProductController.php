@@ -3,14 +3,17 @@
 namespace App\Http\Controllers\Admin;
 
 
+use App\Contracts\ImageContract;
 use App\Contracts\ProductContract;
 use App\Exports\ProductExports;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Admin\StoreProductRequest;
 use App\Http\Requests\Admin\UpdateProductRequest;
+use App\Http\Requests\UpdateImageRequest;
 use App\Imports\ProductImport;
 use App\Models\Attribute;
 use App\Models\Category;
+use App\Models\Image;
 use App\Models\Product;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
@@ -32,6 +35,7 @@ class ProductController extends Controller
     {
         $this->product = $product;
     }
+
     public function index(): Response
     {
         $products = $this->product->findByFilter();
@@ -41,15 +45,21 @@ class ProductController extends Controller
     public function create()
     {
         $categories = Category::select('id', 'name')->get();
-        return Inertia::render('products/create',compact('categories'));
+        return Inertia::render('products/create', compact('categories'));
     }
 
     public function store(StoreProductRequest $request)
     {
         $data = $request->validated();
         $this->product->new($data);
-        $request->session()->flash('success', 'Product created successfully.');
-        return redirect()->route('admin.products.index');
+
+        session()->flash('toast', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => __('messages.flash.create',['resource'=>'product']),
+        ]);
+
+        return Inertia::location(route('admin.products.index'));
     }
 
     public function edit($id)
@@ -83,10 +93,42 @@ class ProductController extends Controller
     public function update(UpdateProductRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
         $this->product->update($id, $request->validated());
-        return redirect()->route('admin.products.index');
+
+        session()->flash('toast', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => __('messages.flash.update',['resource'=>'product']),
+        ]);
+
+        return Inertia::location(route('admin.products.edit', $id));
     }
 
-    public function attachAttribute($id,Request $request)
+    public function updateImages(UpdateImageRequest $request, $id, ImageContract $image)
+    {
+        $data = $request->validated();
+
+        if (array_key_exists('deleted_images', $data)) {
+            foreach ($data['deleted_images'] as $deletedImage) {
+                Image::find($deletedImage['id'])->delete();
+            }
+        }
+
+        foreach ($data['images'] as $oneImage) {
+            $imageData['path'] = $oneImage;
+            $imageData['product_id'] = $id;
+            $image->new($imageData);
+        }
+
+        session()->flash('toast', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => __('messages.flash.update',['resource'=>'product']),
+        ]);
+
+        return Inertia::location(route('admin.products.edit', $id));
+    }
+
+    public function attachAttribute($id, Request $request)
     {
         $data = $request->validate([
             'product_id' => 'required',
@@ -95,10 +137,12 @@ class ProductController extends Controller
         $product->attributes()->attach($id);
         return redirect()->back();
     }
-    public function dettachAttribute($id,Request $request)
+
+    public
+    function dettachAttribute($id, Request $request)
     {
         $data = $request->validate([
-            'product_id' => 'required','exists:products,id'
+            'product_id' => 'required', 'exists:products,id'
         ]);
         $product = $this->product->findOneById($data['product_id']);
         $product->attributes()->detach($id);
@@ -122,7 +166,7 @@ class ProductController extends Controller
     public function destroy($id)
     {
         $this->product->destroy($id);
-        session()->flash('success',__('messages.flash.delete'));
+        session()->flash('success', __('messages.flash.delete'));
     }
 
 }

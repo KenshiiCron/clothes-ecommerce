@@ -22,6 +22,7 @@ export default function Roles({settings} : PageProps<{ settings: any }>) {
         site_name: settings.site_name,
         site_description: settings.site_description,
         site_about_us: settings.site_about_us,
+        max_upload_size: settings.max_upload_size,
         phone_2: settings.phone_2,
         facebook_pixel: settings.facebook_pixel,
         social_facebook: settings.social_facebook,
@@ -293,6 +294,15 @@ export default function Roles({settings} : PageProps<{ settings: any }>) {
                                             id="site_about_us"
                                             onChange={(e) => setData("site_about_us", e.target.value)}
                                         >{data.site_about_us}</Textarea>
+                                    </div>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="max_upload_size">Max Upload Size (KB)</Label>
+                                        <Input
+                                            id="max_upload_size"
+                                            type="number"
+                                            value={data.max_upload_size}
+                                            onChange={(e) => setData("max_upload_size", e.target.value)}
+                                        />
                                     </div>
                                 </CardContent>
                                 <CardFooter>

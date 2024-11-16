@@ -36,11 +36,11 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
     Route::get('settings',[App\Http\Controllers\Admin\SettingController::class,'index'])->name('settings.index');
     Route::post('settings',[App\Http\Controllers\Admin\SettingController::class,'update'])->name('settings.update');
-
+    Route::post('products/images/{id}',[ProductController::class,'updateImages'])->name('products.images');
 
 //    Test Routes
-    Route::get('tests',[App\Http\Controllers\Admin\TestController::class,'index'])->name('tests.index');
-    Route::post('tests/test',[App\Http\Controllers\Admin\TestController::class,'test'])->name('tests.test');
+    Route::get('tests',[TestController::class,'index'])->name('tests.index');
+    Route::post('tests/test',[TestController::class,'test'])->name('tests.test');
     Route::get('shipping', function () {
         $deliveryService = app()->make(\App\Services\Delivery\DeliveryServiceInterface::class, ['service' => 'yalidine']);
         $prices = $deliveryService->getShippingPrices();
