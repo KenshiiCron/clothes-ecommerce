@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\TestController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -36,7 +37,7 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
     Route::get('settings',[App\Http\Controllers\Admin\SettingController::class,'index'])->name('settings.index');
     Route::post('settings',[App\Http\Controllers\Admin\SettingController::class,'update'])->name('settings.update');
-    Route::post('products/images/{id}',[ProductController::class,'updateImages'])->name('products.images');
+    Route::post('products/images/{id}',[\App\Http\Controllers\Admin\ProductController::class,'updateImages'])->name('products.images');
 
 //    Test Routes
     Route::get('tests',[TestController::class,'index'])->name('tests.index');

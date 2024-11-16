@@ -85,15 +85,15 @@ export type Inventory = {
 
 
 export type AttributesValues = {
-    id:string,
-    name:string,
+    id: string,
+    name: string,
     values: Value[]
 }
- export type Value = {
-     attribute_id?:string,
-     id:string,
-     value?: string,
- }
+export type Value = {
+    attribute_id?: string,
+    id: string,
+    value?: string,
+}
 
 type Image = {
     product_id: number;
@@ -101,7 +101,7 @@ type Image = {
     image_url: string;
 };
 
-interface EditProductProps{
+interface EditProductProps {
     product: Product,
     categories: Category[],
     attributes: Attribute[],
@@ -111,11 +111,9 @@ interface EditProductProps{
 }
 
 
-export default function Edit({product,categories ,attributes,attributes_values}:EditProductProps){
-
-    const exitInventoryRef = useRef<HTMLInputElement>(null);
-    const { data, setData, put, processing, errors, reset } = useForm({
-        category_id : product.category_id,
+export default function Edit({product, categories, attributes, attributes_values}: EditProductProps) {
+    const {data, setData, put, processing, errors, reset} = useForm({
+        category_id: product.category_id,
         name: product.name,
         description: product.description,
         image: null,
@@ -149,7 +147,6 @@ export default function Edit({product,categories ,attributes,attributes_values}:
     });
 
 
-
     const AttachAttribute: FormEventHandler = (e) => {
         e.preventDefault();
         submitAttachAttribute(
@@ -162,7 +159,7 @@ export default function Edit({product,categories ,attributes,attributes_values}:
         e.preventDefault();
         //console.log(inventoryData.values)
         submitAddInventory(route("admin.inventories.store"));
-        resetAddInventory('values','quantity','price');
+        resetAddInventory('values', 'quantity', 'price');
     };
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
@@ -177,7 +174,6 @@ export default function Edit({product,categories ,attributes,attributes_values}:
         }
     };
 
-    };
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         console.log(data.image)
@@ -210,7 +206,7 @@ export default function Edit({product,categories ,attributes,attributes_values}:
 
     const [deletedImages, setDeletedImages] = useState<Image[]>([]);
     const [oldImages, setOldImages] = useState<Image[]>(
-        product.images.map((image) => image)
+        product.images?.map((image) => image)
     );
     const [images, setImages] = useState<File[]>([]);
     const [previews, setPreviews] = useState<string[]>([]);
@@ -256,7 +252,7 @@ export default function Edit({product,categories ,attributes,attributes_values}:
         });
     };
 
-    const handleUpload = (e) => {
+    const handleUpload : FormEventHandler = (e) => {
         e.preventDefault();
         submitImages(route("admin.products.images", product.id));
     };
@@ -363,24 +359,24 @@ export default function Edit({product,categories ,attributes,attributes_values}:
                                         />
                                     </div>
 
-                            <div className="grid gap-2">
-                                <Label htmlFor="user_id">Category</Label>
-                                <Select
-                                    onValueChange={(value) => setData("category_id", value)}
-                                >
-                                    <SelectTrigger>
-                                        <SelectValue placeholder={product.category.name}/>
-                                    </SelectTrigger>
-                                    <SelectContent>
-                                        {categories.map((category) => (
-                                            <SelectItem key={category.id} value={String(category.id)}>
-                                                {category.name}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <InputError message={errors.category_id}/>
-                            </div>
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="user_id">Category</Label>
+                                        <Select
+                                            onValueChange={(value) => setData("category_id", value)}
+                                        >
+                                            <SelectTrigger>
+                                                <SelectValue placeholder={product.category.name}/>
+                                            </SelectTrigger>
+                                            <SelectContent>
+                                                {categories.map((category) => (
+                                                    <SelectItem key={category.id} value={String(category.id)}>
+                                                        {category.name}
+                                                    </SelectItem>
+                                                ))}
+                                            </SelectContent>
+                                        </Select>
+                                        <InputError message={errors.category_id}/>
+                                    </div>
 
                                     <div className="grid gap-2">
                                         <Label htmlFor="image">Image</Label>
@@ -452,11 +448,11 @@ export default function Edit({product,categories ,attributes,attributes_values}:
                                 </div>
 
                                 {(previews.length > 0 ||
-                                    oldImages.length > 0) && (
+                                    oldImages?.length > 0) && (
                                     <Card>
                                         <CardContent className="p-8 min-w-fit">
                                             <div className="flex flex-wrap gap-8 justify-center md:justify-start">
-                                                {oldImages.map(
+                                                {oldImages?.map(
                                                     (oldImage, index) => (
                                                         <div
                                                             key={index}
@@ -485,7 +481,7 @@ export default function Edit({product,categories ,attributes,attributes_values}:
                                                         </div>
                                                     )
                                                 )}
-                                                {previews.map(
+                                                {previews?.map(
                                                     (preview, index) => (
                                                         <div
                                                             key={index}
@@ -621,33 +617,24 @@ export default function Edit({product,categories ,attributes,attributes_values}:
                     <Card>
                         <CardHeader>
                             <CardTitle>Inventory</CardTitle>
-                            <CardDescription>
-                                Manage your product's inventory.
-                            </CardDescription>
+                            <CardDescription>Manage your product's inventory.</CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Dialog>
                                 <DialogTrigger asChild>
                                     <Button className="mb-4">
                                         <p>Add inventory</p>
-                                        <PlusIcon size={20}/>
+                                        <PlusIcon size={20} />
                                     </Button>
                                 </DialogTrigger>
                                 <DialogContent>
                                     <DialogHeader>
-                                        <DialogTitle>
-                                            Add an inventory
-                                        </DialogTitle>
+                                        <DialogTitle>Add an inventory</DialogTitle>
                                     </DialogHeader>
-                                    <form
-                                        onSubmit={AddInventory}
-                                        className="max-w-md mt-6"
-                                    >
+                                    <form onSubmit={AddInventory} className="max-w-md mt-6">
                                         <div className="grid gap-4">
                                             <div className="grid gap-2">
-                                                <Label htmlFor="price">
-                                                    Price
-                                                </Label>
+                                                <Label htmlFor="price">Price</Label>
                                                 <Input
                                                     id="price"
                                                     type="number"
@@ -656,135 +643,96 @@ export default function Edit({product,categories ,attributes,attributes_values}:
                                                     onChange={(e) =>
                                                         setInventoryData(
                                                             "price",
-                                                            Number(
-                                                                e.target.value
-                                                            )
+                                                            Number(e.target.value)
                                                         )
                                                     }
                                                     required
                                                 />
-                                                <InputError
-                                                    message={
-                                                        errorsAddInventory.price
-                                                    }
-                                                />
+                                                <InputError message={errorsAddInventory.price} />
                                             </div>
 
-                                        <div className="grid gap-2">
-                                            <Label htmlFor="quantity">Quantity</Label>
-                                            <Input
-                                                id="quantity"
-                                                type="number"
-                                                placeholder="Quantity"
-                                                value={inventoryData.quantity}
-                                                onChange={(e) => setInventoryData("quantity", Number(e.target.value))}
-                                                required
-                                            />
-                                            <InputError message={errorsAddInventory.quantity}/>
-                                        </div>
-                                        {
-                                            attributes_values.map((att) => {
-                                                return (
-                                                    <div className="grid gap-2">
-                                                        <Label>
-                                                            {att.name}
-                                                        </Label>
-                                                        <Select
-                                                            onValueChange={(
-                                                                value
-                                                            ) => {
-                                                                console.log(
-                                                                    value
-                                                                );
-                                                                const exists =
-                                                                    inventoryData.values.some(
-                                                                        (
-                                                                            item: Value
-                                                                        ) =>
-                                                                            item.attribute_id ==
-                                                                            att.id
-                                                                    );
-                                                                if (exists) {
-                                                                    const updatedValues =
-                                                                        inventoryData.values.map(
-                                                                            (
-                                                                                item: Value
-                                                                            ) =>
-                                                                                item.attribute_id ==
-                                                                                att.id
-                                                                                    ? {
-                                                                                        ...item,
-                                                                                        id: value,
-                                                                                    }
-                                                                                    : item
-                                                                        );
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="quantity">Quantity</Label>
+                                                <Input
+                                                    id="quantity"
+                                                    type="number"
+                                                    placeholder="Quantity"
+                                                    value={inventoryData.quantity}
+                                                    onChange={(e) =>
+                                                        setInventoryData(
+                                                            "quantity",
+                                                            Number(e.target.value)
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                                <InputError message={errorsAddInventory.quantity} />
+                                            </div>
 
-                                                                    setInventoryData(
-                                                                        "values",
-                                                                        updatedValues
-                                                                    );
-                                                                } else {
-                                                                    setInventoryData(
-                                                                        "values",
-                                                                        [
-                                                                            ...inventoryData.values,
-                                                                            {
-                                                                                attribute_id:
-                                                                                att.id,
-                                                                                id: value,
-                                                                            },
-                                                                        ]
-                                                                    );
-                                                                }
-                                                            }}
-                                                        >
-                                                            <SelectTrigger>
-                                                                <SelectValue
-                                                                    placeholder={
-                                                                        "Select a value"
-                                                                    }
-                                                                />
-                                                            </SelectTrigger>
-                                                            <SelectContent>
-                                                                {att.values.map(
-                                                                    (v) => (
-                                                                        <SelectItem
-                                                                            key={
-                                                                                v.id
-                                                                            }
-                                                                            value={String(
-                                                                                v.id
-                                                                            )}
-                                                                        >
-                                                                            {
-                                                                                v.value
-                                                                            }
-                                                                        </SelectItem>
-                                                                    )
-                                                                )}
-                                                            </SelectContent>
-                                                        </Select>
-                                                        <InputError
-                                                            message={
-                                                                errorsAttachAttribute.attribute_id
+                                            {attributes_values.map((att) => (
+                                                <div className="grid gap-2" key={att.id}>
+                                                    <Label>{att.name}</Label>
+                                                    <Select
+                                                        onValueChange={(value) => {
+                                                            const exists = inventoryData.values.some(
+                                                                (item: Value) =>
+                                                                    item.attribute_id === att.id
+                                                            );
+                                                            if (exists) {
+                                                                const updatedValues = inventoryData.values.map(
+                                                                    (item: Value) =>
+                                                                        item.attribute_id ===
+                                                                        att.id
+                                                                            ? { ...item, id: value }
+                                                                            : item
+                                                                );
+
+                                                                setInventoryData("values", updatedValues);
+                                                            } else {
+                                                                setInventoryData("values", [
+                                                                    ...inventoryData.values,
+                                                                    {
+                                                                        attribute_id: att.id,
+                                                                        id: value,
+                                                                    },
+                                                                ]);
                                                             }
-                                                        />
-                                                    </div>
-                                                )
-                                            })
-                                        }
-                                        <DialogClose>
+                                                        }}
+                                                    >
+                                                        <SelectTrigger>
+                                                            <SelectValue placeholder="Select a value" />
+                                                        </SelectTrigger>
+                                                        <SelectContent>
+                                                            {att.values.map((v) => (
+                                                                <SelectItem key={v.id} value={String(v.id)}>
+                                                                    {v.value}
+                                                                </SelectItem>
+                                                            ))}
+                                                        </SelectContent>
+                                                    </Select>
+                                                    <InputError
+                                                        message={errorsAttachAttribute.attribute_id}
+                                                    />
+                                                </div>
+                                            ))}
+
                                             <Button type="submit" className="w-full">
                                                 Add
                                             </Button>
-                                        </DialogClose>
-                                    </div>
-                            </form>
-                        </DialogContent>
-                    </Dialog>
-                    <MemoizedInventoryTable product_attributes={product.attributes} inventories={inventories} attributes_values={attributes_values}/>
+                                        </div>
+                                    </form>
+                                </DialogContent>
+                            </Dialog>
+                            <MemoizedInventoryTable
+                                product_attributes={product.attributes}
+                                inventories={product.inventories}
+                                attributes_values={attributes_values}
+                            />
+                        </CardContent>
+                    </Card>
                 </TabsContent>
+
             </Tabs>
         </AuthenticatedLayout>
-    );
+);
 }
