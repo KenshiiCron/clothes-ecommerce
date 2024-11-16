@@ -52,10 +52,11 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card";
+import {MultiSelect} from "@/components/multi-select";
 
 export type Product = {
     id: string;
-    category_id: string;
+    categories: Category[];
     description: string;
     image_url: string;
     name: string;
@@ -113,12 +114,18 @@ interface EditProductProps {
 
 export default function Edit({product, categories, attributes, attributes_values}: EditProductProps) {
     const {data, setData, put, processing, errors, reset} = useForm({
-        category_id: product.category_id,
+        categories: product.categories.map((category) => category.id),
         name: product.name,
         description: product.description,
         image: null,
-
     });
+
+    console.log(product.categories)
+    console.log(categories)
+
+    const handleChangeCategories = (values: any) => {
+        setData('categories', values);
+    }
 
     const {
         data: attachAttributeData,
@@ -179,7 +186,7 @@ export default function Edit({product, categories, attributes, attributes_values
         console.log(data.image)
         router.post(route("admin.products.update", product.id), {
             _method: "put",
-            category_id: data.category_id,
+            categories: data.categories,
             name: data.name,
             description: data.description,
             image: data.image,
@@ -352,22 +359,16 @@ export default function Edit({product, categories, attributes, attributes_values
                                     </div>
 
                                     <div className="grid gap-2">
-                                        <Label htmlFor="user_id">Category</Label>
-                                        <Select
-                                            onValueChange={(value) => setData("category_id", value)}
-                                        >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder={product.category.name}/>
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                {categories.map((category) => (
-                                                    <SelectItem key={category.id} value={String(category.id)}>
-                                                        {category.name}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        <InputError message={errors.category_id}/>
+                                        <Label htmlFor="categories">Category</Label>
+                                        <MultiSelect
+                                            options={categories}
+                                            onValueChange={handleChangeCategories}
+                                            defaultValue={product.categories.map((category) => category.id)}
+                                            placeholder="Select categories"
+                                            variant="inverted"
+                                            animation={2}
+                                        />
+                                        <InputError message={errors.categories}/>
                                     </div>
 
                                     <div className="grid gap-2">

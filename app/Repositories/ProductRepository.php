@@ -42,7 +42,11 @@ class ProductRepository extends BaseRepositories implements ProductContract
             ->event('store')
             ->log('created: ' . $this->model);
 
-        return $this->model::create($data);
+        $product = $this->model::create($data);
+
+        $product->categories()->attach($data['categories']);
+
+        return $product;
     }
 
     public function update($model, array $data)
@@ -69,6 +73,8 @@ class ProductRepository extends BaseRepositories implements ProductContract
             ->performedOn($this->model)
             ->event('update')
             ->log('edited: ' . $this->model);
+
+        $model->categories()->sync($data['categories']);
 
         return $model->refresh();
     }

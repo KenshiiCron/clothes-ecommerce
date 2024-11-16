@@ -36,6 +36,7 @@ import {
 } from 'ckeditor5';
 
 import 'ckeditor5/ckeditor5.css';
+import {MultiSelect} from "@/components/multi-select";
 
 
 export type Category = {
@@ -47,13 +48,18 @@ interface createCategory {
     categories: Category[]
 }
 
-export default function Create({categories}: createCategory) {
+export default function Create({categories}: any) {
     const {data, setData, post, processing, errors, reset} = useForm({
-        category_id: "",
+        categories: [],
         name: "",
         description: "",
         image: null,
     });
+
+    const handleChangeCategories = (values: any) => {
+        setData('categories', values);
+        console.log(values)
+    }
 
     const [preview, setPreview] = useState(data.image);
     const handleImageChange = (e: any) => {
@@ -155,22 +161,15 @@ export default function Create({categories}: createCategory) {
 
                     <div className="grid gap-2">
                         <Label htmlFor="user_id">Category</Label>
-                        <Select
-                            value={data.category_id}
-                            onValueChange={(value) => setData("category_id", value)}
-                        >
-                            <SelectTrigger>
-                                <SelectValue placeholder="Select a category"/>
-                            </SelectTrigger>
-                            <SelectContent>
-                                {categories.map((category) => (
-                                    <SelectItem key={category.id} value={String(category.id)}>
-                                        {category.name}
-                                    </SelectItem>
-                                ))}
-                            </SelectContent>
-                        </Select>
-                        <InputError message={errors.category_id}/>
+                        <MultiSelect
+                            options={categories}
+                            onValueChange={handleChangeCategories}
+                            // defaultValue={selectedFrameworks}
+                            placeholder="Select categories"
+                            variant="inverted"
+                            animation={2}
+                        />
+                        <InputError message={errors.categories}/>
                     </div>
 
                     <div className="grid gap-2">

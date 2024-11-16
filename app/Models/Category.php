@@ -25,8 +25,8 @@ class Category extends Model
     {
         return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/image-default.jpg');
     }
-    public function products(): HasMany
+    public function products(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
     {
-        return $this->hasMany(Product::class);
+        return $this->belongsToMany(Product::class, 'product_categories');
     }
 }

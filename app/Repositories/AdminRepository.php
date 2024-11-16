@@ -39,6 +39,7 @@ class AdminRepository extends BaseRepositories implements AdminContract
             ->performedOn($this->model)
             ->event('store')
             ->log('created: '. $this->model);
+
         $admin = $this->model::create($data);
         $admin->assignRole($data['roles']);
         return $admin;

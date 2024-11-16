@@ -19,5 +19,11 @@ class CategorySeeder extends Seeder
             'description'     => 'Test Category Description',
             'featured'     => true,
         ]);
+        Category::updateOrCreate([
+            'name'      => 'Test Category 2',
+            'slug'     => 'test-category-2',
+            'description'     => 'Test Category 2 Description',
+            'featured'     => true,
+        ]);
     }
 }

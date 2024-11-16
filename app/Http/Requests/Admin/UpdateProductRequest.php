@@ -22,10 +22,11 @@ class UpdateProductRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'category_id' => ['required','exists:categories,id'],
+            'categories' => ['required', 'array'],
+            'categories.*' => ['required', 'integer', 'exists:categories,id'],
             'name' => ['required', 'string', 'max:255'],
-            'description' => ['string','sometimes'],
-            'image' => ['nullable', 'file', 'max:'.config('settings.max_upload_size')],
+            'description' => ['sometimes', 'string'],
+            'image' => ['nullable', 'file', 'max:' . config('settings.max_upload_size')],
         ];
     }
 }

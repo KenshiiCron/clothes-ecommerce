@@ -67,10 +67,11 @@ class ProductController extends Controller
     {
         $product = $this->product->setRelations([
             'inventories.attribute_values',
-            'category',
+            'categories',
             'attributes',
             'images'
         ])->findOneById($id);
+
         $attributes_values = [];
         foreach($product->attributes as $attribute) {
             $attributes_values[] = [
@@ -88,6 +89,7 @@ class ProductController extends Controller
 
         $attributes = Attribute::whereNotIn('id',$product->attributes->pluck('id')->toArray())->get(['id', 'name']);
         $categories = Category::select('id', 'name')->get();
+
         return Inertia::render('products/edit', compact('product','categories','attributes'
             ,'attributes_values'));
     }
@@ -131,7 +133,7 @@ class ProductController extends Controller
         return Inertia::location(route('admin.products.edit', $id));
     }
 
-    public function attachAttribute($id, Request $request)
+    public function attachAttribute($id, Request $request): \Illuminate\Http\RedirectResponse
     {
         $data = $request->validate([
             'product_id' => 'required',
@@ -142,7 +144,7 @@ class ProductController extends Controller
     }
 
     public
-    function dettachAttribute($id, Request $request)
+    function dettachAttribute($id, Request $request): \Illuminate\Http\RedirectResponse
     {
         $data = $request->validate([
             'product_id' => 'required', 'exists:products,id'
@@ -152,7 +154,7 @@ class ProductController extends Controller
         return redirect()->back();
     }
 
-    public function importProducts(Request $request)
+    public function importProducts(Request $request): void
     {
         $request->validate([
             'file' => ['required', 'mimes:xls,xlsx,csv', 'max:'.config('settings.max_upload_size')],
@@ -161,15 +163,22 @@ class ProductController extends Controller
         Excel::import(new ProductImport,$request->file('file'));
     }
 
-    public function exportsProducts()
+    public function exportsProducts(): \Symfony\Component\HttpFoundation\BinaryFileResponse
     {
         return Excel::download(new ProductExports, 'export-products.xlsx');
     }
 
-    public function destroy($id)
+    public function destroy($id): \Symfony\Component\HttpFoundation\Response
     {
         $this->product->destroy($id);
-        session()->flash('success', __('messages.flash.delete'));
+
+        session()->flash('toast', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => __('messages.flash.delete',['resource'=>'product']),
+        ]);
+
+        return Inertia::location(route('admin.products.index'));
     }
 
 }

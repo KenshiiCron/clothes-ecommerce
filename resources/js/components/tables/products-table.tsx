@@ -100,7 +100,7 @@ export default function DataTableDemo({ products }: DataTableDemoProps) {
                     <CreateButton link="admin.products.create" />
                     <Dialog>
                         <DialogTrigger>
-                            <Button >
+                            <Button variant="outline">
                                 <p>Import File</p>
                                 <Upload/>
                             </Button>
