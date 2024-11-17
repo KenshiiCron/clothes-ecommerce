@@ -30,6 +30,7 @@ import {
 import {Link, usePage} from "@inertiajs/react";
 
 import {PageProps} from "@/types";
+import {TextGenerateEffect} from "@/components/ui/text-generate-effect";
 
 const data = {
     user: {
@@ -115,6 +116,8 @@ const data = {
 
 export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
     const {auth} = usePage<PageProps>().props;
+    const date = new Date();
+    const words = `ALGEORITHME© ${date.getFullYear()}`;
     return (
         <Sidebar variant="inset" {...props}>
             <SidebarHeader>
@@ -141,6 +144,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={auth.user}/>
+                <TextGenerateEffect words={words} />
             </SidebarFooter>
         </Sidebar>
     )

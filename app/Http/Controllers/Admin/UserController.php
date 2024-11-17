@@ -36,7 +36,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = $this->user->setRelations(['orders'])->findByFilter();
+        $users = $this->user->setRelations(['orders', 'wishlist'])->findByFilter();
         return Inertia::render('users/index', compact('users'));
     }
 
@@ -62,7 +62,7 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = $this->user->findOneById($id);
+        $user = $this->user->setRelations(['orders', 'wishlist'])->findOneById($id);
         return Inertia::render('users/show',compact('user'));
     }
 

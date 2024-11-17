@@ -56,20 +56,12 @@ import {
 
 import {Switch} from "@/components/ui/switch";
 import {Badge} from "@/components/ui/badge";
-import {PageProps} from "@/types";
+import {PageProps, User} from "@/types";
 import {Link, useForm} from "@inertiajs/react";
 
 import {CreateButton} from "@/components/elements/create-button";
+import {GlareCard} from "@/components/ui/glare-card";
 
-export type User = {
-    id: string;
-    name: string;
-    email: string;
-    orders: Array<any>;
-    image_url: string;
-    created_at: string;
-    updated_at: string;
-};
 
 export const columns: ColumnDef<User>[] = [
     {
@@ -171,6 +163,33 @@ export const columns: ColumnDef<User>[] = [
         },
     },
     {
+        accessorKey: "wishlist",
+        header: ({column}) => {
+            return (
+                <Button
+                    variant="ghost"
+                    onClick={() =>
+                        column.toggleSorting(column.getIsSorted() === "asc")
+                    }
+                >
+                    Wishlist
+                    <ArrowUpDown className="ml-2 h-4 w-4"/>
+                </Button>
+            );
+        },
+        cell: ({row}) => {
+            return (
+                <div className="capitalize">
+                    {/* <Switch value={row.getValue("orders")} /> */}
+                    <Badge
+                    >
+                        {row.getValue("wishlist").length}
+                    </Badge>
+                </div>
+            );
+        },
+    },
+    {
         id: "actions",
         enableHiding: false,
         cell: ({row}) => {
@@ -247,6 +266,7 @@ interface DataTableDemoProps {
 }
 
 export default function DataTableDemo({users}: DataTableDemoProps) {
+    console.log(users);
     const [sorting, setSorting] = React.useState<SortingState>([]);
     const [columnFilters, setColumnFilters] =
         React.useState<ColumnFiltersState>([]);

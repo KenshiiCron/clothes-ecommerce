@@ -22,17 +22,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ProductSeeder::class);
         $this->call(AttributeSeeder::class);
         $this->call(AttributeValueSeeder::class);
-//        $this->call(OrderSeeder::class);
-//
-//        User::factory()->create([
-//            'name' => 'Test User',
-//            'email' => 'test@example.com',
-//        ]);
-//
-//        Admin::create([
-//            'name' => 'Test Admin',
-//            'email' => 'test@example.com',
-//            'password' => bcrypt('password'),
-//        ]);
+        $this->call(WishlistSeeder::class);
     }
 }

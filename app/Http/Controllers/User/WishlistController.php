@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\User;
 
-use App\Http\Requests\StoreOrderItemRequest;
-use App\Http\Requests\UpdateOrderItemRequest;
-use App\Models\OrderItem;
+use App\Http\Controllers\Controller;
+use App\Http\Requests\StoreWishlistRequest;
+use App\Http\Requests\UpdateWishlistRequest;
+use App\Models\Wishlist;
 
-class OrderItemController extends Controller
+class WishlistController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -27,7 +28,7 @@ class OrderItemController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreOrderItemRequest $request)
+    public function store(StoreWishlistRequest $request)
     {
         //
     }
@@ -35,7 +36,7 @@ class OrderItemController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(OrderItem $orderItem)
+    public function show(Wishlist $wishlist)
     {
         //
     }
@@ -43,7 +44,7 @@ class OrderItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(OrderItem $orderItem)
+    public function edit(Wishlist $wishlist)
     {
         //
     }
@@ -51,7 +52,7 @@ class OrderItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrderItemRequest $request, OrderItem $orderItem)
+    public function update(UpdateWishlistRequest $request, Wishlist $wishlist)
     {
         //
     }
@@ -59,7 +60,7 @@ class OrderItemController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(OrderItem $orderItem)
+    public function destroy(Wishlist $wishlist)
     {
         //
     }

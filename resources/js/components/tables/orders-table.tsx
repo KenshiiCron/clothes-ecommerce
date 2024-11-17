@@ -17,7 +17,7 @@ import {
     ArrowUpDown,
     Trash, Eye,
     MoreHorizontal, Pencil,
-    PlusCircleIcon, DollarSign, Check, Ellipsis, LucideCross, X,
+    PlusCircleIcon, DollarSign, Check, Ellipsis, LucideCross, X, Package, Clock,
 } from "lucide-react";
 
 import {Button, buttonVariants} from "@/components/ui/button";
@@ -368,7 +368,7 @@ export default function OrdersTable({
                         <CardTitle className="text-md font-medium">
                             Total Orders
                         </CardTitle>
-                        <Ellipsis size={20}/>
+                        <Package size={20}/>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{totalOrders}</div>
@@ -382,7 +382,7 @@ export default function OrdersTable({
                         <CardTitle className="text-md font-medium">
                             Orders Pending
                         </CardTitle>
-                        <Ellipsis size={20}/>
+                        <Clock size={20}/>
                     </CardHeader>
                     <CardContent>
                         <div className="text-2xl font-bold">{totalPending}</div>

@@ -16,6 +16,7 @@ class UserSeeder extends Seeder
         User::updateOrCreate([
             'name'      => 'Site User',
             'email'     => 'user@example.com',
+            'phone'     => '0123 45 67 89',
             'password'  => bcrypt('password'),
         ]);
 

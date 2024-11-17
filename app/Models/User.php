@@ -51,13 +51,18 @@ class User extends Authenticatable implements MustVerifyEmail
         ];
     }
 
-    public function getImageUrlAttribute()
+    public function getImageUrlAttribute(): string
     {
         return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/user-default.png');
     }
 
-    public function orders()
+    public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
     {
         return $this->hasMany(Order::class);
+    }
+
+    public function wishlist(): \Illuminate\Database\Eloquent\Relations\BelongsToMany
+    {
+        return $this->belongsToMany(Product::class, 'wishlists');
     }
 }
