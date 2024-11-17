@@ -34,7 +34,7 @@ class UserController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): \Inertia\Response
     {
         $users = $this->user->setRelations(['orders', 'wishlist'])->findByFilter();
         return Inertia::render('users/index', compact('users'));
@@ -43,7 +43,7 @@ class UserController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): \Inertia\Response
     {
         return Inertia::render('users/create');
     }
@@ -51,16 +51,23 @@ class UserController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserRequest $request)
+    public function store(StoreUserRequest $request): \Illuminate\Http\RedirectResponse
     {
         $user = $this->user->new($request->validated());
+
+        session()->flash('toast', [
+            'type' => 'success',
+            'title' => 'Success!',
+            'message' => __('messages.flash.update',['resource'=>'product']),
+        ]);
+
         return redirect()->route('admin.users.index');
     }
 
     /**
      * Display the specified resource.
      */
-    public function show($id)
+    public function show($id): \Inertia\Response
     {
         $user = $this->user->setRelations(['orders', 'wishlist'])->findOneById($id);
         return Inertia::render('users/show',compact('user'));
@@ -69,7 +76,7 @@ class UserController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit($id)
+    public function edit($id): \Inertia\Response
     {
         $user = $this->user->findOneById($id);
         return Inertia::render('users/edit',compact('user'));
@@ -80,21 +87,14 @@ class UserController extends Controller
      */
     public function update(UpdateUserRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
-        $user = $this->user->update($id, $request->validated());
+        $this->user->update($id, $request->validated());
         return redirect()->route('admin.users.index');
     }
-
-   /* public function updatehh(UpdateUserRequest $request, $id)
-    {
-        dd($request->validated());
-        $user = $this->user->update($id,$request->validated());
-        return redirect()->route('admin.users.index');
-    }*/
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy($id)
+    public function destroy($id): \Illuminate\Http\RedirectResponse
     {
         $this->user->destroy($id);
         session()->flash('success',__('messages.flash.delete'));
