@@ -23,5 +23,6 @@ class DatabaseSeeder extends Seeder
         $this->call(AttributeSeeder::class);
         $this->call(AttributeValueSeeder::class);
         $this->call(WishlistSeeder::class);
+        $this->call(NewsLetterSeeder::class);
     }
 }

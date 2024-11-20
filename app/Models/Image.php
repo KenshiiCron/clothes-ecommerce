@@ -16,7 +16,7 @@ class Image extends Model
 
     public function getImageUrlAttribute()
     {
-        return isset($this->path) ? asset('storage/' . $this->path) : asset('assets/front/images/image-default.jpg');
+        return isset($this->path) ? asset('storage/' . $this->path) : asset('assets/front/images/defaults/image-default.jpg');
     }
 
     public function product() : BelongsTo

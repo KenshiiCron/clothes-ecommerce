@@ -1,8 +1,8 @@
 <?php
 
-use App\Http\Controllers\Admin\TestController;
+namespace App\Http\Controllers\Admin;
+
 use App\Http\Controllers\ProfileController;
-use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
 
@@ -18,26 +18,27 @@ Route::middleware(['auth:admin', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 Route::middleware(['auth:admin', 'verified'])->group(function () {
-    Route::resource('users',\App\Http\Controllers\Admin\UserController::class);
-    Route::resource('admins',\App\Http\Controllers\Admin\AdminController::class);
-    Route::resource('roles',\App\Http\Controllers\Admin\RoleController::class);
-    Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
-    Route::resource('categories',\App\Http\Controllers\Admin\CategoryController::class);
-    Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
-    Route::resource('inventories',\App\Http\Controllers\Admin\InventoryController::class);
-    Route::put('products/attach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'attachAttribute'])->name('products.attach');
-    Route::put('products/dettach/{id}',[\App\Http\Controllers\Admin\ProductController::class,'dettachAttribute'])->name('products.dettach');
-    Route::post('products/import',[\App\Http\Controllers\Admin\ProductController::class,'importProducts'])->name('products.import');
-    Route::get('products/export',[\App\Http\Controllers\Admin\ProductController::class,'exportsProducts'])->name('products.export');
-    Route::resource('brands',\App\Http\Controllers\Admin\BrandController::class);
-    Route::resource('products',\App\Http\Controllers\Admin\ProductController::class);
-    Route::resource('attributes',\App\Http\Controllers\Admin\AttributeController::class);
-    Route::resource('attribute-values',\App\Http\Controllers\Admin\AttributeValueController::class);
-    Route::resource('orders',\App\Http\Controllers\Admin\OrderController::class);
-    Route::resource('carousels',\App\Http\Controllers\Admin\CarouselController::class);
-    Route::get('settings',[App\Http\Controllers\Admin\SettingController::class,'index'])->name('settings.index');
-    Route::post('settings',[App\Http\Controllers\Admin\SettingController::class,'update'])->name('settings.update');
-    Route::post('products/images/{id}',[\App\Http\Controllers\Admin\ProductController::class,'updateImages'])->name('products.images');
+    Route::resource('users',UserController::class);
+    Route::resource('admins',AdminController::class);
+    Route::resource('roles',RoleController::class);
+    Route::resource('carousels',CarouselController::class);
+    Route::resource('categories',CategoryController::class);
+    Route::resource('products',ProductController::class);
+    Route::resource('inventories',InventoryController::class);
+    Route::resource('brands',BrandController::class);
+    Route::resource('products',ProductController::class);
+    Route::resource('attributes',AttributeController::class);
+    Route::resource('attribute-values',AttributeValueController::class);
+    Route::resource('orders',OrderController::class);
+    Route::resource('carousels',CarouselController::class);
+    Route::resource('newsletters',NewsLetterController::class);
+    Route::put('products/attach/{id}',[ProductController::class,'attachAttribute'])->name('products.attach');
+    Route::put('products/dettach/{id}',[ProductController::class,'dettachAttribute'])->name('products.dettach');
+    Route::post('products/import',[ProductController::class,'importProducts'])->name('products.import');
+    Route::get('products/export',[ProductController::class,'exportsProducts'])->name('products.export');
+    Route::get('settings',[SettingController::class,'index'])->name('settings.index');
+    Route::post('settings',[SettingController::class,'update'])->name('settings.update');
+    Route::post('products/images/{id}',[ProductController::class,'updateImages'])->name('products.images');
 
 //    Test Routes
     Route::get('tests',[TestController::class,'index'])->name('tests.index');

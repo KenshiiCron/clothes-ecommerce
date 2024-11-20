@@ -53,8 +53,7 @@ class BrandController extends Controller
      */
     public function store(StoreBrandRequest $request)
     {
-        $data = $request->validated();
-        $brand = $this->brand->new($data);
+        $this->brand->new($request->validated());
         return redirect()->route('admin.brands.index');
     }
 
@@ -81,16 +80,9 @@ class BrandController extends Controller
      */
     public function update(UpdateBrandRequest $request, $id): \Illuminate\Http\RedirectResponse
     {
-        $brand = $this->brand->update($id, $request->validated());
+        $this->brand->update($id, $request->validated());
         return redirect()->route('admin.brands.index');
     }
-
-   /* public function updatehh(UpdateBrandRequest $request, $id)
-    {
-        dd($request->validated());
-        $brand = $this->brand->update($id,$request->validated());
-        return redirect()->route('admin.brands.index');
-    }*/
 
     /**
      * Remove the specified resource from storage.

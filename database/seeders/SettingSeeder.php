@@ -70,7 +70,7 @@ class SettingSeeder extends Seeder
             'value' => '',
         ],
         [
-            'key' => 'bio',
+            'key' => 'seo_meta_keywords',
             'value' => '',
         ],
         [
@@ -118,16 +118,16 @@ class SettingSeeder extends Seeder
             'value' => "",
         ],
         [
-            'key' => 'zr_delivery',
-            'value' => "",
-        ],
-        [
             'key' => 'yalidine_api_id',
             'value' => '',
         ],
         [
             'key' => 'yalidine_api_token',
             'value' => '',
+        ],
+        [
+            'key' => 'zr_delivery',
+            'value' => "",
         ],
         [
             'key' => 'zr_express_api_key',
@@ -138,12 +138,20 @@ class SettingSeeder extends Seeder
             'value' => '',
         ],
         [
+            'key' => 'noest_delivery',
+            'value' => "",
+        ],
+        [
             'key' => 'noest_api_key',
             'value' => '',
         ],
         [
             'key' => 'noest_api_secret',
             'value' => '',
+        ],
+        [
+            'key' => 'maystro_delivery',
+            'value' => "",
         ],
         [
             'key' => 'maystro_api_key',
@@ -154,12 +162,21 @@ class SettingSeeder extends Seeder
             'value' => '',
         ],
         [
+            'key' => 'guepex_delivery',
+            'value' => "",
+        ],
+        [
             'key' => 'guepex_api_key',
             'value' => '',
         ],
         [
             'key' => 'guepex_api_secret',
             'value' => '',
+        ],
+
+        [
+            'key' => 'anderson_delivery',
+            'value' => "",
         ],
         [
             'key' => 'anderson_api_key',

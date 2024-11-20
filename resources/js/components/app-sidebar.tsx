@@ -11,7 +11,7 @@ import {
     User,
     ShoppingBag,
     Image,
-    Code
+    Code, Mail
 } from "lucide-react"
 
 import {NavMain} from "@/components/nav-main"
@@ -80,7 +80,7 @@ const data = {
         },
         {
             title: "Accounts",
-            url: "#",
+            url: "/admin/users",
             icon: User,
             isActive: false,
             items: [
@@ -93,6 +93,11 @@ const data = {
                     url: "/admin/admins",
                 },
             ]
+        },
+        {
+            title: "Newsletters",
+            url: "/admin/newsletters",
+            icon: Mail,
         },
         {
             title: "Tests",
@@ -144,7 +149,7 @@ export function AppSidebar({...props}: React.ComponentProps<typeof Sidebar>) {
             </SidebarContent>
             <SidebarFooter>
                 <NavUser user={auth.user}/>
-                <TextGenerateEffect words={words} />
+                <TextGenerateEffect words={words}/>
             </SidebarFooter>
         </Sidebar>
     )

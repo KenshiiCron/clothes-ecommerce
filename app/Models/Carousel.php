@@ -26,6 +26,6 @@ class Carousel extends Model
 
     public function getImageUrlAttribute()
     {
-        return isset($this->image) ? asset('storage/' . $this->image) : asset('assets/front/images/image-default.jpg');
+        return isset($this->image) ? asset('storage/' . $this->image) : asset('assets/front/images/defaults/image-default.jpg');
     }
 }

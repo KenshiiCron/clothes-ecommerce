@@ -5,7 +5,8 @@
             "no": "Non"
         },
         "texts": {
-            "delete_brand": "Cette action ne peut pas être annulée. Cela supprimera définitivement cette marque, les produits et les commandes ne seront pas supprimés."
+            "delete_brand": "Cette action ne peut pas être annulée. Cela supprimera définitivement cette marque, les produits et les commandes ne seront pas supprimés.",
+            "delete_newsletter": "Cette action ne peut pas être annulée. Cela supprimera définitivement cet email de la liste de newsletter."
         }
     },
     "actions": {
@@ -35,6 +36,7 @@
     "labels": {
         "models": {
             "user": "Utilisateur|Utilisateurs",
+            "newsletter": "Newsletter|Newsletters",
             "admin": "Administrateur|Administrateurs",
             "brand": "Marque|Marques",
             "category": "Catégorie|Catégories",

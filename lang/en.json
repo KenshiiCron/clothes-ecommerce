@@ -5,7 +5,8 @@
             "no": "No"
         },
         "texts": {
-            "delete_brand": "This action cannot be undone. This will permanently delete this brand, products and orders will not be deleted."
+            "delete_brand": "This action cannot be undone. This will permanently delete this brand, products and orders will not be deleted.",
+            "delete_newsletter": "This action cannot be undone. This will permanently delete this email from the newsletter list."
         }
     },
     "actions": {
@@ -35,6 +36,7 @@
     "labels": {
         "models": {
             "user": "User|Users",
+            "newsletter": "Newsletter|Newsletters",
             "admin": "Admin|Admins",
             "brand": "Brand|Brands",
             "category": "Category|Categories",
