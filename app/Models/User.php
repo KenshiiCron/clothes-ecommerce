@@ -53,7 +53,7 @@ class User extends Authenticatable implements MustVerifyEmail
 
     public function getImageUrlAttribute(): string
     {
-        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/user-default.png');
+        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/defaults/user-default.png');
     }
 
     public function orders(): \Illuminate\Database\Eloquent\Relations\HasMany
