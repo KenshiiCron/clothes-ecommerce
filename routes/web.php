@@ -32,3 +32,5 @@ use Inertia\Inertia;
 //require __DIR__.'/auth.php';
 
 Route::get('locale/{locale}', [\App\Http\Controllers\User\WebsiteController::class, 'switchLocale'])->name('switchLocale');
+
+Route::get('/', [\App\Http\Controllers\User\WebsiteController::class, 'home'])->name('home');

@@ -21,4 +21,9 @@ class WebsiteController extends Controller
 
         return redirect()->back();
     }
+
+    public function home()
+    {
+        return view('pages.home');
+    }
 }
