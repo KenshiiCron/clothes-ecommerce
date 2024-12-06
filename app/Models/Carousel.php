@@ -2,7 +2,9 @@
 
 namespace App\Models;
 
+use App\Enums\Carousel\State;
 use App\Enums\Carousel\Type;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 
 class Carousel extends Model
@@ -20,7 +22,7 @@ class Carousel extends Model
     protected $appends = ['image_url'];
 
     protected $casts = [
-        'state' => 'boolean',
+        'state' => State::class,
         'type' => Type::class,
     ];
 
@@ -28,4 +30,10 @@ class Carousel extends Model
     {
         return isset($this->image) ? asset('storage/' . $this->image) : asset('assets/front/images/defaults/image-default.jpg');
     }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('state', '=', State::ACTIVE);
+    }
+
 }

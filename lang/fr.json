@@ -110,6 +110,7 @@
         }
     },
     "navigation": {
+        "home": "Accueil",
         "dashboard": "Tableau de bord",
         "orders": "Commandes",
         "products": "Produits",

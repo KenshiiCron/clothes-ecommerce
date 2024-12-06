@@ -110,6 +110,7 @@
         }
     },
     "navigation": {
+        "home": "الرئيسية",
         "dashboard": "لوحة التحكم",
         "orders": "الطلبات",
         "products": "المنتجات",

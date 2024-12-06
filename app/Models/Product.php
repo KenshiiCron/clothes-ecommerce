@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -17,8 +18,38 @@ class Product extends Model
         'name', 'slug', 'description','category_id','image'
     ];
 
+    protected $casts = [
+        'featured' => 'boolean',
+        'limited' => 'boolean',
+        'active' => 'boolean'
+    ];
+
     protected $appends = ['image_url'];
 
+    // Appends
+
+    public function getImageUrlAttribute()
+    {
+        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/defaults/image-default.jpg');
+    }
+
+    // Scopes
+    public function scopeFeatured(Builder $query): void
+    {
+        $query->where('featured', '=', true);
+    }
+
+    public function scopeLimited(Builder $query): void
+    {
+        $query->where('limited', '=', true);
+    }
+
+    public function scopeActive(Builder $query): void
+    {
+        $query->where('state', '=', true);
+    }
+
+    // Relations
     public function attributes(): BelongsToMany
     {
         return $this->belongsToMany(Attribute::class);
@@ -42,10 +73,5 @@ class Product extends Model
     public function inventories(): HasMany
     {
         return $this->hasMany(Inventory::class);
-    }
-
-    public function getImageUrlAttribute()
-    {
-        return isset($this->image) ? asset('storage/'.$this->image) : asset('assets/front/images/defaults/image-default.jpg');
     }
 }

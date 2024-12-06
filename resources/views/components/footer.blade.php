@@ -135,7 +135,7 @@
                 <div class="row">
                     <div class="col-12">
                         <div class="footer-bottom-wrap d-flex gap-20 flex-wrap justify-content-between align-items-center">
-                            <div class="footer-menu_item">© 2024 Ecomus Store. All Rights Reserved</div>
+                            <div class="footer-menu_item">© {{\Carbon\Carbon::now()->format('Y')}} Algeorithme. All Rights Reserved</div>
                             <div class="tf-payment">
                                 <img src="{{asset('assets/front/images/payments/visa.png')}}" alt="">
                                 <img src="{{asset('assets/front/images/payments/img-1.png')}}" alt="">

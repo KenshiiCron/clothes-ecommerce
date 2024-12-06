@@ -39,13 +39,13 @@ export default function Roles({settings} : PageProps<{ settings: any }>) {
 
     const { locale } = usePage().props;
 
-    const {data: localeData, setData: setLocaleData, get} = useForm({
+    const {data: localeData, setData: setLocaleData, post: postLocale} = useForm({
         locale: locale,
     });
 
     const handleLocaleChange = (value: string) => {
         setLocaleData("locale", value);
-        get(route("switchLocale", { locale: value }));
+        postLocale(route("switchLocale", { locale: value }));
     };
 
     const submit: FormEventHandler = (e) => {

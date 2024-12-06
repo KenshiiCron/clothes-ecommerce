@@ -85,7 +85,7 @@ class SettingSeeder extends Seeder
         //        Social Media
         [
             'key' => 'social_facebook',
-            'value' => '',
+            'value' => 'https://facebook.com/',
         ],
         [
             'key' => 'facebook_pixel',
@@ -93,23 +93,19 @@ class SettingSeeder extends Seeder
         ],
         [
             'key' => 'social_twitter',
-            'value' => '',
+            'value' => 'https://twitter.com/',
         ],
         [
             'key' => 'social_instagram',
-            'value' => '',
-        ],
-        [
-            'key' => 'social_linkedin',
-            'value' => '',
+            'value' => 'https://instagram.com/',
         ],
         [
             'key' => 'social_youtube',
-            'value' => '',
+            'value' => 'https://youtube.com/',
         ],
         [
             'key' => 'social_tiktok',
-            'value' => '',
+            'value' => 'https://tiktok.com/',
         ],
 
         //        Delivery Companies API Keys (bcrypt encrypted)
