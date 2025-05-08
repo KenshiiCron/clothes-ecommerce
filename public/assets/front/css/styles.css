@@ -108,6 +108,25 @@
 .color-main-text-2 {
     --main: #253d4e;
 }
+.loader {
+    width:20px;
+    height: 20px;
+    border: 5px solid #FFF;
+    border-bottom-color: transparent;
+    border-radius: 50%;
+    display: inline-block;
+    box-sizing: border-box;
+    animation: rotation 1s linear infinite;
+}
+
+@keyframes rotation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
 
 /*---------- Reset css styles ----------- */
 html,
@@ -9600,6 +9619,7 @@ header.header-bg {
 
 .variant-picker-item .variant-picker-values input:checked + label.style-text:not(.color-btn) {
     background-color: var(--main);
+    color: white;
 }
 
 .variant-picker-item .variant-picker-values input:checked + label.style-text:not(.color-btn) p {

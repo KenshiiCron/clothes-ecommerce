@@ -51,7 +51,8 @@ class ProductController extends Controller
     public function show(string $id): \Illuminate\Contracts\View\View|\Illuminate\Foundation\Application|\Illuminate\Contracts\View\Factory
     {
         $product = $this->product->findOneById($id);
-        return view('user.product.show', compact('product'));
+
+        return view('pages.product', compact('product'));
     }
 
     /**

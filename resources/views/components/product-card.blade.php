@@ -2,6 +2,9 @@
     <div class="card-product-wrapper">
         <a href="{{route('products.show', $product->id)}}" class="product-img">
             <img class="lazyload img-product"
+                 height="440"
+                 width="330"
+                 style="aspect-ratio: 0.75; object-fit: cover"
                  data-src="{{$product->image_url}}"
                  src="{{$product->image_url}}" alt="image-product">
             <img class="lazyload img-hover"
@@ -19,13 +22,13 @@
                 <span class="tooltip">Add to Wishlist</span>
                 <span class="icon icon-delete"></span>
             </a>
-            <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
+      {{--      <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft"
                class="box-icon bg_white compare btn-icon-action">
                 <span class="icon icon-compare"></span>
                 <span class="tooltip">Add to Compare</span>
                 <span class="icon icon-check"></span>
-            </a>
-            <a href="#quick_view" data-bs-toggle="modal"
+            </a>--}}
+            <a href="{{route('products.show', $product->id)}}" data-bs-toggle="modal"
                class="box-icon bg_white quickview tf-btn-loading">
                 <span class="icon icon-view"></span>
                 <span class="tooltip">Quick View</span>

@@ -32,6 +32,9 @@
     {{-- CSS Imports --}}
 
     @stack('css')
+    @livewireStyles
+    {{--@viteReactRefresh
+    @vite(['resources/views/js/app.jsx'])--}}
 </head>
 
 <body>
@@ -1774,5 +1777,6 @@
 {{-- Javascript Imports --}}
 
 @stack('js')
+@livewireScripts
 </body>
 </html>
