@@ -115,6 +115,7 @@ trait FindAbleTrait
             $result->latest();
         }
 
+
         return $this->getPerPage() > 0 ? $result->paginate($this->getPerPage(),$this->getColumns(),$this->getPageName())->withQueryString() : $result->get();
     }
 

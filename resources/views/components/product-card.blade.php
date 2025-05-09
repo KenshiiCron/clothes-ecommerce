@@ -42,27 +42,22 @@
         </div>
     </div>
     <div class="card-product-info">
-        <a href="product-detail.html" class="title link">Ribbed Tank Top</a>
-        <span class="price">$16.95</span>
+        <a href="product-detail.html" class="title link">{{$product->name}}</a>
+        <span class="price">{{$product->inventories->min('price') ?? '/'}} DA</span>
         <ul class="list-color-product">
-            <li class="list-color-item color-swatch active">
-                <span class="tooltip">Orange</span>
-                <span class="swatch-value bg_orange-3"></span>
-                <img class="lazyload" data-src="{{asset('assets/front/images/products/orange-1.jpg')}}"
-                     src="{{asset('assets/front/images/products/orange-1.jpg')}}" alt="image-product">
-            </li>
-            <li class="list-color-item color-swatch">
-                <span class="tooltip">Black</span>
-                <span class="swatch-value bg_dark"></span>
-                <img class="lazyload" data-src="{{asset('assets/front/images/products/black-1.jpg')}}"
-                     src="{{asset('assets/front/images/products/black-1.jpg')}}" alt="image-product">
-            </li>
-            <li class="list-color-item color-swatch">
-                <span class="tooltip">White</span>
-                <span class="swatch-value bg_white"></span>
-                <img class="lazyload" data-src="{{asset('assets/front/images/products/white-1.jpg')}}"
-                     src="{{asset('assets/front/images/products/white-1.jpg')}}" alt="image-product">
-            </li>
+            @foreach($product->inventories as $inventory)
+                @foreach($inventory->attribute_values as $value)
+                    @if(strtolower($value->attribute->name) == 'color')
+                        <li class="list-color-item color-swatch active">
+                            <span class="tooltip">{{ucfirst($value->value)}}</span>
+                            <span class="swatch-value" style="background-color: {{$value->value}}"></span>
+                            <img class="lazyload" data-src="{{$product->image_url}}"
+                                 src="{{$product->image_url}}" alt="image-product">
+                        </li>
+                    @endif
+                @endforeach
+            @endforeach
+
         </ul>
     </div>
 </div>

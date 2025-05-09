@@ -43,6 +43,10 @@ class Product extends Model
     {
         $query->where('limited', '=', true);
     }
+    public function scopeHasInventories(Builder $query): void
+    {
+        $query->whereHas('inventories');
+    }
 
     public function scopeActive(Builder $query): void
     {

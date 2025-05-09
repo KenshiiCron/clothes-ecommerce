@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Contracts\ProductContract;
 use App\Enums\Carousel\State;
 use App\Http\Controllers\Controller;
 use App\Models\Carousel;
@@ -36,9 +37,10 @@ class WebsiteController extends Controller
         return view('pages.home', compact('carousels', 'categories', 'featuredProducts'));
     }
 
-    public function shop()
+    public function shop(ProductContract $product)
     {
 
+        return view('pages.shop');
     }
 
     public function about()

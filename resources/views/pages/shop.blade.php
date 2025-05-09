@@ -1,0 +1,15 @@
+@extends('layouts.app')
+
+@section('content')
+    <div class="tf-page-title">
+        <div class="container-full">
+            <div class="heading text-center">New Arrival</div>
+            <p class="text-center text-2 text_black-2 mt_5">Shop through our latest selection of Fashion</p>
+        </div>
+    </div>
+    <!-- /page-title -->
+
+    <!-- Section Product -->
+
+    <livewire:shop  />
+@endsection
