@@ -29,11 +29,11 @@
                             <span class="icon icon-arrow-down"></span>
                         </div>
                         <div class="dropdown-menu">
-                            <div class="select-item active">
+                            <div class="select-item active" wire:click="filter(['price','desc'])">
                                 <span class="text-value-item">Featured</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Best selling</span>
+                                <span class="text-value-item" >Best selling</span>
                             </div>
                             <div class="select-item">
                                 <span class="text-value-item">Alphabetically, A-Z</span>
@@ -48,10 +48,10 @@
                                 <span class="text-value-item">Price, high to low</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Date, old to new</span>
+                                <span class="text-value-item" wire:click="filter(['created_at','asc'])">Date, old to new</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Date, new to old</span>
+                                <span class="text-value-item" wire:click="filter(['created_at','desc'])">Date, new to old</span>
                             </div>
                         </div>
                     </div>

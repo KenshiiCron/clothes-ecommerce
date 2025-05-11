@@ -24,6 +24,7 @@ class ProductRepository extends BaseRepositories implements ProductContract
         \App\QueryFilter\Search::class,
         \App\QueryFilter\Category::class,
         \App\QueryFilter\AttributeValues::class,
+        \App\QueryFilter\CreatedAt::class,
     ])
     {
         parent::__construct($model, $filters);
