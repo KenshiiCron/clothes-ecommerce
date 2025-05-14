@@ -94,12 +94,16 @@
                         <label class="tf-field-label">Password *</label>
                     </div>
 
+
+
                     <div class="bottom align-items-center">
                         <div class="w-100 mb_15">
                             <button type="submit" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center">
                                 <span>Login</span>
                             </button>
                         </div>
+
+
 
                         <div class="w-100 mb_15">
                             {{--                                    {{ route('socialite.redirect', 'google') }}--}}
@@ -111,6 +115,11 @@
 
                     </div>
                 </form>
+                    <div class="w-100 mb_10">
+                        <a href="{{route('password.request')}}" class="btn-link fw-6 w-100 link">
+                            Forgot your password?
+                        </a>
+                    </div>
                     <div class="w-100">
                         <a href="{{route('register')}}" class="btn-link fw-6 w-100 link">
                             Don't have an account? Register here
