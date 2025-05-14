@@ -14,6 +14,7 @@ use Livewire\WithPagination;
 
 class Shop extends Component
 {
+    use WithPagination;
     protected $products;
     protected $categories;
     public $attribute_values = [];

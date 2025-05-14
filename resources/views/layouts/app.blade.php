@@ -1002,114 +1002,7 @@
     </div>
     <!-- /toolbarShopmb -->
 
-    <!-- modal login -->
-    <div class="modal modalCentered fade form-sign-in modal-part-content" id="login">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="header">
-                    <div class="demo-title">Log in</div>
-                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                </div>
-                <div class="tf-login-form">
-                    <form class="" action="my-account.html" accept-charset="utf-8">
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="email"  name="">
-                            <label class="tf-field-label" for="">Email *</label>
-                        </div>
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="password"  name="">
-                            <label class="tf-field-label" for="">Password *</label>
-                        </div>
-                        <div>
-                            <a href="#forgotPassword" data-bs-toggle="modal" class="btn-link link">Forgot your password?</a>
-                        </div>
-                        <div class="bottom">
-                            <div class="w-100">
-                                <button type="submit" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Log in</span></button>
-                            </div>
-                            <div class="w-100">
-                                <a href="#register" data-bs-toggle="modal" class="btn-link fw-6 w-100 link">
-                                    New customer? Create your account
-                                    <i class="icon icon-arrow1-top-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal modalCentered fade form-sign-in modal-part-content" id="forgotPassword">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="header">
-                    <div class="demo-title">Reset your password</div>
-                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                </div>
-                <div class="tf-login-form">
-                    <form class="">
-                        <div>
-                            <p>Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails</p>
-                        </div>
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="email"  name="">
-                            <label class="tf-field-label" for="">Email *</label>
-                        </div>
-                        <div>
-                            <a href="#login" data-bs-toggle="modal" class="btn-link link">Cancel</a>
-                        </div>
-                        <div class="bottom">
-                            <div class="w-100">
-                                <button type="submit" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Reset password</span></button>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal modalCentered fade form-sign-in modal-part-content" id="register">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="header">
-                    <div class="demo-title">Register</div>
-                    <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
-                </div>
-                <div class="tf-login-form">
-                    <form class="">
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="text"  name="">
-                            <label class="tf-field-label" for="">First name</label>
-                        </div>
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="text"  name="">
-                            <label class="tf-field-label" for="">Last name</label>
-                        </div>
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="email"  name="">
-                            <label class="tf-field-label" for="">Email *</label>
-                        </div>
-                        <div class="tf-field style-1">
-                            <input class="tf-field-input tf-input" placeholder=" " type="password"  name="">
-                            <label class="tf-field-label" for="">Password *</label>
-                        </div>
-                        <div class="bottom">
-                            <div class="w-100">
-                                <a href="register.html" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Register</span></a>
-                            </div>
-                            <div class="w-100">
-                                <a href="#login" data-bs-toggle="modal" class="btn-link fw-6 w-100 link">
-                                    Already have an account? Log in here
-                                    <i class="icon icon-arrow1-top-left"></i>
-                                </a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- /modal login -->
+
 
     <!-- shoppingCart -->
     <div class="modal fullRight fade modal-shopping-cart" id="shoppingCart">
@@ -1774,9 +1667,54 @@
 <script type="text/javascript" src="{{asset('assets/front/js/wow.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/front/js/multiple-modal.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/front/js/main.js')}}"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2-theme-bootstrap-4@4"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
 {{-- Javascript Imports --}}
 
 @stack('js')
 @livewireScripts
+<script>
+    let Toast = Swal.mixin({
+        toast: true,
+        position: 'top',
+        showConfirmButton: false,
+        timer: 3000,
+        customClass: {
+            popup: "my-custom-popup",
+            title: "my-custom-title",
+        },
+        didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer);
+            toast.addEventListener('mouseleave', Swal.resumeTimer);
+        }
+    });
+
+
+    @if(session()->has('success'))
+    Toast.fire({
+        icon: 'success',
+        title: '{{__('messages.flash.success')}}',
+        text: '{{session()->get('success')}}'
+    })
+    @endif
+
+    @if(session()->has('error'))
+    Toast.fire({
+        icon: 'error',
+        title: '{{__('messages.flash.error')}}',
+        text: '{{session()->get('error')}}'
+    })
+    @endif
+    Livewire.on('swal-toast', (event) => {
+        console.log(event)
+        Toast.fire({
+            icon: event[0].icon,
+            title: event[0].title,
+            text: event[0].text
+        });
+    });
+</script>
 </body>
 </html>
+

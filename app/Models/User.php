@@ -17,11 +17,16 @@ class User extends Authenticatable implements MustVerifyEmail
      * @var array<int, string>
      */
     protected $fillable = [
-        'name',
-        'phone',
-        'image',
         'email',
         'password',
+        'gender',
+        'phone',
+        'name',
+        'address',
+        'client_id',
+        'google_id',
+        'email_verified_at',
+        'image'
     ];
 
     /**
@@ -29,6 +34,12 @@ class User extends Authenticatable implements MustVerifyEmail
      *
      * @var array<int, string>
      */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'password' => 'hashed',
+        'gender' => \App\Enums\GenderEnum::class,
+    ];
+
     protected $hidden = [
         'password',
         'remember_token',
@@ -43,13 +54,7 @@ class User extends Authenticatable implements MustVerifyEmail
      */
 
 
-    protected function casts(): array
-    {
-        return [
-            'email_verified_at' => 'datetime',
-            'password' => 'hashed',
-        ];
-    }
+
 
     public function getImageUrlAttribute(): string
     {

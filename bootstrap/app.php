@@ -10,7 +10,8 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
             then: function () {
-            \Illuminate\Support\Facades\Route::middleware('web')->prefix('admin')->name('admin.')->group(__DIR__ . '/../routes/admin/admin.php');
+            \Illuminate\Support\Facades\Route::middleware('admin')->prefix('admin')->name('admin.')->group(__DIR__ . '/../routes/admin/admin.php');
+            \Illuminate\Support\Facades\Route::middleware('web')->group(__DIR__ . '/../routes/web.php');
         }
     )
     ->withMiddleware(function (Middleware $middleware) {
@@ -25,6 +26,7 @@ return Application::configure(basePath: dirname(__DIR__))
             }
             return route('login');
         });
+
 
         $middleware->alias([
             'guest' => \App\Http\Middleware\OnlyGuestAllowedMiddleware::class

@@ -15,6 +15,23 @@ class ProfileController extends Controller
     /**
      * Display the user's profile form.
      */
+
+    public function dashboard(){
+
+        return view('pages.user.profile.dashboard');
+    }
+    public function orders(){
+
+        return view('pages.user.profile.orders');
+    }
+    public function details(){
+
+        return view('pages.user.profile.details');
+    }
+    public function wishlist(){
+
+        return view('pages.user.profile.wishlist');
+    }
     public function edit(Request $request): View
     {
         return view('profile.edit', [
