@@ -10,10 +10,21 @@ return Application::configure(basePath: dirname(__DIR__))
         commands: __DIR__.'/../routes/console.php',
         health: '/up',
             then: function () {
-            \Illuminate\Support\Facades\Route::middleware('admin')->prefix('admin')->name('admin.')->group(__DIR__ . '/../routes/admin/admin.php');
-            \Illuminate\Support\Facades\Route::middleware('web')->group(__DIR__ . '/../routes/web.php');
+                \Illuminate\Support\Facades\Route::middleware('web')->group(__DIR__ . '/../routes/web.php');
+                \Illuminate\Support\Facades\Route::middleware(['web','admin'])->prefix('admin')->name('admin.')->group(__DIR__ . '/../routes/admin/admin.php');
+
         }
     )
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->group('admin', [
+            \App\Http\Middleware\HandleInertiaRequests::class,
+            \Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets::class,
+            \App\Http\Middleware\LocalizationMiddleware::class,
+
+//            \Illuminate\Auth\Middleware\Authenticate::class,
+        ]);
+    })
+
     ->withMiddleware(function (Middleware $middleware) {
         $middleware->web(append: [
             \App\Http\Middleware\LocalizationMiddleware::class,
