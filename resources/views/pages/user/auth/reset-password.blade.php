@@ -17,7 +17,7 @@
                                 </ul>
                             </div>
                         @endif
-                        <form class="gap-2" action="{{ route('login') }}" method="POST" id="register-form" accept-charset="utf-8">
+                        <form class="gap-2" action="{{ route('password.store') }}" method="POST" id="register-form" accept-charset="utf-8">
                             @csrf
                             <div class="tf-field style-1 mb_15">
                                 <input class="tf-field-input tf-input" placeholder=" " type="email" name="email" value="{{ old('email') }}">
@@ -28,7 +28,7 @@
                                 <label class="tf-field-label">Password *</label>
                             </div>
                             <div class="tf-field style-1 mb_15">
-                                <input class="tf-field-input tf-input" placeholder=" " type="password" name="confirmed_password">
+                                <input class="tf-field-input tf-input" placeholder=" " type="password" name="password_confirmation">
                                 <label class="tf-field-label">Confirm Password *</label>
                             </div>
 

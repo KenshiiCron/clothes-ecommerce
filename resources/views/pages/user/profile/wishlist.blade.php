@@ -25,7 +25,7 @@
                                 @include('components.product-card',['product'=> $item->product])
                             @endforeach
                             @else
-                                <span class="text-muted">You have no items in your wishlist</span>
+                                <span class="text-muted">You have no items in your wishlist. <a class="text-decoration-underline" href="{{route('shop')}}">Browse our shop</a> to find something you like.</span>
                             @endif
                             <!-- card product 1 -->
 {{--                            <div class="card-product">--}}

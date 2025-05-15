@@ -65,6 +65,7 @@ Route::middleware('auth:web')->group(function () {
     Route::controller(ProfileController::class)->group(function (){
         Route::get('account/orders', [ProfileController::class, 'orders'])->name('account.orders');
         Route::get('account', [ProfileController::class, 'details'])->name('account.details');
+        Route::put('account', [ProfileController::class, 'update'])->name('account.details.update');
         Route::get('account/wishlist', [ProfileController::class, 'wishlist'])->name('account.wishlist');
     });
 

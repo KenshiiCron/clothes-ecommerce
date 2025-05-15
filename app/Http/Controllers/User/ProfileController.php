@@ -8,7 +8,9 @@ use App\Models\Wishlist;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class ProfileController extends Controller
@@ -25,25 +27,12 @@ class ProfileController extends Controller
 
         return view('pages.user.profile.orders');
     }
-    public function details(){
-
-        return view('pages.user.profile.details');
-    }
-    public function wishlist(){
-        $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
-
-        return view('pages.user.profile.wishlist', compact('wishlist'));
-    }
-    public function edit(Request $request): View
+    public function details()
     {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
+        $user = Auth::user();
+        return view('pages.user.profile.details', compact('user'));
     }
 
-    /**
-     * Update the user's profile information.
-     */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
         $request->user()->fill($request->validated());
@@ -53,9 +42,44 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+        session()->flash('success', 'Your profile has been updated.');
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
+        return Redirect::route('account.details')->with('status', 'profile-updated');
     }
+
+//    public function updatePassword(Request $request): RedirectResponse{
+//        $user = $request->user();
+//        $data = $request->validate([
+//            'current_password' => ['required','string', 'min:8'],
+//            'password' => ['required', 'string', 'min:8', 'confirmed'],
+//        ]);
+//        if (! Hash::check($data['current_password'], $user->password)) {
+//            return back()->withErrors([
+//                'password' => ['The provided password does not match our records.']
+//            ]);
+//        }
+//        $user->update(['password' => Hash::make($data['password'])]);
+//        $user->save();
+//        session()->flash('success', 'password updated successfully');
+//        return Redirect::route('account.details')->with('status', 'password-updated');
+//    }
+
+    public function wishlist(){
+        $wishlist = Wishlist::where('user_id', auth()->user()->id)->get();
+
+        return view('pages.user.profile.wishlist', compact('wishlist'));
+    }
+//    public function edit(Request $request): View
+//    {
+//        return view('profile.edit', [
+//            'user' => $request->user(),
+//        ]);
+//    }
+
+    /**
+     * Update the user's profile information.
+     */
+
 
     /**
      * Delete the user's account.

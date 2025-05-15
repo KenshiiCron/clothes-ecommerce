@@ -5,6 +5,15 @@
         <section class="flat-spacing-10 mt_37">
             <div class="container">
                 <div class="form-register-wrap">
+                    @if($errors->any())
+                        <div class="alert alert-danger">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
                     <div class="flat-title align-items-start gap-0 mb_30 px-0">
                         <h5 class="mb_18">Register</h5>
                         <p class="text_black-2">Sign up for early Sale access plus tailored new arrivals, trends and promotions. To opt out, click unsubscribe in our emails</p>
