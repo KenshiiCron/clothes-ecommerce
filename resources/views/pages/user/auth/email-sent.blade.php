@@ -2,7 +2,7 @@
 
 @push('css')
     <style>
-        .success-animation { margin:100px auto;}
+        .success-animation { margin:60px auto;}
 
         .checkmark {
             width: 100px;

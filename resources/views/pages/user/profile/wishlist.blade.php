@@ -18,8 +18,15 @@
                 <div class="col-lg-9">
                     <div class="my-account-content account-wishlist">
                         <h5 class="fw-5 mb_20">My Wishlist</h5>
+
                         <div class="grid-layout wrapper-shop" data-grid="grid-3">
-                            @dump(auth()->user()->wishlist)
+                            @if($wishlist->isNotEmpty())
+                            @foreach($wishlist as $item)
+                                @include('components.product-card',['product'=> $item->product])
+                            @endforeach
+                            @else
+                                <span class="text-muted">You have no items in your wishlist</span>
+                            @endif
                             <!-- card product 1 -->
 {{--                            <div class="card-product">--}}
 {{--                                <div class="card-product-wrapper">--}}
