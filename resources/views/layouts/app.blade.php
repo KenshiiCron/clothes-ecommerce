@@ -37,9 +37,7 @@
     @vite(['resources/views/js/app.jsx'])--}}
 </head>
 
-<body>
-
-<div>
+<body class="preload-wrapper">
     {{-- Preloader --}}
     <div class="preload preload-container">
         <div class="preload-logo">
@@ -48,7 +46,9 @@
     </div>
     {{-- Preloader --}}
     <div id="wrapper">
+        @if(request()->routeIs('home'))
         @include('components.top-bar')
+        @endif
 
         @include('components.header')
 
@@ -716,9 +716,6 @@
         </div>
     </div>
     <!-- /mobile menu -->
-
-
-
     <!-- canvasSearch -->
     <div class="offcanvas offcanvas-end canvas-search" id="canvasSearch">
         <div class="canvas-wrapper">
@@ -1001,8 +998,6 @@
         </div>
     </div>
     <!-- /toolbarShopmb -->
-
-
 
     <!-- shoppingCart -->
     <div class="modal fullRight fade modal-shopping-cart" id="shoppingCart">
@@ -1307,7 +1302,6 @@
         </div>
     </div>
     <!-- /modal compare -->
-
     <!-- modal quick_add -->
     <div class="modal fade modalDemo" id="quick_add">
         <div class="modal-dialog modal-dialog-centered">
@@ -1407,7 +1401,6 @@
         </div>
     </div>
     <!-- /modal quick_add -->
-
     <!-- modal quick_view -->
     <div class="modal fade modalDemo" id="quick_view">
         <div class="modal-dialog modal-dialog-centered">
@@ -1539,7 +1532,6 @@
         </div>
     </div>
     <!-- /modal quick_view -->
-
     <!-- modal find_size -->
     <div class="modal fade modalDemo tf-product-modal" id="find_size">
         <div class="modal-dialog modal-dialog-centered">
@@ -1627,7 +1619,6 @@
         </div>
     </div>
     <!-- /modal find_size -->
-
     <!-- auto popup  -->
     <div class="modal modalCentered fade auto-popup modal-newleter">
         <div class="modal-dialog modal-dialog-centered">
@@ -1654,7 +1645,7 @@
         </div>
     </div>
     <!-- /auto popup  -->
-</div>
+
 
 {{-- Javascript Imports --}}
 <script type="text/javascript" src="{{asset('assets/front/js/bootstrap.min.js')}}"></script>

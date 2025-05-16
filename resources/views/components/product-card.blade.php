@@ -13,10 +13,14 @@
         </a>
         <livewire:product-card-buttons :product="$product"/>
         <div class="size-list">
-            <span>S</span>
-            <span>M</span>
-            <span>L</span>
-            <span>XL</span>
+
+            @foreach($product->sizes() as $size)
+                <span>{{$size->value}}</span>
+            @endforeach
+{{--            <span>S</span>--}}
+{{--            <span>M</span>--}}
+{{--            <span>L</span>--}}
+{{--            <span>XL</span>--}}
         </div>
     </div>
     <div class="card-product-info">

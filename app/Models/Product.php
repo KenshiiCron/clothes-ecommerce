@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -54,6 +55,7 @@ class Product extends Model
         $query->where('state', '=', true);
     }
 
+
     // Relations
     public function attributes(): BelongsToMany
     {
@@ -78,5 +80,23 @@ class Product extends Model
     public function inventories(): HasMany
     {
         return $this->hasMany(Inventory::class);
+    }
+
+    public function scopeSizes(): Collection
+    {
+        return $this->inventories
+            ->flatMap(fn ($inventory) => $inventory->attribute_values)
+            ->filter(fn ($value) => strtolower(optional($value->attribute)->name) === 'size')
+            ->unique('id')
+            ->values();
+    }
+
+    public function scopeColors(): Collection
+    {
+        return $this->inventories
+            ->flatMap(fn ($inventory) => $inventory->attribute_values)
+            ->filter(fn ($value) => strtolower(optional($value->attribute)->name) === 'color')
+            ->unique('id')
+            ->values();
     }
 }
