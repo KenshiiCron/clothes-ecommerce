@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Route;
 
+
+
 Route::post('locale', [\App\Http\Controllers\User\WebsiteController::class, 'switchLocale'])->name('switchLocale');
 
 
