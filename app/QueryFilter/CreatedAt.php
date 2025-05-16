@@ -21,6 +21,7 @@ class CreatedAt extends Filter
             return $builder;
         }
         if($model instanceof Product){
+
             return $builder->orderBy('created_at', $q);
         }
 

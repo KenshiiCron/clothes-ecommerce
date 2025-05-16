@@ -14,7 +14,6 @@ use Livewire\WithPagination;
 
 class Shop extends Component
 {
-    use WithPagination;
     protected $products;
     protected $categories;
     public $attribute_values = [];
@@ -37,7 +36,9 @@ class Shop extends Component
     {
         $categories = Category::whereHas('products')->get();
         $attributes = Attribute::whereHas('products')->get();
+
         $this->products = $product->findByFilter();
+
         return view('livewire.shop', ['categories' => $categories,'attributes' => $attributes, 'products' => $this->products]);
     }
 
@@ -45,11 +46,13 @@ class Shop extends Component
     {
         if(str_contains($propertyName,'attribute_values'))
         {
+
             $selectedAttributes = collect($this->attribute_values)
                 ->filter()
                 ->keys()
                 ->all();
             request()->merge(['attribute_values' => $selectedAttributes]);
+
             if($this->category != null)
             {
                 request()->merge(['category' => $this->category, 'attribute_values' => $selectedAttributes]);

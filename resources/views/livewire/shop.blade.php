@@ -1,7 +1,7 @@
 <div>
     <section class="flat-spacing-2" >
         <div class="container">
-            <div wire:ignore class="tf-shop-control grid-3 align-items-center">
+            <div class="tf-shop-control grid-3 align-items-center">
                 <div class="tf-control-filter">
                     <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-btn-filter"><span class="icon icon-filter"></span><span class="text">Filter</span></a>
                 </div>
@@ -68,13 +68,30 @@
                 <!-- pagination -->
                 <ul class="tf-pagination-wrap tf-pagination-list tf-pagination-btn">
                   {{$products->links()}}
+         {{--           <li class="active">
+                        <a href="#" class="pagination-link">1</a>
+                    </li>
+                    <li>
+                        <a href="#" class="pagination-link animate-hover-btn">2</a>
+                    </li>
+                    <li>
+                        <a href="#" class="pagination-link animate-hover-btn">3</a>
+                    </li>
+                    <li>
+                        <a href="#" class="pagination-link animate-hover-btn">4</a>
+                    </li>
+                    <li>
+                        <a href="#" class="pagination-link animate-hover-btn">
+                            <span class="icon icon-arrow-right"></span>
+                        </a>
+                    </li>--}}
                 </ul>
             </div>
 
         </div>
     </section>
 
-    <div class="offcanvas offcanvas-start canvas-filter" id="filterShop" wire:ignore>
+    <div class="offcanvas offcanvas-start canvas-filter" id="filterShop" >
         <div class="canvas-wrapper">
             <header class="canvas-header">
                 <div class="filter-icon">
