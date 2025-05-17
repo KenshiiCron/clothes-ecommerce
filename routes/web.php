@@ -11,6 +11,8 @@ Route::get('/', [\App\Http\Controllers\User\WebsiteController::class, 'home'])->
 Route::get('about', [\App\Http\Controllers\User\WebsiteController::class, 'about'])->name('about');
 Route::get('/contact', [\App\Http\Controllers\User\WebsiteController::class, 'contact'])->name('contact');
 Route::get('/shop', [\App\Http\Controllers\User\WebsiteController::class, 'shop'])->name('shop');
+Route::view('/cart', 'pages.cart')->name('cart');
+Route::view('/cart', 'pages.cart')->name('cart');
 
 Route::resource('products', \App\Http\Controllers\User\ProductController::class);
 

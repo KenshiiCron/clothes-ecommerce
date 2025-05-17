@@ -127,8 +127,8 @@
                                 </div>
                             </div>
                             <div class="tf-product-info-buy-button">
-                                <form class="">
-                                    <button @disabled(!$exists) wire:loading.attr = 'disabled' href="javascript:void(0);" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart" @if(!$exists)style="background-color: gray; border-color: gray"@endif>
+                                <form class="" wire:submit = 'addToCart'>
+                                    <button type="submit" @disabled(!$exists) wire:loading.attr = 'disabled' href="javascript:void(0);" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart" @if(!$exists)style="background-color: gray; border-color: gray"@endif>
                                         <p wire:loading.remove><span >Add to cart -&nbsp;</span><span class="tf-qty-price total-price">{{$price * $quantity}} DA</span></p>
                                         <span class="loader" wire:loading></span>
                                     </button>
