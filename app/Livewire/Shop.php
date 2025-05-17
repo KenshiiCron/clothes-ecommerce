@@ -7,6 +7,7 @@ use App\Models\Attribute;
 use App\Models\AttributeValue;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Product;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Url;
 use Livewire\Component;
@@ -36,9 +37,7 @@ class Shop extends Component
     {
         $categories = Category::whereHas('products')->get();
         $attributes = Attribute::whereHas('products')->get();
-
         $this->products = $product->findByFilter();
-
         return view('livewire.shop', ['categories' => $categories,'attributes' => $attributes, 'products' => $this->products]);
     }
 
@@ -63,8 +62,9 @@ class Shop extends Component
             });*/
         }
     }
-    public function filter($filters)
+    public function order($filters)
     {
+
         request()->merge([$filters[0] => $filters[1]]);
     }
 

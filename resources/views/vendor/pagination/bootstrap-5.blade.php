@@ -27,29 +27,25 @@
             </ul>
         </div>
 
-        <div class="d-none flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
-            <div>
-                <p class="small text-muted">
-                    {!! __('Showing') !!}
-                    <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
-                    {!! __('to') !!}
-                    <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
-                    {!! __('of') !!}
-                    <span class="fw-semibold">{{ $paginator->total() }}</span>
-                    {!! __('results') !!}
-                </p>
-            </div>
+        <div class="d-none flex-column flex-sm-fill d-sm-flex align-items-sm-center justify-content-sm-between">
 
             <div>
-                <ul class="pagination">
+                <ul class="tf-pagination-wrap tf-pagination-list tf-pagination-btn">
                     {{-- Previous Page Link --}}
                     @if ($paginator->onFirstPage())
-                        <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
+                    {{--    <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.previous')">
                             <span class="page-link" aria-hidden="true">&lsaquo;</span>
-                        </li>
+                        </li>--}}
+
+                            <li class="pagination-link animate-hover-btn "  aria-disabled="true" aria-label="@lang('pagination.previous')">
+                                <span class="icon icon-arrow-left " style="color: gray;"></span>
+                            </li>
                     @else
-                        <li class="page-item">
+                       {{-- <li class="page-item">
                             <a class="page-link" href="{{ $paginator->previousPageUrl() }}" rel="prev" aria-label="@lang('pagination.previous')">&lsaquo;</a>
+                        </li>--}}
+                        <li class="pagination-link animate-hover-btn "  aria-disabled="true" aria-label="@lang('pagination.previous')">
+                            <a href="{{ $paginator->previousPageUrl() }}" class="icon icon-arrow-left "></a>
                         </li>
                     @endif
 
@@ -64,9 +60,15 @@
                         @if (is_array($element))
                             @foreach ($element as $page => $url)
                                 @if ($page == $paginator->currentPage())
-                                    <li class="page-item active" aria-current="page"><span class="page-link">{{ $page }}</span></li>
+                                    {{--<li class="page-item active" aria-current="page"><span class="page-link">{{ $page }}</span></li>--}}
+                                    <li class="active">
+                                        <a href="javascript:void(0)" class="pagination-link" aria-current="page">{{$page}}</a>
+                                    </li>
                                 @else
-                                    <li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>
+                                    {{--<li class="page-item"><a class="page-link" href="{{ $url }}">{{ $page }}</a></li>--}}
+                                    <li >
+                                        <a href="{{ $url }}" class="pagination-link" aria-current="page">{{$page}}</a>
+                                    </li>
                                 @endif
                             @endforeach
                         @endif
@@ -74,15 +76,32 @@
 
                     {{-- Next Page Link --}}
                     @if ($paginator->hasMorePages())
-                        <li class="page-item">
+                       {{-- <li class="page-item">
                             <a class="page-link" href="{{ $paginator->nextPageUrl() }}" rel="next" aria-label="@lang('pagination.next')">&rsaquo;</a>
+                        </li>--}}
+                        <li class="pagination-link animate-hover-btn "  aria-disabled="true" aria-label="@lang('pagination.next')">
+                            <a href = '{{ $paginator->nextPageUrl() }}' class="icon icon-arrow-right "></a>
                         </li>
                     @else
-                        <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
+                    {{--    <li class="page-item disabled" aria-disabled="true" aria-label="@lang('pagination.next')">
                             <span class="page-link" aria-hidden="true">&rsaquo;</span>
+                        </li>--}}
+                        <li class="pagination-link animate-hover-btn "  aria-disabled="true" aria-label="@lang('pagination.next')">
+                            <span class="icon icon-arrow-right " style="color: gray;"></span>
                         </li>
                     @endif
                 </ul>
+            </div>
+            <div>
+                <p class="small text-muted">
+                    {!! __('Showing') !!}
+                    <span class="fw-semibold">{{ $paginator->firstItem() }}</span>
+                    {!! __('to') !!}
+                    <span class="fw-semibold">{{ $paginator->lastItem() }}</span>
+                    {!! __('of') !!}
+                    <span class="fw-semibold">{{ $paginator->total() }}</span>
+                    {!! __('results') !!}
+                </p>
             </div>
         </div>
     </nav>

@@ -42,16 +42,16 @@
                                 <span class="text-value-item">Alphabetically, Z-A</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Price, low to high</span>
+                                <span class="text-value-item" wire:click="order(['price','asc'])">Price, low to high</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Price, high to low</span>
+                                <span class="text-value-item" wire:click="order(['price','desc'])">Price, high to low</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item" wire:click="filter(['created_at','asc'])">Date, old to new</span>
+                                <span class="text-value-item" wire:click="order(['created_at','asc'])">Date, old to new</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item" wire:click="filter(['created_at','desc'])">Date, new to old</span>
+                                <span class="text-value-item" wire:click="order(['created_at','desc'])">Date, new to old</span>
                             </div>
                         </div>
                     </div>
@@ -68,7 +68,7 @@
                 <!-- pagination -->
                 <ul class="tf-pagination-wrap tf-pagination-list tf-pagination-btn">
                   {{$products->links()}}
-         {{--           <li class="active">
+             {{--       <li class="active">
                         <a href="#" class="pagination-link">1</a>
                     </li>
                     <li>
@@ -84,14 +84,20 @@
                         <a href="#" class="pagination-link animate-hover-btn">
                             <span class="icon icon-arrow-right"></span>
                         </a>
+                    </li>
+                    <li>
+                        <a href="#" class="pagination-link animate-hover-btn">
+                            <span class="icon icon-arrow-left"></span>
+                        </a>
                     </li>--}}
+
                 </ul>
             </div>
 
         </div>
     </section>
 
-    <div class="offcanvas offcanvas-start canvas-filter" id="filterShop" >
+    <div class="offcanvas offcanvas-start canvas-filter" id="filterShop" wire:ignore>
         <div class="canvas-wrapper">
             <header class="canvas-header">
                 <div class="filter-icon">

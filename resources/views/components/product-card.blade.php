@@ -11,7 +11,7 @@
                  data-src="{{$product->image_url}}"
                  src="{{$product->image_url}}" alt="image-product">
         </a>
-        <livewire:product-card-buttons :product="$product"/>
+        <livewire:product-card-buttons :product="$product" wire:key = '{{$product->id}}'/>
         <div class="size-list">
             <span>S</span>
             <span>M</span>

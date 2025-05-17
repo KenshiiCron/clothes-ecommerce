@@ -106,7 +106,7 @@ trait FindAbleTrait
     {
         $result = $this->applyFilter($query);
 
-        foreach ($this->getOrders() as $key => $value) {
+       foreach ($this->getOrders() as $key => $value) {
             $result->orderBy($key, $value);
         }
 
@@ -114,6 +114,7 @@ trait FindAbleTrait
         {
             $result->latest();
         }
+
 
 
         return $this->getPerPage() > 0 ? $result->paginate($this->getPerPage(),$this->getColumns(),$this->getPageName())->withQueryString() : $result->get();
@@ -263,6 +264,7 @@ trait FindAbleTrait
             ->select($this->getColumns())
             ->withCount($this->getCounts())
             ->scopes($this->getScopes());
+        dd($this->query-)
     }
 
     public function getQuery()
