@@ -15,7 +15,7 @@
         <div class="size-list">
 
             @foreach($product->sizes() as $size)
-                <span>{{$size->value}}</span>
+                <span>{{strtoupper($size->value)}}</span>
             @endforeach
 {{--            <span>S</span>--}}
 {{--            <span>M</span>--}}

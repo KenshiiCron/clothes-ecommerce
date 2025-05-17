@@ -6,12 +6,23 @@ use Livewire\Attributes\Computed;
 use Livewire\Component;
 use App\Models\Product;
 
-class CartPage extends Component
+class SideCart extends Component
 {
     public $qty = [];
     public $products = [];
+    public bool $cartOpen = false;
 
+    public function openCart()
+    {
+        $this->cartOpen = true;
+    }
+
+    public function closeCart()
+    {
+        $this->cartOpen = false;
+    }
     public function mount(){
+
         $cart = session()->has('cart') ? session()->get('cart') : null;
         $this->products =[];
         if($cart){
@@ -68,6 +79,6 @@ class CartPage extends Component
     public function render()
     {
         $cart = session()->has('cart') ? session()->get('cart') : null;
-        return view('livewire.cart-page',compact('cart'));
+        return view('livewire.side-cart',compact('cart'));
     }
 }
