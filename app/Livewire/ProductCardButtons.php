@@ -42,6 +42,7 @@ class ProductCardButtons extends Component
             if ($wishlistItem) {
                 $wishlistItem->delete();
                 $this->isInWishlist = false;
+                $this->dispatch('wishlist-updated');
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
@@ -53,6 +54,7 @@ class ProductCardButtons extends Component
                     'product_id' => $this->product->id,
                 ]);
                 $this->isInWishlist = true;
+                $this->dispatch('wishlist-updated');
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
@@ -66,6 +68,7 @@ class ProductCardButtons extends Component
             if (in_array($this->product->id, $wishlist)) {
                 $wishlist = array_diff($wishlist, [$this->product->id]);
                 $this->isInWishlist = false;
+                $this->dispatch('wishlist-updated');
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
@@ -74,6 +77,7 @@ class ProductCardButtons extends Component
             } else {
                 $wishlist[] = $this->product->id;
                 $this->isInWishlist = true;
+                $this->dispatch('wishlist-updated');
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
