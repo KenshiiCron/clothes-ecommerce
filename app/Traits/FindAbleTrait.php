@@ -264,7 +264,6 @@ trait FindAbleTrait
             ->select($this->getColumns())
             ->withCount($this->getCounts())
             ->scopes($this->getScopes());
-        dd($this->query-)
     }
 
     public function getQuery()
