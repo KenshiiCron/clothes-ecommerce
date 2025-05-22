@@ -38,6 +38,7 @@ class Product extends Component
             $wishlist = session()->get('wishlist', []);
             $this->isInWishlist = in_array($this->product->id, $wishlist);
         }
+        $this->trackRecentlyViewed();
 
     }
     public function render()
@@ -180,6 +181,15 @@ class Product extends Component
             ]);
         }
         session()->forget('wishlist');
+    }
+
+    protected function trackRecentlyViewed()
+    {
+        $recentlyViewed = session()->get('recently_viewed', []);
+        $recentlyViewed = array_diff($recentlyViewed, [$this->product->id]);
+        array_unshift($recentlyViewed, $this->product->id);
+        $recentlyViewed = array_slice($recentlyViewed, 0, 4);
+        session()->put('recently_viewed', $recentlyViewed);
     }
 
 }
