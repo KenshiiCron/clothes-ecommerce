@@ -80,6 +80,7 @@ export type Inventory = {
     product_id: string;
     quantity: number;
     price: number;
+    old_price: number;
     created_at: string;
     attribute_values: Value[]
 }
@@ -150,6 +151,7 @@ export default function Edit({product, categories, attributes, attributes_values
         product_id: product.id,
         quantity: 0,
         price: 0,
+        old_price: 0,
         values: [] as Value[],
     });
 
@@ -166,7 +168,7 @@ export default function Edit({product, categories, attributes, attributes_values
         e.preventDefault();
         //console.log(inventoryData.values)
         submitAddInventory(route("admin.inventories.store"));
-        resetAddInventory('values', 'quantity', 'price');
+        resetAddInventory('values', 'quantity', 'price','old_price');
     };
 
     const [preview, setPreview] = useState(data.image ? data.image : null);
@@ -641,7 +643,25 @@ export default function Edit({product, categories, attributes, attributes_values
                                                     }
                                                     required
                                                 />
-                                                <InputError message={errorsAddInventory.price} />
+                                                <InputError message={errorsAddInventory.price}/>
+                                            </div>
+
+                                            <div className="grid gap-2">
+                                                <Label htmlFor="old_price">Old Price</Label>
+                                                <Input
+                                                    id="old_price"
+                                                    type="number"
+                                                    placeholder="Old Price"
+                                                    value={inventoryData.old_price}
+                                                    onChange={(e) =>
+                                                        setInventoryData(
+                                                            "old_price",
+                                                            Number(e.target.value)
+                                                        )
+                                                    }
+                                                    required
+                                                />
+                                                <InputError message={errorsAddInventory.old_price}/>
                                             </div>
 
                                             <div className="grid gap-2">
@@ -659,7 +679,7 @@ export default function Edit({product, categories, attributes, attributes_values
                                                     }
                                                     required
                                                 />
-                                                <InputError message={errorsAddInventory.quantity} />
+                                                <InputError message={errorsAddInventory.quantity}/>
                                             </div>
 
                                             {attributes_values.map((att) => (
@@ -676,7 +696,7 @@ export default function Edit({product, categories, attributes, attributes_values
                                                                     (item: Value) =>
                                                                         item.attribute_id ===
                                                                         att.id
-                                                                            ? { ...item, id: value }
+                                                                            ? {...item, id: value}
                                                                             : item
                                                                 );
 
@@ -693,7 +713,7 @@ export default function Edit({product, categories, attributes, attributes_values
                                                         }}
                                                     >
                                                         <SelectTrigger>
-                                                            <SelectValue placeholder="Select a value" />
+                                                            <SelectValue placeholder="Select a value"/>
                                                         </SelectTrigger>
                                                         <SelectContent>
                                                             {att.values.map((v) => (
@@ -727,5 +747,5 @@ export default function Edit({product, categories, attributes, attributes_values
 
             </Tabs>
         </AuthenticatedLayout>
-);
+    );
 }

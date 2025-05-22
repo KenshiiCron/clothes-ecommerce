@@ -28,7 +28,7 @@ import setColumns from '@/components/tables/columns/inventories-columns'
 import {Attribute, AttributesValues, Inventory} from "@/pages/products/edit";
 
 interface DataTableDemoProps {
-    inventories: Inventory [];
+    inventories: Inventory[];
     product_attributes: Attribute[];
     attributes_values: AttributesValues[]
 }

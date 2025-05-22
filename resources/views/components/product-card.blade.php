@@ -1,5 +1,14 @@
 <div class="card-product fl-item">
     <div class="card-product-wrapper">
+        <div class="badge-product">
+            @if($product->featured)
+                <span class="badge badge-success">Featured</span>
+            @endif
+                @if($product->inventories->min('old_price') > 0 )
+                    <span class="badge badge-danger">PROMO</span>
+                @endif
+
+        </div>
         <a href="{{route('products.show', $product->id)}}" class="product-img">
             <img class="lazyload img-product"
                  height="440"
@@ -25,7 +34,10 @@
     </div>
     <div class="card-product-info">
         <a href="product-detail.html" class="title link">{{$product->name}}</a>
-        <span class="price">{{$product->inventories->min('price') ?? '/'}} DA</span>
+        <span class="price fs-5">{{$product->inventories->min('price') ?? '/'}} DA</span>
+        @if($product->inventories->min('old_price') > 0 )
+        <span class="text-danger fs-6 text-decoration-line-through">{{$product->inventories->min('old_price') ?? '/'}} DA</span>
+        @endif
         <ul class="list-color-product">
             @foreach($product->inventories as $inventory)
                 @foreach($inventory->attribute_values as $value)

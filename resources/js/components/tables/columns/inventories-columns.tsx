@@ -107,6 +107,22 @@ export default setColumns = (product_attributes: Attribute[], attributes_values:
             accessorFn: row => row.inventory.price,
         },
         {
+            accessorKey: "old_price",
+            header: ({column}) => {
+                return (
+                    <Button
+                        variant="ghost"
+                        onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+                    >
+                        Old Price
+                        <ArrowUpDown className="ml-2 h-4 w-4"/>
+                    </Button>
+                );
+            },
+            cell: ({row}) => <div className="lowercase">{row.getValue("old_price")}</div>,
+            accessorFn: row => row.inventory.old_price,
+        },
+        {
             accessorKey: "quantity",
             header: ({column}) => {
                 return (
@@ -138,6 +154,7 @@ export default setColumns = (product_attributes: Attribute[], attributes_values:
                 } = useForm({
                     quantity: inventory.quantity,
                     price: inventory.price,
+                    old_price: inventory.old_price,
                     values: inventory.attribute_values as Value[]
                 });
                 const EditInventory: FormEventHandler = (e) => {
@@ -216,6 +233,19 @@ export default setColumns = (product_attributes: Attribute[], attributes_values:
                                             required
                                         />
                                         <InputError message={errorsEditInventory.price}/>
+                                    </div>
+
+                                    <div className="grid gap-2">
+                                        <Label htmlFor="old_price">Old Price</Label>
+                                        <Input
+                                            id="old_price"
+                                            type="number"
+                                            placeholder="Old Price"
+                                            value={editInventoryData.old_price}
+                                            onChange={(e) => setEditInventoryData("old_price", Number(e.target.value))}
+                                            required
+                                        />
+                                        <InputError message={errorsEditInventory.old_price}/>
                                     </div>
 
                                     <div className="grid gap-2">
