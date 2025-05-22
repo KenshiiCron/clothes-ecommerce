@@ -28,6 +28,6 @@ class HeaderComponent extends Component
     #[On('cart-updated')]
     public function getCartCountProperty()
     {
-        return session()->has('cart') ? session()->get('cart')->getTotalQty() : 0;
+        return session()->has('cart') ? count(session()->get('cart')->getItems()) : 0;
     }
 }

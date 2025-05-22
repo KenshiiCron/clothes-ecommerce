@@ -12,6 +12,9 @@ class CartPage extends Component
     public $products = [];
 
     public function mount(){
+       $this->getCart();
+    }
+    public function getCart(){
         $cart = session()->has('cart') ? session()->get('cart') : null;
         $this->products =[];
         if($cart){
@@ -48,6 +51,25 @@ class CartPage extends Component
             $this->dispatch('cart-updated');
         }
     }
+    public function remove($key)
+    {
+        $cart = session()->has('cart') ? session()->get('cart') : null;
+
+        if ($cart) {
+            $cart->remove($key);
+
+            unset($this->products[$key]);
+            $this->products = array_values($this->products);
+
+            session()->put('cart', $cart);
+
+            $this->getCart();
+
+            $this->dispatch('swal-toast',['icon' => 'success','title' => 'Cart Item Removed', 'text' => 'wow²']);
+            $this->dispatch('cart-updated');
+        }
+    }
+
 
     private function recalculateTotal($key)
     {
@@ -61,7 +83,7 @@ class CartPage extends Component
     public function getTotalProperty()
     {
         $cart = session()->has('cart') ? session()->get('cart') : null;
-        return $cart->getTotalPrice();
+        return $cart?->getTotalPrice()?:0;
     }
 
 

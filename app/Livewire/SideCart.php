@@ -3,6 +3,7 @@
 namespace App\Livewire;
 
 use Livewire\Attributes\Computed;
+use Livewire\Attributes\On;
 use Livewire\Component;
 use App\Models\Product;
 
@@ -22,9 +23,12 @@ class SideCart extends Component
         $this->cartOpen = false;
     }
     public function mount(){
-
-        $cart = session()->has('cart') ? session()->get('cart') : null;
+       $this->getCart();
+    }
+    #[On('cart-updated')]
+    public function getCart(){
         $this->products =[];
+        $cart = session()->has('cart') ? session()->get('cart') : null;
         if($cart){
             foreach($cart->getItems() as $key=>$item){
                 $product = Product::find($item['product_id']);
@@ -60,6 +64,26 @@ class SideCart extends Component
         }
     }
 
+    public function remove($key)
+    {
+        $cart = session()->has('cart') ? session()->get('cart') : null;
+
+        if ($cart) {
+            $cart->remove($key);
+
+            unset($this->products[$key]);
+            $this->products = array_values($this->products);
+
+            session()->put('cart', $cart);
+
+            $this->getCart();
+
+            $this->dispatch('swal-toast',['icon' => 'success','title' => 'Cart Item Removed', 'text' => 'wow²']);
+            $this->dispatch('cart-updated');
+        }
+    }
+
+
     private function recalculateTotal($key)
     {
         $qty = $this->products[$key]['qty'];
@@ -72,7 +96,7 @@ class SideCart extends Component
     public function getTotalProperty()
     {
         $cart = session()->has('cart') ? session()->get('cart') : null;
-        return $cart->getTotalPrice();
+        return $cart?->getTotalPrice()?:0;
     }
 
 

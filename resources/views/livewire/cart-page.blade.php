@@ -37,7 +37,8 @@
                             </thead>
                             <tbody>
 
-                            @foreach($products as $key=>$product)
+                            @forelse($products as $key=>$product)
+
 
                                 <tr class="tf-cart-item file-delete">
                                     <td class="tf-cart-item_product">
@@ -47,7 +48,7 @@
                                         <div class="cart-info">
                                             <a href="{{route('products.show', $product['details']->id)}}" class="cart-title link">{{$product['details']->name}}</a>
                                             <div class="cart-meta-variant">{{ucfirst($product['inventory']->attribute_values[1]->value)}} / {{ucfirst($product['inventory']->attribute_values[0]->value)}}</div>
-                                            <span class="remove-cart link remove">Remove</span>
+                                            <span wire:click="remove({{$key}})" class="remove-cart link remove">Remove</span>
                                         </div>
                                     </td>
                                     <td class="tf-cart-item_price" cart-data-title="Price">
@@ -71,15 +72,20 @@
                                         <div class="cart-total">{{$product['total']}} DA</div>
                                     </td>
                                 </tr>
-                            @endforeach
+                                @empty
+                                <tr>
+                                    <td><span class="fs-5">Aucun produit dans votre panier. <a href="{{route('shop')}}" class="text-decoration-underline">Allez on va faire du shopping!</a></span>
+                                    </td>
+                                </tr>
+                            @endforelse
 
 
                             </tbody>
                         </table>
                         <div class="tf-page-cart-note">
-                            <label for="cart-note">Add Order Note</label>
-                            <textarea name="note" id="cart-note" placeholder="How can we help you?"></textarea>
+                            <a href="{{route('shop')}}" class="text-decoration-underline">Continue shopping and enjoy our discounts and offers</a>
                         </div>
+
                     </form>
                 </div>
                 <div class="tf-page-cart-footer">

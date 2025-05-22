@@ -10,20 +10,25 @@
                             <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-direction="vertical">
                                 <div class="swiper-wrapper stagger-wrap">
                                     <!-- beige -->
-                                    <div class="swiper-slide stagger-item" data-color="beige">
-                                        @foreach($product->images as $image)
+                                    @foreach($product->images as $image)
+                                        <div class="swiper-slide stagger-item" data-color="beige">
                                             <div class="item">
                                                 <img class="lazyload" data-src="{{$image->image_url}}" src="{{$image->image_url}}" alt="img-product">
                                             </div>
-                                        @endforeach
-                                    </div>
+                                        </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <div dir="ltr" class="swiper tf-product-media-main" id="gallery-swiper-started">
                                 <div class="swiper-wrapper" >
                                     <!-- beige -->
+                                    <div class="swiper-slide">
+                                        <a href="{{$product->image_url}}" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
+                                            <img class="tf-image-zoom lazyload" data-zoom="{{$product->image_url}}" data-src="{{$product->image_url}}" src="{{$product->image_url}}" alt="">
+                                        </a>
+                                    </div>
                                     @foreach($product->images as $image)
-                                        <div class="swiper-slide" data-color="beige">
+                                        <div class="swiper-slide">
                                             <a href="{{$image->image_url}}" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
                                                 <img class="tf-image-zoom lazyload" data-zoom="{{$image->image_url}}" data-src="{{$image->image_url}}" src="{{$image->image_url}}" alt="">
                                             </a>
@@ -129,13 +134,24 @@
                             <div class="tf-product-info-buy-button">
                                 <form class="" wire:submit = 'addToCart'>
                                     <button type="submit" @disabled(!$exists) wire:loading.attr = 'disabled' href="javascript:void(0);" class="tf-btn btn-fill justify-content-center fw-6 fs-16 flex-grow-1 animate-hover-btn btn-add-to-cart" @if(!$exists)style="background-color: gray; border-color: gray"@endif>
-                                        <p wire:loading.remove><span >Add to cart -&nbsp;</span><span class="tf-qty-price total-price">{{$price * $quantity}} DA</span></p>
+                                       @if($exists)
+                                        <p wire:loading.remove><span >Add to cart -&nbsp;</span>
+                                            <span class="tf-qty-price total-price">{{$price * $quantity}} DA</span></p>
+                                        @else
+                                            <p wire:loading.remove>
+                                                <span class="tf-qty-price total-price">Out of stock</span></p>
+                                        @endif
+
                                         <span class="loader" wire:loading></span>
                                     </button>
-                                    <a href="javascript:void(0);" class="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
-                                        <span class="icon icon-heart"></span>
-                                        <span class="tooltip">Add to Wishlist</span>
-                                        <span class="icon icon-delete"></span>
+                                    <a wire:click="toggleWishlist" href="javascript:void(0);" class="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
+                                        @if($isInWishlist)
+                                            <span class="icon icon-delete"></span>
+                                            <span class="tooltip">Remove from Wishlist</span>
+                                        @else
+                                            <span class="icon icon-heart"></span>
+                                            <span class="tooltip">Add to Wishlist</span>
+                                        @endif
                                     </a>
                                     {{--    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-product-btn-wishlist hover-tooltip box-icon bg_white compare btn-icon-action">
                                             <span class="icon icon-compare"></span>
@@ -218,41 +234,35 @@
             <div class="tf-height-observer w-100 d-flex align-items-center">
                 <div class="tf-sticky-atc-product d-flex align-items-center">
                     <div class="tf-sticky-atc-img">
-                        <img class="lazyloaded" data-src="images/shop/products/p-d1.png" alt="" src="images/shop/products/p-d1.png">
+                        <img class="lazyloaded" data-src="images/shop/products/p-d1.png" alt="" src="{{$product->image_url}}">
                     </div>
-                    <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">Cotton jersey top</div>
+                    <div class="tf-sticky-atc-title fw-5 d-xl-block d-none">{{$product->name}}</div>
                 </div>
                 <div class="tf-sticky-atc-infos">
                     <form class="">
                         <div class="tf-sticky-atc-variant-price text-center">
-                            <select class="tf-select">
-                                <option selected="selected">Beige / S - $8.00</option>
-                                <option>Beige / M - $8.00</option>
-                                <option>Beige / L - $8.00</option>
-                                <option>Beige / XL - $8.00</option>
-                                <option>Black / S - $8.00</option>
-                                <option>Black / M - $8.00</option>
-                                <option>Black / L - $8.00</option>
-                                <option>Black / XL - $8.00</option>
-                                <option>Blue / S - $8.00</option>
-                                <option>Blue / M - $8.00</option>
-                                <option>Blue / L - $8.00</option>
-                                <option>Blue / XL - $8.00</option>
-                                <option>White / S - $8.00</option>
-                                <option>White / M - $8.00</option>
-                                <option>White / L - $8.00</option>
-                                <option>White / XL - $8.00</option>
+                            <select id="variant-select" class="form-select" wire:model.live="selected_inventory_id">
+                                <option value="">-- Select Color / Size --</option>
+                                @foreach($product->inventories->where('quantity', '>', 0) as $inventory)
+                                    @php
+                                        $color = $inventory->attribute_values->firstWhere('attribute.name', 'color')?->value;
+                                        $size = $inventory->attribute_values->firstWhere('attribute.name', 'size')?->value;
+                                    @endphp
+                                    <option value="{{ $inventory->id }}">
+                                        {{ ucfirst($color) }} / {{ ucfirst($size) }}
+                                    </option>
+                                @endforeach
                             </select>
                         </div>
                         <div class="tf-sticky-atc-btns">
                             <div class="tf-product-info-quantity">
                                 <div class="wg-quantity">
-                                    <span class="btn-quantity minus-btn">-</span>
-                                    <input type="text" name="number" value="1">
-                                    <span class="btn-quantity plus-btn">+</span>
+                                    <span class="btn-quantity" wire:click="decreaseQty">-</span>
+                                    <input type="text" name="number" wire:model.live="quantity" value="{{ $quantity }}">
+                                    <span class="btn-quantity" wire:click="increaseQty">+</span>
                                 </div>
                             </div>
-                            <a href="javascript:void(0);" class="tf-btn btn-fill radius-3 justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add to cart</span></a>
+                            <a wire:click="addToCart" href="javascript:void(0);" class="tf-btn btn-fill radius-3 justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add to cart</span></a>
                         </div>
                     </form>
                 </div>

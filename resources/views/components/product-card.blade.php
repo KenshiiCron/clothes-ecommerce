@@ -11,7 +11,7 @@
                  data-src="{{$product->image_url}}"
                  src="{{$product->image_url}}" alt="image-product">
         </a>
-        <livewire:product-card-buttons :product="$product" wire:key = '{{$product->id}}'/>
+        <livewire:product-card-buttons :product="$product" wire:key="product-card-{{ $product->id }}" />
         <div class="size-list">
 
             @foreach($product->sizes() as $size)

@@ -59,17 +59,18 @@ class Cart
 
     public function remove($id): void
     {
+
         $collection = collect($this->getItems());
-        // get the item who will be deleted
+
         $item = $collection->get($id);
-        // calculate the new subTotalPrice
+
+        if (!$item) return;
+
         $this->setTotalPrice($this->getTotalPrice() - $item["price"] * $item["qty"]);
-        // calculate the nrw totalQty
+
         $this->setTotalQty($this->getTotalQty() - $item["qty"]);
 
-        // remove the item from the list of items
         $collection->forget($id);
-
 
         $this->setItems($collection->all());
     }
