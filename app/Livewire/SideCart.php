@@ -38,6 +38,8 @@ class SideCart extends Component
                 $this->products[$key]['qty'] = $item['qty'];
                 $this->products[$key]['total'] = $item['qty'] * $inventory->price;
             }
+        }else{
+            redirect()->route('home');
         }
     }
 

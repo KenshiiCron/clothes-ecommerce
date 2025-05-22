@@ -28,7 +28,7 @@
                             <span class="text-sort-value">Featured</span>
                             <span class="icon icon-arrow-down"></span>
                         </div>
-                        <div class="dropdown-menu">
+                        <div class="dropdown-menu" >
                             <div class="select-item active" wire:click="filter(['price','desc'])">
                                 <span class="text-value-item">Featured</span>
                             </div>

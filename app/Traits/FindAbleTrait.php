@@ -105,11 +105,14 @@ trait FindAbleTrait
     public function processQuery($query): mixed // Propose another name if you don't like it
     {
         $result = $this->applyFilter($query);
-
        foreach ($this->getOrders() as $key => $value) {
-            $result->orderBy($key, $value);
+           if($key == 'price')
+           {
+               $result->with('inventories')
+                   ->withMin('inventories', 'price') // adds `inventories_min_price` column
+                   ->orderBy('inventories_min_price', $value);
+           }
         }
-
         if(empty($this->getOrders()))
         {
             $result->latest();

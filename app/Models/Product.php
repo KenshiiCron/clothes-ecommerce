@@ -54,6 +54,12 @@ class Product extends Model
     {
         $query->where('state', '=', true);
     }
+    public function scopeHasValidInventories(Builder $query): void
+    {
+        $query->whereHas('inventories', function (Builder $query) {
+            $query->where('quantity', '>', 0);
+        });
+    }
 
 
     // Relations
@@ -66,12 +72,6 @@ class Product extends Model
     {
         return $this->belongsToMany(Category::class, 'product_categories');
     }
-
-    public function orders(): HasMany
-    {
-        return $this->hasMany(Order::class);
-    }
-
     public function images(): HasMany
     {
         return $this->hasMany(Image::class);
@@ -99,4 +99,6 @@ class Product extends Model
             ->unique('id')
             ->values();
     }
+
+
 }

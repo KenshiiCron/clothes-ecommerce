@@ -20,8 +20,7 @@ class Shop extends Component
     public $attribute_values = [];
     #[Url]
     public $category = null;
-
-    protected $listeners = ['filter'];
+    public $orders = [];
 
     public function mount(ProductContract $product)
     {
@@ -37,7 +36,7 @@ class Shop extends Component
     {
         $categories = Category::whereHas('products')->get();
         $attributes = Attribute::whereHas('products')->get();
-        $this->products = $product->findByFilter();
+        $this->products = $product->setScopes(['HasValidInventories'])->setOrders($this->orders)->findByFilter();
         return view('livewire.shop', ['categories' => $categories,'attributes' => $attributes, 'products' => $this->products]);
     }
 
@@ -62,10 +61,10 @@ class Shop extends Component
             });*/
         }
     }
-    public function order($filters)
+    public function order($orders)
     {
-
-        request()->merge([$filters[0] => $filters[1]]);
+        $this->orders[] = [$orders[0] => $orders[1]];
     }
+
 
 }

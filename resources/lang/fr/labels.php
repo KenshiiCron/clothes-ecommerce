@@ -10,4 +10,15 @@ return [
       'orders' => 'Achats',
       'wishlist' => 'Liste de souhaits',
   ],
+  'fields' =>
+    [
+        'name' => 'Nom',
+        'description' => 'Description',
+        'price' => 'Prix',
+        'image' => 'Image',
+        'email' => 'Email',
+        'phone' => 'Téléphone',
+        'address' => 'Adresse',
+        'optional' => 'Optionnel',
+        ]
 ];

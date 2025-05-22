@@ -35,6 +35,6 @@ class Order extends Model
 
     public function orderItems()
     {
-        return $this->belongsToMany(Product::class,'order_items',)->withPivot('qty','total','attributes')->withTimestamps();
+        return $this->belongsToMany(Inventory::class,'order_items',)->withPivot('qty','total')->withTimestamps();
     }
 }

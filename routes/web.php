@@ -13,6 +13,7 @@ Route::get('/contact', [\App\Http\Controllers\User\WebsiteController::class, 'co
 Route::get('/shop', [\App\Http\Controllers\User\WebsiteController::class, 'shop'])->name('shop');
 Route::view('/cart', 'pages.cart')->name('cart');
 Route::view('/cart', 'pages.cart')->name('cart');
+Route::view('/checkout', 'pages.checkout')->name('checkout');
 
 Route::resource('products', \App\Http\Controllers\User\ProductController::class);
 

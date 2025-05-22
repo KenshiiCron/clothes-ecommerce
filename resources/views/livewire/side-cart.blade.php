@@ -35,7 +35,11 @@
                                     </div>
                                     <div class="tf-mini-cart-info">
                                         <a class="title link" href="{{route('products.show', $product['details']->id)}}">{{$product['details']->name}}</a>
-                                        <div class="meta-variant">{{ucfirst($product['inventory']->attribute_values[1]->value)}} / {{ucfirst($product['inventory']->attribute_values[0]->value)}}</div>
+                                        <div class="meta-variant">
+                                            @foreach($product['inventory']->attribute_values as $value)
+                                                <p class="variant">{{ucfirst($value->attribute->name)}} : {{ucfirst($value->value)}}</p>
+                                            @endforeach
+                                        </div>
                                         <div class="price fw-6">{{$product['inventory']->price}} DA</div>
                                         <div class="tf-mini-cart-btns">
                                             <div class="wg-quantity small">
@@ -71,7 +75,7 @@
                             <div class="tf-mini-cart-line"></div>
                             <div class="tf-mini-cart-view-checkout">
                                 <a href="{{route('cart')}}" class="tf-btn btn-outline radius-3 link w-100 justify-content-center">View cart</a>
-                                <a {{--href="{{route('checkout')}}" --}}class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check out</span></a>
+                                <a href="{{route('checkout')}}" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check out</span></a>
                             </div>
                         </div>
                     </div>

@@ -14,10 +14,9 @@ return new class extends Migration
         Schema::create('order_items', function (Blueprint $table) {
             $table->id();
             $table->foreignId('order_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
-            $table->foreignId('product_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
+            $table->foreignId('inventory_id')->nullable()->constrained()->cascadeOnDelete()->cascadeOnUpdate();
             $table->integer('total')->default(0);
             $table->integer('qty')->default(1);
-            $table->json('attributes')->nullable();
             $table->timestamps();
         });
     }
