@@ -171,10 +171,7 @@ export const columns: ColumnDef<Order>[] = [
         },
         cell: ({row}) => (
             <div className="lowercase">
-                {new Date(row.getValue("created_at"))
-                    .toISOString()
-                    .slice(0, 19)
-                    .replace("T", " ")}
+                {row.getValue("created_at")}
             </div>
         ),
     },

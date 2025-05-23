@@ -29,10 +29,10 @@ class SideCart extends Component
     public function getCart(){
         $this->products =[];
         $cart = session()->has('cart') ? session()->get('cart') : null;
-        if($cart){
-            foreach($cart->getItems() as $key=>$item){
+        if($cart) {
+            foreach ($cart->getItems() as $key => $item) {
                 $product = Product::find($item['product_id']);
-                $inventory = $product->inventories->where('id',$item['inventory_id'])->first();
+                $inventory = $product->inventories->where('id', $item['inventory_id'])->first();
                 $this->products[$key]['details'] = $product;
                 $this->products[$key]['inventory'] = $inventory;
                 $this->products[$key]['qty'] = $item['qty'];

@@ -46,9 +46,8 @@
     </div>
     {{-- Preloader --}}
     <div id="wrapper">
-        @if(request()->routeIs('home'))
+
         @include('components.top-bar')
-        @endif
 
         @include('components.header')
 

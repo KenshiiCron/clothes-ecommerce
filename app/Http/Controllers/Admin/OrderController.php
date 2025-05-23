@@ -8,6 +8,7 @@ use App\Http\Requests\StoreOrdersRequest;
 use App\Http\Requests\UpdateOrdersRequest;
 use App\Models\Order;
 use App\Models\User;
+use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Kossa\AlgerianCities\Wilaya;
 
@@ -78,7 +79,7 @@ class OrderController extends Controller
      */
     public function show($id)
     {
-        $order = $this->order->findOneById($id);
+        $order = $this->order->findOneById($id)->load('orderItems.product');
         return Inertia::render('orders/show', compact('order'));
     }
 
@@ -93,9 +94,18 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateOrdersRequest $request, Order $orders)
+    public function update($id, Request $request)
     {
-        //
+        $order = $this->order->findOneById($id);
+
+        if (!$order) {
+            return response()->json(['message' => 'Order not found.'], 404);
+        }
+        $order->update([
+            'state' => $request->state,
+        ]);
+
+        return response()->json(['message' => 'Order state updated successfully.']);
     }
 
     /**

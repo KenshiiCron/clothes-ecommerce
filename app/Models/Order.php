@@ -28,6 +28,11 @@ class Order extends Model
         'tracking',
     ];
 
+    protected $casts=[
+        'created_at'=>'datetime:l d-m-Y H:i',
+        'updated_at'=>'datetime:l d-M-Y H:i',
+    ];
+
     public function user()
     {
         return $this->hasOne(User::class);
@@ -37,4 +42,7 @@ class Order extends Model
     {
         return $this->belongsToMany(Inventory::class,'order_items',)->withPivot('qty','total')->withTimestamps();
     }
+
+
+
 }
