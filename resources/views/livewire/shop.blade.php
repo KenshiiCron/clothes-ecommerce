@@ -204,8 +204,7 @@
 
         </div>
     </section>
-
-    <div class="offcanvas offcanvas-start canvas-filter" id="filterShop" wire:ignore>
+    <div class="offcanvas offcanvas-start canvas-filter " id="filterShop" wire:ignore>
         <div class="canvas-wrapper">
             <header class="canvas-header">
                 <div class="filter-icon">
@@ -247,7 +246,7 @@
                             </ul>
                         </div>
                     </div>--}}
-                    <div class="widget-facet">
+                 {{--   <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#price" data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
                             <span>Price</span>
                             <span class="icon icon-arrow-up"></span>
@@ -258,27 +257,27 @@
                                     <div class="progress-price"></div>
                                 </div>
                                 <div class="range-input">
-                                    <input class="range-min" type="range" min="0" max="300" value="0"/>
-                                    <input class="range-max" type="range" min="0" max="300" value="300"/>
+                                    <input class="range-min" type="range" min="0" max="300" value="0" wire:model.live = 'min_price'/>
+                                    <input class="range-max" type="range" min="0" max="300" value="300" wire:model.live = 'max_price'/>
                                 </div>
                                 <div class="box-title-price">
                                     <span class="title-price">Price :</span>
                                     <div class="caption-price">
                                         <div>
-                                            <span>$</span>
-                                            <span class="min-price">0</span>
+                                            <span>DA</span>
+                                            <span class="min-price">{{$min_price}}</span>
                                         </div>
                                         <span>-</span>
                                         <div>
-                                            <span>$</span>
-                                            <span class="max-price">300</span>
+                                            <span>DA</span>
+                                            <span class="max-price">{{$max_price}}</span>
                                         </div>
                                     </div>
                                 </div>
                             </div>
 
                         </div>
-                    </div>
+                    </div>--}}
           {{--          @if(!$brands->isEmpty())
                         <div class="widget-facet">
                             <div class="facet-title" data-bs-target="#brand" data-bs-toggle="collapse" aria-expanded="true" aria-controls="brand">

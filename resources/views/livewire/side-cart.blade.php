@@ -24,8 +24,8 @@
                     <div class="tf-mini-cart-main">
                         <div class="tf-mini-cart-sroll">
                             <div class="tf-mini-cart-items">
-
-                                @if(count($products) > 0)
+²
+                                @if(!empty($products))
                                 @foreach($products as $key=>$product)
                                 <div class="tf-mini-cart-item" wire:key="product-{{ $key }}">
                                     <div class="tf-mini-cart-image">

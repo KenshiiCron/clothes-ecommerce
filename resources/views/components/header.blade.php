@@ -68,9 +68,8 @@
         </div>
     </div>
 </div>
-@if(session()->has('cart'))
     <livewire:side-cart/>
-@endif
+
 
 
 {{--<div class="modal modalCentered fade form-sign-in modal-part-content" id="forgotPassword">--}}

@@ -21,5 +21,7 @@ return [
         'address' => 'Adresse',
         'optional' => 'Optionnel',
         'filter' => 'Filtre',
-        ]
+        'category' => 'Catégorie',
+        'categories' => 'Catégories',
+    ]
 ];

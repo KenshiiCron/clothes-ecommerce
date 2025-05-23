@@ -3,7 +3,7 @@
 
 @section('content')
     <main>
-        <section class="flat-spacing-10" style="padding: 150px 150px;">
+        <section class="flat-spacing-10">
             <div class="container">
                 <div class="form-register-wrap">
                         <h5 class="mb_18">Login</h5>

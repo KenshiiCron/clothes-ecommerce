@@ -20,8 +20,11 @@ class Shop extends Component
     public $attribute_values = [];
     #[Url]
     public $category = null;
+    public $search = null;
     public $orders = [];
     public $currentOrder = 'default';
+    public $min_price = 0;
+    public $max_price = 10000;
 
     public function mount(ProductContract $product)
     {
@@ -29,9 +32,10 @@ class Shop extends Component
         {
             $this->category = request('category');
         }
-        /*->reject(function ($product) {
-            return $product->inventories->isEmpty();
-        });*/
+        if(request()->has('search'))
+        {
+            $this->search = request('search');
+        }
     }
     public function render(ProductContract $product)
     {
@@ -41,7 +45,7 @@ class Shop extends Component
         return view('livewire.shop', ['categories' => $categories,'attributes' => $attributes, 'products' => $this->products]);
     }
 
-    public function updated($propertyName)
+    public function updated($propertyName,$value)
     {
         if(str_contains($propertyName,'attribute_values'))
         {
@@ -60,6 +64,10 @@ class Shop extends Component
             ;/*->reject(function ($product) {
                 return $product->inventories->isEmpty();
             });*/
+        }
+        if(str_contains($propertyName,'min_price') || str_contains($propertyName,'max_price'))
+        {
+            dd($propertyName);
         }
     }
     public function order($order,$direction)

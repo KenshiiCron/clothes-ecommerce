@@ -21,7 +21,7 @@ class Product extends Component
 
     public function mount()
     {
-        $inventory = $this->product->inventories->where('quantity', '>', 0)->first();
+        $inventory = $this->product->inventories()->where('quantity', '>', 0)->orderBy('price','asc')->first();
         $this->selected_inventory_id = $inventory->id;
         $this->price = $inventory->price;
         foreach ($inventory->attribute_values as $value) {

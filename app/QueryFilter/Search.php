@@ -2,6 +2,7 @@
 
 namespace App\QueryFilter;
 
+use App\Models\Product;
 use App\Models\User;
 
 class Search extends Filter
@@ -34,6 +35,9 @@ class Search extends Filter
             $builder->where('name', 'like', '%' . $q . '%')
                 ->orWhere('email', 'like', '%' . $q . '%')
                 ->orWhere('phone', 'like', '%' . $q . '%');
+        }
+        if ($model instanceof Product) {
+            $builder->where('name', 'like', '%' . $q . '%');
         }
         /*if ($model instanceof Category) {
             $builder->where('name', 'like', '%' . $q . '%');

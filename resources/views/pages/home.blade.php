@@ -193,7 +193,6 @@
             </div>
             <div class="grid-layout loadmore-item wow fadeInUp" data-wow-delay="0s" data-grid="grid-4">
                 @foreach($featuredProducts as $product)
-                <!-- card product 1 -->
                     @include('components.product-card', $product)
                 @endforeach
 
