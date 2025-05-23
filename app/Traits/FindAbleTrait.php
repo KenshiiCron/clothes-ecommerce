@@ -111,6 +111,14 @@ trait FindAbleTrait
                $result->with('inventories')
                    ->withMin('inventories', 'price') // adds `inventories_min_price` column
                    ->orderBy('inventories_min_price', $value);
+           }/*elseif($key == 'seller')
+           {
+               $result->with('inventories')
+                   ->withCount('inventories', 'orders') // adds `inventories_min_price` column
+                   ->orderBy('orders_count', $value);
+           }*/
+           else{
+               $result->orderBy($key, $value);
            }
         }
         if(empty($this->getOrders()))

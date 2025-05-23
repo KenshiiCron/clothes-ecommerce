@@ -21,6 +21,7 @@ class Shop extends Component
     #[Url]
     public $category = null;
     public $orders = [];
+    public $currentOrder = 'default';
 
     public function mount(ProductContract $product)
     {
@@ -61,9 +62,10 @@ class Shop extends Component
             });*/
         }
     }
-    public function order($orders)
+    public function order($order,$direction)
     {
-        $this->orders[] = [$orders[0] => $orders[1]];
+        $this->orders = [$order => $direction];
+        $this->currentOrder = $order.'_'.$direction;
     }
 
 

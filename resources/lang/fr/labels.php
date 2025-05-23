@@ -20,5 +20,6 @@ return [
         'phone' => 'Téléphone',
         'address' => 'Adresse',
         'optional' => 'Optionnel',
+        'filter' => 'Filtre',
         ]
 ];

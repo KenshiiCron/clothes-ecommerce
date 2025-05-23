@@ -11,5 +11,5 @@
 
     <!-- Section Product -->
 
-    <livewire:shop  wire:key="my-shop"/>
+    <livewire:shop />
 @endsection

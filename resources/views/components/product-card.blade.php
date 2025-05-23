@@ -1,4 +1,4 @@
-<div class="card-product fl-item">
+<div class="card-product fl-item" wire:key = '{{$product->id}}'>
     <div class="card-product-wrapper">
         <div class="badge-product">
             @if($product->featured)

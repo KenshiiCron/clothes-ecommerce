@@ -1,9 +1,11 @@
+
+
 <div>
     <section class="flat-spacing-2" >
         <div class="container">
             <div class="tf-shop-control grid-3 align-items-center">
                 <div class="tf-control-filter">
-                    <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-btn-filter"><span class="icon icon-filter"></span><span class="text">Filter</span></a>
+                    <a href="#filterShop" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-btn-filter"><span class="icon icon-filter"></span><span class="text">{{__('labels.fields.filter')}}</span></a>
                 </div>
                 <ul class="tf-control-layout d-flex justify-content-center">
                     <li class="tf-view-layout-switch sw-layout-2" data-value-grid="grid-2">
@@ -25,33 +27,33 @@
                 <div class="tf-control-sorting d-flex justify-content-end">
                     <div class="tf-dropdown-sort" data-bs-toggle="dropdown">
                         <div class="btn-select">
-                            <span class="text-sort-value">Featured</span>
+                            <span class="text-sort-value">{{__('labels.sort.'.$currentOrder)}}</span>
                             <span class="icon icon-arrow-down"></span>
                         </div>
                         <div class="dropdown-menu" >
-                            <div class="select-item active" wire:click="filter(['price','desc'])">
-                                <span class="text-value-item">Featured</span>
+                         {{--   <div class="select-item active" wire:click="filter(['price','desc'])">
+                                <span class="text-value-item">{{__('labels.sort.featured')}}</span>
+                            </div>--}}
+                         {{--   <div class="select-item">
+                                <span class="text-value-item" wire:click="order('seller','asc')">{{__('labels.sort.best_selling')}}</span>
+                            </div>--}}
+                            <div class="select-item">
+                                <span class="text-value-item" wire:click="order('name','asc')">{{__('labels.sort.name_asc')}}</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item" >Best selling</span>
+                                <span class="text-value-item" wire:click="order('name','asc')">{{__('labels.sort.name_desc')}}</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Alphabetically, A-Z</span>
+                                <span class="text-value-item" wire:click="order('price','asc')">{{__('labels.sort.price_asc')}}</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item">Alphabetically, Z-A</span>
+                                <span class="text-value-item" wire:click="order('price','desc')">{{__('labels.sort.price_desc')}}</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item" wire:click="order(['price','asc'])">Price, low to high</span>
+                                <span class="text-value-item" wire:click="order('created_at','asc')">{{__('labels.sort.oldest')}}</span>
                             </div>
                             <div class="select-item">
-                                <span class="text-value-item" wire:click="order(['price','desc'])">Price, high to low</span>
-                            </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order(['created_at','asc'])">Date, old to new</span>
-                            </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order(['created_at','desc'])">Date, new to old</span>
+                                <span class="text-value-item" wire:click="order('created_at','desc')">{{__('labels.sort.newest')}}</span>
                             </div>
                         </div>
                     </div>
@@ -64,6 +66,112 @@
                     @foreach($products as $product)
                         @include('components.product-card',['product'=> $product])
                     @endforeach
+                </div>
+                <div class="grid-layout wrapper-shop" data-grid="grid-4" wire:loading>
+                    <div class="card-product fl-item">
+                        <div class="card-product-wrapper">
+                            <div class="badge-product">
+                                <span class="badge badge-placeholder" style="width: 60px; height: 20px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                            <div class="product-img" style="width: 330px; height: 440px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="size-list">
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                        </div>
+                        <div class="card-product-info">
+                            <div class="title" style="width: 70%; height: 20px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="price" style="width: 40%; height: 18px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="old-price" style="width: 30%; height: 16px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <ul class="list-color-product">
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-product fl-item">
+                        <div class="card-product-wrapper">
+                            <div class="badge-product">
+                                <span class="badge badge-placeholder" style="width: 60px; height: 20px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                            <div class="product-img" style="width: 330px; height: 440px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="size-list">
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                        </div>
+                        <div class="card-product-info">
+                            <div class="title" style="width: 70%; height: 20px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="price" style="width: 40%; height: 18px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="old-price" style="width: 30%; height: 16px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <ul class="list-color-product">
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-product fl-item">
+                        <div class="card-product-wrapper">
+                            <div class="badge-product">
+                                <span class="badge badge-placeholder" style="width: 60px; height: 20px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                            <div class="product-img" style="width: 330px; height: 440px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="size-list">
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                        </div>
+                        <div class="card-product-info">
+                            <div class="title" style="width: 70%; height: 20px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="price" style="width: 40%; height: 18px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="old-price" style="width: 30%; height: 16px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <ul class="list-color-product">
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="card-product fl-item">
+                        <div class="card-product-wrapper">
+                            <div class="badge-product">
+                                <span class="badge badge-placeholder" style="width: 60px; height: 20px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                            <div class="product-img" style="width: 330px; height: 440px; background-color: #e0e0e0; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="size-list">
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                <span style="width: 30px; height: 20px; background-color: #e0e0e0; display: inline-block; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                            </div>
+                        </div>
+                        <div class="card-product-info">
+                            <div class="title" style="width: 70%; height: 20px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="price" style="width: 40%; height: 18px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <div class="old-price" style="width: 30%; height: 16px; background-color: #e0e0e0; margin-bottom: 10px; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></div>
+                            <ul class="list-color-product">
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                                <li class="list-color-item">
+                                    <span class="swatch-value" style="width: 20px; height: 20px; background-color: #e0e0e0; border-radius: 50%; box-shadow: 0 0 8px rgba(224, 224, 224, 0.5);"></span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
                 <!-- pagination -->
                 <ul class="tf-pagination-wrap tf-pagination-list tf-pagination-btn">
@@ -121,7 +229,7 @@
                     </div>
                 </div>
                 <form action="#" id="facet-filter-form" class="facet-filter-form">
-                    <div class="widget-facet">
+               {{--     <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#availability" data-bs-toggle="collapse" aria-expanded="true" aria-controls="availability">
                             <span>Availability</span>
                             <span class="icon icon-arrow-up"></span>
@@ -138,7 +246,7 @@
                                 </li>
                             </ul>
                         </div>
-                    </div>
+                    </div>--}}
                     <div class="widget-facet">
                         <div class="facet-title" data-bs-target="#price" data-bs-toggle="collapse" aria-expanded="true" aria-controls="price">
                             <span>Price</span>
@@ -192,7 +300,7 @@
                     @foreach($attributes as $attribute)
                         @if(strtolower($attribute->name) == 'color')
                             <div class="widget-facet">
-                                <div class="facet-title"  data-bs-toggle="collapse" aria-expanded="true" aria-controls="color">
+                                <div class="facet-title" data-bs-target="#{{$attribute->name}}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="color">
                                     <span>Color</span>
                                     <span class="icon icon-arrow-up"></span>
                                 </div>
@@ -200,7 +308,7 @@
                                     <ul class="tf-filter-group filter-color current-scrollbar mb_36">
                                         @foreach($attribute->attribute_values as $key => $value)
                                             <li class="list-item d-flex gap-12 align-items-center">
-                                                <input type="checkbox"   wire:model.live = 'attribute_values.{{$value->id}}' class="tf-check-color" id="attribute_{{$attribute->id}}_{{$value->id}}"  style="background-color: {{$value->value}}" value="{{$value->id}}">
+                                                <input type="checkbox"  wire:model.live = 'attribute_values.{{$value->id}}' class="tf-check-color" id="attribute_{{$attribute->id}}_{{$value->id}}"  style="background-color: {{$value->value}}" value="{{$value->id}}">
                                                 <label for="attribute_{{$attribute->id}}_{{$value->id}}" class="label"><span>{{ucfirst($value->value)}}</span>&nbsp;</label>
                                             </li>
                                         @endforeach
@@ -209,7 +317,7 @@
                             </div>
                         @else
                             <div class="widget-facet">
-                                <div class="facet-title"  data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
+                                <div class="facet-title" data-bs-target="#{{$attribute->name}}" data-bs-toggle="collapse" aria-expanded="true" aria-controls="size">
                                     <span>Size</span>
                                     <span class="icon icon-arrow-up"></span>
                                 </div>
