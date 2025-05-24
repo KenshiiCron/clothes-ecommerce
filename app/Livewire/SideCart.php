@@ -69,18 +69,23 @@ class SideCart extends Component
         $cart = session()->has('cart') ? session()->get('cart') : null;
 
         if ($cart) {
+            $productName = $this->products[$key]['details']['name'];
             $cart->remove($key);
-
             unset($this->products[$key]);
             $this->products = array_values($this->products);
 
             session()->put('cart', $cart);
-
             $this->getCart();
 
-            $this->dispatch('swal-toast',['icon' => 'success','title' => 'Cart Item Removed', 'text' => 'wow²']);
+            $this->dispatch('swal-toast', [
+                'icon' => 'success',
+                'title' => 'Cart Item Removed',
+                'text' => $productName . ' has been removed from your cart.',
+            ]);
+
             $this->dispatch('cart-updated');
         }
+
     }
 
 

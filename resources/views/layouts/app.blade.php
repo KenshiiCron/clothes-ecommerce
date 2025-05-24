@@ -23,12 +23,17 @@
 
     {{-- CSS Imports --}}
     <!-- font -->
+    <link href="https://cdn.jsdelivr.net/npm/jolty-ui@0.3.1/dist/jolty-ui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{asset('assets/front/fonts/fonts.css')}}">
     <link rel="stylesheet" href="{{asset('assets/front/fonts/font-icons.css')}}">
     <link rel="stylesheet" href="{{asset('assets/front/css/bootstrap.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/front/css/drift-basic.min.css')}}">
+    <link rel="stylesheet" href="{{asset('assets/front/css/photoswipe.css')}}">
     <link rel="stylesheet" href="{{asset('assets/front/css/swiper-bundle.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/front/css/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/front/css/styles.css')}}"/>
+
+
 
 
     {{-- CSS Imports --}}
@@ -832,59 +837,66 @@
 <script type="text/javascript" src="{{asset('assets/front/js/lazysize.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/front/js/count-down.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/front/js/wow.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/front/js/drift.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('assets/front/js/drift.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/front/js/multiple-modal.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/front/js/main.js')}}"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2-theme-bootstrap-4@4"></script>
+
+
+<script type="module" src="{{asset('assets/front/js/model-viewer.min.js')}}"></script>
+<script type="module" src="{{asset('assets/front/js/zoom.js')}}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2-theme-bootstrap-4@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-
+    <script src="https://cdn.jsdelivr.net/npm/jolty@0.6.2/dist/jolty.min.js"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
 
     {{-- Javascript Imports --}}
 
 @stack('js')
 @livewireScripts
-<script>
-    let Toast = Swal.mixin({
-        toast: true,
-        position: 'top',
-        showConfirmButton: false,
-        timer: 3000,
-        customClass: {
-            popup: "my-custom-popup",
-            title: "my-custom-title",
-        },
-        didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer);
-            toast.addEventListener('mouseleave', Swal.resumeTimer);
-        }
-    });
+{{--<script>--}}
+{{--    let Toast = Swal.mixin({--}}
+{{--        toast: true,--}}
+{{--        position: 'top',--}}
+{{--        showConfirmButton: false,--}}
+{{--        timer: 3000,--}}
+{{--        customClass: {--}}
+{{--            popup: "my-custom-popup",--}}
+{{--            title: "my-custom-title",--}}
+{{--        },--}}
+{{--        didOpen: (toast) => {--}}
+{{--            toast.addEventListener('mouseenter', Swal.stopTimer);--}}
+{{--            toast.addEventListener('mouseleave', Swal.resumeTimer);--}}
+{{--        }--}}
+{{--    });--}}
 
 
-    @if(session()->has('success'))
-    Toast.fire({
-        icon: 'success',
-        title: '{{__('messages.flash.success')}}',
-        text: '{{session()->get('success')}}'
-    })
-    @endif
+{{--    @if(session()->has('success'))--}}
+{{--    Toast.fire({--}}
+{{--        icon: 'success',--}}
+{{--        title: '{{__('messages.flash.success')}}',--}}
+{{--        text: '{{session()->get('success')}}'--}}
+{{--    })--}}
+{{--    @endif--}}
 
-    @if(session()->has('error'))
-    Toast.fire({
-        icon: 'error',
-        title: '{{__('messages.flash.error')}}',
-        text: '{{session()->get('error')}}'
-    })
-    @endif
-    Livewire.on('swal-toast', (event) => {
-        console.log(event)
-        Toast.fire({
-            icon: event[0].icon,
-            title: event[0].title,
-            text: event[0].text
-        });
-    });
-</script>
+{{--    @if(session()->has('error'))--}}
+{{--    Toast.fire({--}}
+{{--        icon: 'error',--}}
+{{--        title: '{{__('messages.flash.error')}}',--}}
+{{--        text: '{{session()->get('error')}}'--}}
+{{--    })--}}
+{{--    @endif--}}
+{{--    Livewire.on('swal-toast', (event) => {--}}
+{{--        console.log(event)--}}
+{{--        Toast.fire({--}}
+{{--            icon: event[0].icon,--}}
+{{--            title: event[0].title,--}}
+{{--            text: event[0].text--}}
+{{--        });--}}
+{{--    });--}}
+{{--</script>--}}
 <script>
     import Alpine from 'alpinejs'
 
@@ -892,6 +904,30 @@
 
     Alpine.start()
 </script>
+    <script>
+        const { Toast } = window.jolty;
+
+        Toast.template(({ content, type, dismiss, autohide }) => {
+            const className = `ui-toast ${type ? "ui-toast--" + type : ""}`;
+            const closeBtn = dismiss ? `<button class="ui-btn-close ui-btn-close--no-bg" aria-label="Close" data-ui-dismiss></button>` : "";
+            const progress = autohide ? '<div class="ui-toast-progress" data-ui-autohide-progress></div>' : "";
+            return `<div class="${className}">${content}${closeBtn}${progress}</div>`;
+        });
+
+        @if(session()->has('success'))
+        new Toast({ type: "success", content: @json(session()->get('success')) });
+        @endif
+
+        @if(session()->has('error'))
+        new Toast({ type: "error", content: @json(session()->get('error')) });
+        @endif
+
+        Livewire.on('swal-toast', (event) => {
+            console.log('Toast event:', event);
+            new Toast({ type: event[0].icon, content: event[0].text });
+        });
+    </script>
+
 </body>
 </html>
 

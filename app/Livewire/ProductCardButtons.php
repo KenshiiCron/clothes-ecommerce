@@ -46,7 +46,7 @@ class ProductCardButtons extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product removed from wishlist.',
+                    'text' => $this->product->name.' has been removed from your wishlist.',
                 ]);
             } else {
                 Wishlist::create([
@@ -58,7 +58,7 @@ class ProductCardButtons extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product added to wishlist.',
+                    'text' => $this->product->name.' has been added to your wishlist.',
                 ]);
             }
         } else {
@@ -72,7 +72,7 @@ class ProductCardButtons extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product removed from wishlist.',
+                    'text' => $this->product->name.' has been removed from your wishlist.',
                 ]);
             } else {
                 $wishlist[] = $this->product->id;
@@ -81,7 +81,7 @@ class ProductCardButtons extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product added to wishlist.',
+                    'text' => $this->product->name.' has been added to your wishlist.',
                 ]);
             }
 

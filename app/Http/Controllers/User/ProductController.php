@@ -52,6 +52,7 @@ class ProductController extends Controller
     {
         $product = $this->product->findOneById($id);
 
+
         return view('pages.product', compact('product'));
     }
 

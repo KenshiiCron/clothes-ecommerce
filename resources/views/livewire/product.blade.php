@@ -5,17 +5,22 @@
         <div class="container">
             <div class="row">
                 <div class="col-md-6">
-                    <div class="tf-product-media-wrap sticky-top">
+
+                    <div class="tf-product-media-wrap sticky-top" wire:ignore>
                         <div class="thumbs-slider">
                             <div dir="ltr" class="swiper tf-product-media-thumbs other-image-zoom" data-direction="vertical">
                                 <div class="swiper-wrapper stagger-wrap">
-                                    <!-- beige -->
-                                    @foreach($product->images as $image)
-                                        <div class="swiper-slide stagger-item" data-color="beige">
-                                            <div class="item">
-                                                <img class="lazyload" data-src="{{$image->image_url}}" src="{{$image->image_url}}" alt="img-product">
-                                            </div>
+                                    <div class="swiper-slide stagger-item">
+                                        <div class="item">
+                                            <img class="lazyload" data-src="{{$product->image_url}}" src="{{$product->image_url}}" alt="img-product">
                                         </div>
+                                    </div>
+                                    @foreach($product->images as $image)
+                                    <div class="swiper-slide stagger-item">
+                                        <div class="item">
+                                            <img class="lazyload" data-src="{{$image->image_url}}" src="{{$image->image_url}}" alt="img-product">
+                                        </div>
+                                    </div>
                                     @endforeach
                                 </div>
                             </div>
@@ -28,18 +33,21 @@
                                         </a>
                                     </div>
                                     @foreach($product->images as $image)
-                                        <div class="swiper-slide">
-                                            <a href="{{$image->image_url}}" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
-                                                <img class="tf-image-zoom lazyload" data-zoom="{{$image->image_url}}" data-src="{{$image->image_url}}" src="{{$image->image_url}}" alt="">
-                                            </a>
-                                        </div>
+                                    <div class="swiper-slide">
+                                        <a href="{{$image->image_url}}" target="_blank" class="item" data-pswp-width="770px" data-pswp-height="1075px">
+                                            <img class="tf-image-zoom lazyload" data-zoom="{{$image->image_url}}" data-src="{{$image->image_url}}" src="{{$image->image_url}}" alt="">
+                                        </a>
+                                    </div>
                                     @endforeach
+
+
                                 </div>
                                 <div class="swiper-button-next button-style-arrow thumbs-next"></div>
                                 <div class="swiper-button-prev button-style-arrow thumbs-prev"></div>
                             </div>
                         </div>
                     </div>
+
                 </div>
                 <div class="col-md-6">
                     <div class="tf-product-info-wrap position-relative">
@@ -51,6 +59,7 @@
                             <div class="tf-product-info-badges">
                                 @if($product->limited)<div class="badges">{{__('labels.fields.limited')}}</div>@endif
                                 @if($product->featured)<div class="badges">{{__('labels.fields.featured')}}</div>@endif
+                                @if($product->inventories->min('old_price') > 0)<div class="badges">{{__('labels.fields.promo')}}</div>@endif
 
                             </div>
                             <div class="tf-product-info-price">
@@ -88,7 +97,7 @@
                                                                @if($attribute_values[$attribute->id] == $value->id)
                                                                    style="border: 1px solid black"
                                                                @endif
-                                                               for="values-{{$value->value}}" data-color="{{$value->value}}" data-value="{{$value->value}}">
+                                                               for="values-{{$value->value}}">
                                                             <span class="btn-checkbox bg-color-{{$value->value}}" style="background-color: {{$value->value}}"></span>
                                                             <span class="tooltip">{{ucfirst($value->value)}}</span>
                                                         </label>

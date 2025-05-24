@@ -107,7 +107,10 @@ class Product extends Component
         $cart->add($this->product,['qty' => $this->quantity,'inventory_id' => $this->selected_inventory_id]);
         session()->put('cart',$cart);
         session()->flash("success","a été ajouté au panier !");
-        $this->dispatch('swal-toast',['icon' => 'success','title' => 'wow', 'text' => 'wow²']);
+        $this->dispatch('swal-toast', [
+            'icon' => 'success',
+            'text' => $this->product->name . ' has been added to your cart.'
+        ]);
         $this->dispatch('cart-updated');
     }
 
@@ -127,7 +130,7 @@ class Product extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product removed from wishlist.',
+                    'text' => $this->product->name . ' has been removed from your wishlist.',
                 ]);
             } else {
                 Wishlist::create([
@@ -139,7 +142,7 @@ class Product extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product added to wishlist.',
+                    'text' => $this->product->name . ' has been added to your wishlist.',
                 ]);
             }
         } else {
@@ -153,7 +156,7 @@ class Product extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product removed from wishlist.',
+                    'text' => $this->product->name . ' has been removed from your wishlist.',
                 ]);
             } else {
                 $wishlist[] = $this->product->id;
@@ -162,7 +165,7 @@ class Product extends Component
                 $this->dispatch('swal-toast', [
                     'icon' => 'success',
                     'title' => 'Success',
-                    'text' => 'Product added to wishlist.',
+                    'text' => $this->product->name . ' has been added to your wishlist.',
                 ]);
             }
 

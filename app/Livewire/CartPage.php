@@ -65,7 +65,11 @@ class CartPage extends Component
 
             $this->getCart();
 
-            $this->dispatch('swal-toast',['icon' => 'success','title' => 'Cart Item Removed', 'text' => 'wow²']);
+            $this->dispatch('swal-toast',
+                ['icon' => 'success',
+                    'title' => 'Cart Item Removed',
+                    'text' => $this->products[$key]->name . ' has been removed from your cart.',
+                ]);
             $this->dispatch('cart-updated');
         }
     }
