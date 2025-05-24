@@ -2,30 +2,29 @@
 
 namespace App\Enums\Order;
 
-use App\Contracts\Enums\ColorAbleContract;
-use App\Traits\Enums\ColorableTrait;
-use App\Traits\Enums\ValuesFormatTrait;
-
-enum State: int implements ColorAbleContract
+enum State: int
 {
-    use ColorableTrait, ValuesFormatTrait;
+    case Pending = 0;
+    case Validated = 1;
+    case Canceled = 2;
+    case Rejected = 3;
 
-    case PENDING = 0;
-    case CONFIRMED = 1;
-    case CANCELLED = 2;
-    case REJECTED = 3;
-
-    public static function colors(): array
+    public function label(): string
     {
-        return [
-            self::PENDING->value => 'light-info',
-            self::CONFIRMED->value => 'light-success',
-            self::CANCELLED->value => 'light-danger',
-            self::REJECTED->value => 'light-danger',
-        ];
+        return match ($this) {
+            self::Pending => 'Pending',
+            self::Validated => 'Validated',
+            self::Canceled => 'Canceled',
+            self::Rejected => 'Rejected',
+        };
     }
-    public function label():string
+
+    public function color(): string
     {
-        return __('labels.enum.order.state.'.$this->value);
+        return match ($this) {
+            self::Pending => 'bg-warning text-white',
+            self::Validated => 'bg-success text-white',
+            self::Canceled, self::Rejected => 'bg-danger text-white',
+        };
     }
 }

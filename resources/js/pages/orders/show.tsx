@@ -16,6 +16,7 @@ import {
 import {stateColor, stateLabel} from "@/enums/OrderEnum";
 import {Button} from "@/components/ui/button";
 import axios from "axios";
+import {useState} from "react";
 
 type OrderItem = {
     id: number;
@@ -39,10 +40,13 @@ export default function OrderShow({ order }: { order: Order }) {
 
     console.log(order)
 
-    function updateState(state: number) {
-        axios.put(`/admin/orders/${order.id}`, { state: state })
+    const [state, setState] = useState(parseInt(order.state));
+
+    function updateState(newState: number) {
+        axios.put(`/admin/orders/${order.id}`, { state: newState })
             .then(res => {
                 console.log(res);
+                setState(newState); // ✅ Update local state to trigger re-render
             })
             .catch(err => {
                 console.error(err.response.data);
@@ -64,8 +68,8 @@ export default function OrderShow({ order }: { order: Order }) {
                             <div className="flex items-center justify-between">
                                 <p><span className="font-medium text-black">Order Number:</span> {order.order_number}
                                 </p>
-                                <Badge variant={stateLabel(parseInt(order.state))}><span
-                                    className="font-medium text-black"></span> {stateLabel(parseInt(order.state))}
+                                <Badge variant={stateLabel(state)}><span
+                                    className="font-medium text-black"></span> {stateLabel(state)}
                                 </Badge>
                             </div>
                             <p><span className="font-medium text-black">Date:</span> {order.created_at}</p>
@@ -95,20 +99,17 @@ export default function OrderShow({ order }: { order: Order }) {
                 </Card>
 
                 <div className="flex justify-between items-center gap-2">
-                    {parseInt(order.state) === 0 ? (
+                    {state === 0 && (
                         <>
-                            <Button onClick={() => updateState(4)} variant="danger" className="w-full">
+                            <Button onClick={() => updateState(3)} variant="danger" className="w-full">
                                 <span className="text-sm font-medium">Reject Order</span>
                             </Button>
-                            <Button onClick={() => updateState(3)} variant="success" className="w-full">
+                            <Button onClick={() => updateState(1)} variant="success" className="w-full">
                                 <span className="text-sm font-medium">Confirm Order</span>
                             </Button>
                         </>
-                    ) : (
-                        <Button onClick={() => updateState(2)} variant="danger" className="w-full">
-                            <span className="text-sm font-medium">Cancel Order</span>
-                        </Button>
                     )}
+
                 </div>
 
 

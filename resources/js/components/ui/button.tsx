@@ -17,6 +17,8 @@ const buttonVariants = cva(
               "bg-green-500 text-white hover:bg-green-600/90",
           danger:
               "bg-red-500 text-white hover:bg-red-600/90",
+          // warning:
+          //     "bg-yellow-500 text-white hover:bg-red-600/90",
         outline:
           "border border-input bg-background hover:bg-accent hover:text-accent-foreground",
         secondary:

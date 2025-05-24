@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\Order\State;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -29,8 +30,10 @@ class Order extends Model
     ];
 
     protected $casts=[
+        'state'=>State::class,
         'created_at'=>'datetime:l d-m-Y H:i',
         'updated_at'=>'datetime:l d-M-Y H:i',
+
     ];
 
     public function user()

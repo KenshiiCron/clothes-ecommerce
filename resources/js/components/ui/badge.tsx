@@ -19,6 +19,7 @@ const badgeVariants = cva(
           Validated:  "border-transparent bg-green-500 text-white hover:bg-green/80",
           Canceled:  "border-transparent bg-red-500 text-white hover:bg-red/80",
           Rejected:  "border-transparent bg-red-500 text-white hover:bg-red/80",
+
       },
     },
     defaultVariants: {

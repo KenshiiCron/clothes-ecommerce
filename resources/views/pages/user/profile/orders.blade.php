@@ -28,67 +28,73 @@
                                     <th class="fw-6">Actions</th>
                                 </tr>
                                 </thead>
-                                <tbody>
-                                <tr class="tf-order-item">
+                                @foreach($orders as $order)
+                                <tbody x-data="{ open: false }">
+                                <tr  class="tf-order-item">
                                     <td>
-                                        #123
+                                        #{{$order->order_number}}
                                     </td>
                                     <td>
-                                        August 1, 2024
+                                        {{$order->created_at->translatedFormat('l, d F Y H:i')}}
                                     </td>
                                     <td>
-                                        On hold
+                                        <span class="badge {{$order->state->color()}}">
+                                        {{$order->state->label()}}
+                                        </span>
                                     </td>
                                     <td>
-                                        $200.0 for 1 items
+                                        {{$order->total_price}}DA
                                     </td>
-                                    <td>
-                                        <a href="my-account-orders-details.html" class="tf-btn btn-fill animate-hover-btn rounded-0 justify-content-center">
+                                    <td >
+                                        <button @click="open = !open" class="tf-btn btn-fill animate-hover-btn rounded-0 justify-content-center">
                                             <span>View</span>
-                                        </a>
+                                        </button>
                                     </td>
                                 </tr>
-                                <tr class="tf-order-item">
-                                    <td>
-                                        #345
-                                    </td>
-                                    <td>
-                                        August 2, 2024
-                                    </td>
-                                    <td>
-                                        On hold
-                                    </td>
-                                    <td>
-                                        $300.0 for 1 items
-                                    </td>
-                                    <td>
-                                        <a href="my-account-orders-details.html" class="tf-btn btn-fill animate-hover-btn rounded-0 justify-content-center">
-                                            <span>View</span>
-                                        </a>
-                                    </td>
-                                </tr>
-                                <tr class="tf-order-item">
-                                    <td>
-                                        #567
-                                    </td>
-                                    <td>
-                                        August 3, 2024
-                                    </td>
-                                    <td>
-                                        On hold
-                                    </td>
-                                    <td>
-                                        $400.0 for 1 items
-                                    </td>
-                                    <td>
-                                        <a href="my-account-orders-details.html" class="tf-btn btn-fill animate-hover-btn rounded-0 justify-content-center">
-                                            <span>View</span>
-                                        </a>
-                                    </td>
-                                </tr>
+                                <tr x-show="open" x-transition.scale.origin.top x-cloak>
+                                    <td colspan="5" class="bg-gray-50 p-4">
+                                        <div>
+                                                <table>
+                                                    <thead>
+                                                    <tr>
+                                                        <th>Image</th>
+                                                        <th>Name</th>
+                                                        <th>Quantity</th>
+                                                        <th>Action</th>
+                                                    </tr>
+                                                    </thead>
+                                                    <tbody>
 
+
+                                                    @foreach($order->orderItems as $item)
+                                                        <tr>
+                                                           <td>
+                                                               <img class="object-fit-cover" style="max-width: 100px; height: auto" src="{{$item->product->image_url}}" alt="">
+                                                           </td>
+                                                            <td>
+                                                                {{$item->product->name}}
+                                                            </td>
+                                                            <td>
+                                                                {{$item->pivot->qty}}
+                                                            </td>
+                                                            <td>
+                                                                <a class="text-danger" href="{{route('products.show',$item->product->id)}}"><i class="icon icon-arrow1-top-left"></i></a>
+                                                            </td>
+
+                                                        </tr>
+                                                    @endforeach
+                                                    </tbody>
+                                                </table>
+
+                                        </div>
+                                    </td>
+                                </tr>
                                 </tbody>
+                                @endforeach
+
                             </table>
+                            {{$orders->links()}}
+
                         </div>
                     </div>
                 </div>

@@ -24,8 +24,8 @@ class ProfileController extends Controller
         return view('pages.user.profile.dashboard');
     }
     public function orders(){
-
-        return view('pages.user.profile.orders');
+        $orders = auth()->user()->orders()->with('orderItems')->paginate(4);
+        return view('pages.user.profile.orders',compact('orders'));
     }
     public function details()
     {

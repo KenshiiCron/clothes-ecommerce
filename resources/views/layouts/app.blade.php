@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="{{asset('assets/front/css/swiper-bundle.min.css')}}">
     <link rel="stylesheet" href="{{asset('assets/front/css/animate.css')}}">
     <link rel="stylesheet" type="text/css" href="{{asset('assets/front/css/styles.css')}}"/>
+
+
     {{-- CSS Imports --}}
 
     @stack('css')
@@ -826,7 +828,10 @@
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2-theme-bootstrap-4@4"></script>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
-{{-- Javascript Imports --}}
+
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+
+    {{-- Javascript Imports --}}
 
 @stack('js')
 @livewireScripts
@@ -870,6 +875,13 @@
             text: event[0].text
         });
     });
+</script>
+<script>
+    import Alpine from 'alpinejs'
+
+    window.Alpine = Alpine
+
+    Alpine.start()
 </script>
 </body>
 </html>
