@@ -49,8 +49,8 @@
                                 <h5>{{$product->name}}</h5>
                             </div>
                             <div class="tf-product-info-badges">
-                                @if($product->limited)<div class="badges">{{__('labels.limited')}}</div>@endif
-                                @if($product->featured)<div class="badges">{{__('labels.featured')}}</div>@endif
+                                @if($product->limited)<div class="badges">{{__('labels.fields.limited')}}</div>@endif
+                                @if($product->featured)<div class="badges">{{__('labels.fields.featured')}}</div>@endif
 
                             </div>
                             <div class="tf-product-info-price">
@@ -124,10 +124,10 @@
 
                             </div>
                             <div class="tf-product-info-quantity">
-                                <div class="quantity-title fw-6">Quantity</div>
+                                <div class="quantity-title fw-6">{{__('labels.fields.quantity')}}</div>
                                 <div class="wg-quantity">
                                     <span class="btn-quantity" wire:click = 'decreaseQty'>-</span>
-                                    <input type="text" class="" name="number" wire:model.live = 'quantity' value="{{$quantity}}">
+                                    <input type="text" class="" name="quantity" value="{{$quantity}}" >
                                     <span class="btn-quantity " wire:click = 'increaseQty'>+</span>
                                 </div>
                             </div>
@@ -147,10 +147,10 @@
                                     <a wire:click="toggleWishlist" href="javascript:void(0);" class="tf-product-btn-wishlist hover-tooltip box-icon bg_white wishlist btn-icon-action">
                                         @if($isInWishlist)
                                             <span class="icon icon-delete"></span>
-                                            <span class="tooltip">Remove from Wishlist</span>
+                                            <span class="tooltip">{{__('labels.text.remove_from_wishlist')}}</span>
                                         @else
                                             <span class="icon icon-heart"></span>
-                                            <span class="tooltip">Add to Wishlist</span>
+                                            <span class="tooltip">{{__('labels.text.add_to_wishlist')}}</span>
                                         @endif
                                     </a>
                                     {{--    <a href="#compare" data-bs-toggle="offcanvas" aria-controls="offcanvasLeft" class="tf-product-btn-wishlist hover-tooltip box-icon bg_white compare btn-icon-action">
@@ -242,7 +242,7 @@
                     <form class="">
                         <div class="tf-sticky-atc-variant-price text-center">
                             <select id="variant-select" class="form-select" wire:model.live="selected_inventory_id">
-                                <option value="">-- Select Color / Size --</option>
+                                <option value="">-- {{__('labels.fields.select')}} Color / Size --</option>
                                 @foreach($product->inventories->where('quantity', '>', 0) as $inventory)
                                     @php
                                         $color = $inventory->attribute_values->firstWhere('attribute.name', 'color')?->value;
@@ -262,7 +262,7 @@
                                     <span class="btn-quantity" wire:click="increaseQty">+</span>
                                 </div>
                             </div>
-                            <a wire:click="addToCart" href="javascript:void(0);" class="tf-btn btn-fill radius-3 justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>Add to cart</span></a>
+                            <a wire:click="addToCart" href="javascript:void(0);" class="tf-btn btn-fill radius-3 justify-content-center fw-6 fs-14 flex-grow-1 animate-hover-btn btn-add-to-cart"><span>{{__('labels.text.add_to_cart')}}</span></a>
                         </div>
                     </form>
                 </div>

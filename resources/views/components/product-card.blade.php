@@ -2,10 +2,10 @@
     <div class="card-product-wrapper">
         <div class="badge-product">
             @if($product->featured)
-                <span class="badge badge-success">Featured</span>
+                <span class="badge badge-success">{{__('labels.fields.featured')}}</span>
             @endif
                 @if($product->inventories->min('old_price') > 0 )
-                    <span class="badge badge-danger">PROMO</span>
+                    <span class="badge badge-danger">{{__('labels.fields.discount')}}</span>
                 @endif
 
         </div>

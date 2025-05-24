@@ -67,7 +67,7 @@ class Shop extends Component
         }
         if(str_contains($propertyName,'min_price') || str_contains($propertyName,'max_price'))
         {
-            dd($propertyName);
+
         }
     }
     public function order($order,$direction)

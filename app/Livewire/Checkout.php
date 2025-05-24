@@ -5,6 +5,7 @@ namespace App\Livewire;
 use App\Contracts\OrderContract;
 use App\Helpers\Cart;
 use App\Models\Order;
+use App\Models\User;
 use Kossa\AlgerianCities\Commune;
 use Kossa\AlgerianCities\Wilaya;
 use Livewire\Attributes\On;
@@ -26,47 +27,50 @@ class Checkout extends Component
     protected function rules()
     {
         return [
-            'name' => 'required|string|max:100',
-            'email' => 'sometimes|nullable|email',
-            'phone' => 'required|string|max:50',
-            'wilayat_id' => 'required|integer',
-            'shipping_to' => 'required|integer|in:1,2',
-            'address' => 'sometimes|nullable|string|max:200',
-            'commune_id' => 'required|integer',
-        ];
+        'name' => 'required|string|max:100',
+        'email' => 'sometimes|nullable|email',
+        'phone' => 'required|string|max:50',
+        'wilayat_id' => 'required|integer',
+        'shipping_to' => 'required|integer|in:1,2',
+        'address' => 'required_if:shipping_to,2|nullable|string|max:200',
+        'commune_id' => 'required|integer',
+    ];
+
     }
     protected function messages()
     {
         return [
-            'name.required' => 'The name field is required.',
-            'name.string' => 'The name must be a valid string.',
-            'name.max' => 'The name must not exceed 100 characters.',
+            'email.email' => __('labels.errors.email_invalid'),
 
-            'email.email' => 'Please enter a valid email address.',
+            'phone.required' => __('labels.errors.phone_required'),
+            'phone.string' => __('labels.errors.phone_string'),
+            'phone.max' => __('labels.errors.phone_max'),
 
-            'phone.required' => 'The phone number is required.',
-            'phone.string' => 'The phone number must be a valid string.',
-            'phone.max' => 'The phone number must not exceed 50 characters.',
+            'wilayat_id.required' => __('labels.errors.wilayat_required'),
+            'wilayat_id.integer' => __('labels.errors.wilayat_integer'),
+            'wilayat_id.exists' => __('labels.errors.wilayat_exists'),
 
-            'wilayat_id.required' => 'Please select a city.',
-            'wilayat_id.integer' => 'Invalid city selection.',
-            'wilayat_id.exists' => 'The selected city is invalid.',
+            'shipping_to.required' => __('labels.errors.shipping_required'),
+            'shipping_to.integer' => __('labels.errors.shipping_integer'),
+            'shipping_to.in' => __('labels.errors.shipping_in'),
 
-            'shipping_to.required' => 'Please choose a shipping method.',
-            'shipping_to.integer' => 'Invalid shipping selection.',
-            'shipping_to.in' => 'The selected shipping method is invalid.',
+            'address.required_if' => __('labels.errors.address_required_if'),
+            'address.string' => __('labels.errors.address_string'),
+            'address.max' => __('labels.errors.address_max'),
 
-            'address.required_if' => 'The address is required when choosing home delivery.',
-            'address.string' => 'The address must be a valid string.',
-            'address.max' => 'The address must not exceed 200 characters.',
+            'commune_id.integer' => __('labels.errors.commune_integer'),
+            'commune_id.required' => __('labels.errors.commune_required'),
 
-            'commune_id.integer' => 'Invalid commune selection.',
         ];
     }
 
     public function mount()
     {
-        $this->cities = Wilaya::whereHas('communes')->get();
+        $this->cities = Wilaya::whereHas('communes')->get();;
+        if(auth()->user())
+        {
+            $this->address = auth()->user()->address;
+        }
         $this->getCart();
     }
     public function getCart(){
@@ -94,7 +98,7 @@ class Checkout extends Component
     public function updatedWilayatId($value)
     {
         $this->communes = Commune::where('wilaya_id', $value)->get();
-        $this->commune_id = null;
+        $this->commune_id = $this->communes->first()->id;
     }
 
     public function updatedShippingTo($value)

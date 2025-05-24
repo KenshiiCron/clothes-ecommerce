@@ -2,11 +2,11 @@
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="header">
-                <div class="title fw-5">Shopping cart</div>
+                <div class="title fw-5">{{__('labels.fields.shopping_cart')}}</div>
                 <span class="icon-close icon-close-popup" data-bs-dismiss="modal"></span>
             </div>
             <div class="wrap">
-                <div class="tf-mini-cart-threshold">
+             {{--   <div class="tf-mini-cart-threshold">
                     <div class="tf-progress-bar">
                             <span style="width: 50%;">
                                 <div class="progress-car">
@@ -16,10 +16,10 @@
                                 </div>
                             </span>
                     </div>
-                    <div class="tf-progress-msg">
+                --}}{{--    <div class="tf-progress-msg">
                         Buy <span class="price fw-6">$75.00</span> more to enjoy <span class="fw-6">Free Shipping</span>
-                    </div>
-                </div>
+                    </div>--}}{{--
+                </div>--}}
                 <div class="tf-mini-cart-wrap">
                     <div class="tf-mini-cart-main">
                         <div class="tf-mini-cart-sroll">
@@ -44,10 +44,10 @@
                                         <div class="tf-mini-cart-btns">
                                             <div class="wg-quantity small">
                                                 <span wire:click="decreaseQty({{$key}})" class="btn-quantity minus-btn">-</span>
-                                                <input wire:model.live="products.{{ $key }}.qty" type="text" name="number" readonly>
+                                                <input value="{{$product['qty']}}" type="text" name="number" readonly>
                                                 <span wire:click="increaseQty({{$key}})" class="btn-quantity plus-btn">+</span>
                                             </div>
-                                            <a href="javascript:void(0);" wire:click="remove({{$key}})" class="tf-mini-cart-remove">Remove</a>
+                                            <a href="javascript:void(0);" wire:click="remove({{$key}})" class="tf-mini-cart-remove">{{__('labels.fields.remove')}}</a>
                                         </div>
                                     </div>
                                 </div>
@@ -56,7 +56,7 @@
 
                                 @else
                                 <div class="mx-auto text-center my-4">
-                                    <span class="fs-5">Aucun produit dans votre panier. <a href="{{route('shop')}}" class="text-decoration-underline">Allez on va faire du shopping!</a></span>
+                                    <span class="fs-5">{{__('labels.text.your_cart_is_empty')}} <a href="{{route('shop')}}" class="text-decoration-underline">{{__('labels.text.go_shopping')}}!</a></span>
                                 </div>
                                     @endif
 
@@ -68,14 +68,14 @@
                     <div class="tf-mini-cart-bottom">
                         <div class="tf-mini-cart-bottom-wrap">
                             <div class="tf-cart-totals-discounts">
-                                <div class="tf-cart-total">Subtotal</div>
+                                <div class="tf-cart-total">{{__('labels.fields.subtotal')}}</div>
                                 <div class="tf-totals-total-value fw-6">{{$this->total}} DA</div>
                             </div>
-                            <div class="tf-cart-tax">Taxes and <a href="#">shipping</a> calculated at checkout</div>
+                            <div class="tf-cart-tax">{{__('labels.fields.shipping')}} {{__('labels.text.calc_at_checkout')}}</div>
                             <div class="tf-mini-cart-line"></div>
                             <div class="tf-mini-cart-view-checkout">
-                                <a href="{{route('cart')}}" class="tf-btn btn-outline radius-3 link w-100 justify-content-center">View cart</a>
-                                <a href="{{route('checkout')}}" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>Check out</span></a>
+                                <a href="{{route('cart')}}" class="tf-btn btn-outline radius-3 link w-100 justify-content-center">{{__('labels.text.view_cart')}}</a>
+                                <a href="{{route('checkout')}}" class="tf-btn btn-fill animate-hover-btn radius-3 w-100 justify-content-center"><span>{{__('labels.fields.checkout')}}</span></a>
                             </div>
                         </div>
                     </div>

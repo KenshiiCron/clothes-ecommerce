@@ -20,7 +20,7 @@ class ProfileUpdateRequest extends FormRequest
             'name' => ['sometimes','required', 'string', 'max:255'],
             'gender' => ['sometimes', 'required', Rule::in(GenderEnum::values())],
             'email' => ['sometimes','required', 'string', 'lowercase', 'email', 'max:255', Rule::unique(User::class)->ignore($this->user()->id)],
-            'phone' => ['nullable', 'numeric', 'digits_between:10,12'],
+            'phone' => ['required', 'numeric', 'digits_between:10,12'],
             'address' => ['nullable', 'string', 'max:255'],
         ];
     }

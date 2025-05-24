@@ -16,16 +16,16 @@
             <div class="col-xl-6 tf-md-hidden">
                 <nav class="box-navigation text-center">
                     <ul class="box-nav-ul d-flex align-items-center justify-content-center gap-30">
-                        <li class="menu-item">
-                            <a href="{{route('home')}}" class="item-link">{{__('labels.navigation.home')}}</a>
+                        <li >
+                            <a href="{{route('home')}}" class="item-link @if(request()->routeIs('home')) current @endif">{{__('labels.navigation.home')}}</a>
                         </li>
-                        <li class="menu-item">
-                            <a href="{{route('shop')}}" class="item-link">{{__('labels.navigation.shop')}}</a>
+                        <li >
+                            <a href="{{route('shop')}}" class="item-link @if(request()->routeIs('shop') || request()->routeIs('cart') || request()->routeIs('checkout') || request()->routeIs('products.*')) current @endif">{{__('labels.navigation.shop')}}</a>
                         </li>
-                        <li class="menu-item">
+                        <li >
                             <a href="{{route('about')}}" class="item-link">{{__('labels.navigation.about')}}</a>
                         </li>
-                        <li class="menu-item">
+                        <li >
                             <a href="{{route('contact')}}" class="item-link">{{__('labels.navigation.contact')}}</a>
                         </li>
                     </ul>
@@ -43,11 +43,11 @@
                                 <i class="icon icon-account"></i>
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
-                                <li><a class="dropdown-item" href="{{route('account.details')}}">Account</a></li>
+                                <li><a class="dropdown-item" href="{{route('account.details')}}">{{__('labels.fields.profile')}}</a></li>
                                 <li>
                                     <form method="POST" action="{{ route('logout') }}">
                                         @csrf
-                                        <button type="submit" class="dropdown-item">Logout</button>
+                                        <button type="submit" class="dropdown-item">{{__('labels.fields.logout')}}</button>
                                     </form>
                                 </li>
                             </ul>

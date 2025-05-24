@@ -1801,6 +1801,18 @@ label {
     background: var(--main);
 }
 
+#header .box-nav-ul li .current::before{
+    content: "";
+    width: 100%;
+    left: 0;
+    right: auto;
+    height: 1px;
+    top: 99%;
+    position: absolute;
+    z-index: 1;
+    background: var(--main);
+}
+
 #header .box-nav-ul li:hover .item-link::before {
     width: 100%;
     left: 0;

@@ -23,5 +23,6 @@ return [
         'filter' => 'Filtre',
         'category' => 'Catégorie',
         'categories' => 'Catégories',
-    ]
+    ],
+
 ];

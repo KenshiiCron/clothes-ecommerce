@@ -73,6 +73,15 @@
 
 
     <!-- mobile menu -->
+    <div class="offcanvas offcanvas-start canvas-filter canvas-sidebar canvas-sidebar-account" id="mbAccount">
+        <div class="canvas-wrapper">
+            <header class="canvas-header">
+                <span class="title">{{__('labels.fields.account')}}</span>
+                <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
+            </header>
+            <div class="canvas-body sidebar-mobile-append"> </div>
+        </div>
+    </div>
     <div class="offcanvas offcanvas-start canvas-mb" id="mobileMenu">
         <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
         <div class="mb-canvas-content">
@@ -112,7 +121,7 @@
                 </div>
             </div>
             <div class="mb-bottom">
-                <a href="login.html" class="site-nav-icon"><i class="icon icon-account"></i>Login</a>
+                <a href="{{auth()->user() ? route('account.details') : route('login')}}" class="site-nav-icon"><i class="icon icon-account"></i>{{auth()->user() ?  __('labels.fields.profile') : __('labels.fields.login')}}</a>
                 <div class="bottom-bar-language">
                     <div class="tf-currencies">
                         <select class="image-select center style-default type-currencies">

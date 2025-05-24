@@ -1,7 +1,7 @@
 <div>
     <div class="tf-page-title">
         <div class="container-full">
-            <div class="heading text-center">Shopping Cart</div>
+            <div class="heading text-center">{{__('labels.fields.shopping_cart')}}</div>
         </div>
     </div>
     <!-- /page-title -->
@@ -14,7 +14,7 @@
                 <p class="mb_24">You may check out all the available products and buy some in the shop</p>
                 <a href="shop-default.html" class="tf-btn btn-sm radius-3 btn-fill btn-icon animate-hover-btn">Return to shop<i class="icon icon-arrow1-top-left"></i></a>
             </div> -->
-            <div wire:ignore class="tf-cart-countdown">
+  {{--          <div wire:ignore class="tf-cart-countdown">
                 <div class="title-left">
                     <svg class="d-inline-block" xmlns="http://www.w3.org/2000/svg" width="16" height="24" viewBox="0 0 16 24" fill="rgb(219 18 21)">
                         <path fill-rule="evenodd" clip-rule="evenodd" d="M10.0899 24C11.3119 22.1928 11.4245 20.2409 10.4277 18.1443C10.1505 19.2691 9.64344 19.9518 8.90645 20.1924C9.59084 18.2379 9.01896 16.1263 7.19079 13.8576C7.15133 16.2007 6.58824 17.9076 5.50148 18.9782C4.00436 20.4517 4.02197 22.1146 5.55428 23.9669C-0.806588 20.5819 -1.70399 16.0418 2.86196 10.347C3.14516 11.7228 3.83141 12.5674 4.92082 12.8809C3.73335 7.84186 4.98274 3.54821 8.66895 0C8.6916 7.87426 11.1062 8.57414 14.1592 12.089C17.4554 16.3071 15.5184 21.1748 10.0899 24Z"></path>
@@ -22,17 +22,17 @@
                     <p>These products are limited, checkout within </p>
                 </div>
                 <div class="js-countdown timer-count" data-timer="600" data-labels="d:,h:,m:,s"></div>
-            </div>
+            </div>--}}
             <div class="tf-page-cart-wrap">
                 <div class="tf-page-cart-item">
                     <form>
                         <table class="tf-table-page-cart">
                             <thead>
                             <tr>
-                                <th>Product</th>
-                                <th>Price</th>
-                                <th>Quantity</th>
-                                <th>Total</th>
+                                <th>{{__('labels.fields.product')}}</th>
+                                <th>{{__('labels.fields.price')}}</th>
+                                <th>{{__('labels.fields.quantity')}}</th>
+                                <th>{{__('labels.fields.total')}}</th>
                             </tr>
                             </thead>
                             <tbody>
@@ -47,7 +47,9 @@
                                         </a>
                                         <div class="cart-info">
                                             <a href="{{route('products.show', $product['details']->id)}}" class="cart-title link">{{$product['details']->name}}</a>
-                                            <div class="cart-meta-variant">{{ucfirst($product['inventory']->attribute_values[1]->value)}} / {{ucfirst($product['inventory']->attribute_values[0]->value)}}</div>
+                                            @if($product['inventory']->attribute_values->isNotEmpty())
+                                                <div class="cart-meta-variant">{{ucfirst($product['inventory']->attribute_values[1]->value)}} / {{ucfirst($product['inventory']->attribute_values[0]->value)}}</div>
+                                            @endif
                                             <span wire:click="remove({{$key}})" class="remove-cart link remove">Remove</span>
                                         </div>
                                     </td>
@@ -74,7 +76,7 @@
                                 </tr>
                                 @empty
                                 <tr>
-                                    <td><span class="fs-5">Aucun produit dans votre panier. <a href="{{route('shop')}}" class="text-decoration-underline">Allez on va faire du shopping!</a></span>
+                                    <td><span class="fs-5">{{__('labels.text.your_cart_is_empty')}}. <a href="{{route('shop')}}" class="text-decoration-underline">{{__('labels.text.go_shopping')}}!</a></span>
                                     </td>
                                 </tr>
                             @endforelse
@@ -83,13 +85,13 @@
                             </tbody>
                         </table>
                         <div class="tf-page-cart-note">
-                            <a href="{{route('shop')}}" class="text-decoration-underline">Continue shopping and enjoy our discounts and offers</a>
+                            <a href="{{route('shop')}}" class="text-decoration-underline">{{(__('labels.text.continue_shopping'))}}</a>
                         </div>
 
                     </form>
                 </div>
                 <div class="tf-page-cart-footer">
-                    <div class="tf-cart-footer-inner">
+                {{--    <div class="tf-cart-footer-inner">
                         <div class="tf-free-shipping-bar">
                             <div class="tf-progress-bar">
                                     <span style="width: 50%;">
@@ -100,10 +102,10 @@
                                         </div>
                                     </span>
                             </div>
-                            <div class="tf-progress-msg">
+                          --}}{{--  <div class="tf-progress-msg">
                                 Buy <span class="price fw-6">$75.00</span> more to enjoy <span class="fw-6">Free Shipping</span>
-                            </div>
-                        </div>
+                            </div>--}}{{--
+                        </div>--}}
                         <div class="tf-page-cart-checkout">
                             <div class="shipping-calculator">
                                 <summary class="accordion-shipping-header d-flex justify-content-between align-items-center collapsed" data-bs-target="#shipping" data-bs-toggle="collapse" aria-controls="shipping">
@@ -160,28 +162,34 @@
                             <div class="cart-checkbox">
                                 <input type="checkbox" class="tf-check" id="cart-gift-checkbox">
                                 <label for="cart-gift-checkbox" class="fw-4">
-                                    <span>Do you want a gift wrap?</span> Only <span class="fw-5">$5.00</span>
+                                    <span>{{__('labels.text.you_want_gift_wrap')}}?</span> {{__('labels.singles.only')}} <span class="fw-5">$5.00</span>
                                 </label>
                             </div>
                             <div class="tf-cart-totals-discounts">
-                                <h3>Subtotal</h3>
+                                <h3>{{__('labels.fields.subtotal')}}</h3>
                                 <span class="total-value">{{$this->total}} DA</span>
                             </div>
                             <p class="tf-cart-tax">
-                                Taxes and <a href="shipping-delivery.html">shipping</a>  calculated at checkout
+                                {{__('labels.fields.shipping')}} {{__('labels.text.calc_at_checkout')}}
                             </p>
-                            <div class="cart-checkbox">
+                          {{--  <div class="cart-checkbox">
                                 <input type="checkbox" class="tf-check" id="check-agree">
                                 <label for="check-agree" class="fw-4">
                                     I agree with the <a href="terms-conditions.html">terms and conditions</a>
                                 </label>
-                            </div>
+                            </div>--}}
                             <div class="cart-checkout-btn">
-                                <a href="checkout.html" class="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center">
-                                    <span>Check out</span>
-                                </a>
+                                @if(!empty($products))
+                                    <a href="{{route('checkout')}}" class="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center">
+                                        <span>{{__('labels.fields.checkout')}}</span>
+                                    </a>
+                                @else
+                                    <a href="{{route('checkout')}}" class="tf-btn w-100 btn-fill animate-hover-btn radius-3 justify-content-center">
+                                        <span>{{__('labels.text.go_shopping')}}</span>
+                                    </a>
+                                @endif
                             </div>
-                            <div class="tf-page-cart_imgtrust">
+                   {{--         <div class="tf-page-cart_imgtrust">
                                 <p class="text-center fw-6">Guarantee Safe Checkout</p>
                                 <div class="cart-list-social">
                                     <div class="payment-item">
@@ -200,7 +208,7 @@
                                         <svg xmlns="http://www.w3.org/2000/svg" role="img" viewBox="0 0 38 24" width="38" height="24" aria-labelledby="pi-amazon"><title id="pi-amazon">Amazon</title><path d="M35 0H3C1.3 0 0 1.3 0 3v18c0 1.7 1.4 3 3 3h32c1.7 0 3-1.3 3-3V3c0-1.7-1.4-3-3-3z" fill="#000" fill-rule="nonzero" opacity=".07"></path><path d="M35 1c1.1 0 2 .9 2 2v18c0 1.1-.9 2-2 2H3c-1.1 0-2-.9-2-2V3c0-1.1.9-2 2-2h32" fill="#FFF" fill-rule="nonzero"></path><path d="M25.26 16.23c-1.697 1.48-4.157 2.27-6.275 2.27-2.97 0-5.644-1.3-7.666-3.463-.16-.17-.018-.402.173-.27 2.183 1.504 4.882 2.408 7.67 2.408 1.88 0 3.95-.46 5.85-1.416.288-.145.53.222.248.47v.001zm.706-.957c-.216-.328-1.434-.155-1.98-.078-.167.024-.193-.148-.043-.27.97-.81 2.562-.576 2.748-.305.187.272-.047 2.16-.96 3.063-.14.138-.272.064-.21-.12.205-.604.664-1.96.446-2.29h-.001z" fill="#F90" fill-rule="nonzero"></path><path d="M21.814 15.291c-.574-.498-.676-.73-.993-1.205-.947 1.012-1.618 1.315-2.85 1.315-1.453 0-2.587-.938-2.587-2.818 0-1.467.762-2.467 1.844-2.955.94-.433 2.25-.51 3.25-.628v-.235c0-.43.033-.94-.208-1.31-.212-.333-.616-.47-.97-.47-.66 0-1.25.353-1.392 1.085-.03.163-.144.323-.3.33l-1.677-.187c-.14-.033-.296-.153-.257-.38.386-2.125 2.223-2.766 3.867-2.766.84 0 1.94.234 2.604.9.842.82.762 1.918.762 3.11v2.818c0 .847.335 1.22.65 1.676.113.164.138.36-.003.482-.353.308-.98.88-1.326 1.2a.367.367 0 0 1-.414.038zm-1.659-2.533c.34-.626.323-1.214.323-1.918v-.392c-1.25 0-2.57.28-2.57 1.82 0 .782.386 1.31 1.05 1.31.487 0 .922-.312 1.197-.82z" fill="#221F1F"></path></svg>
                                     </div>
                                 </div>
-                            </div>
+                            </div>--}}
 
                         </div>
                     </div>

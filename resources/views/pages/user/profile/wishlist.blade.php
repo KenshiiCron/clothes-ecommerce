@@ -5,7 +5,7 @@
 @section('content')
     <div class="tf-page-title">
         <div class="container-full">
-            <div class="heading text-center">My Wishlist</div>
+            <div class="heading text-center">{{__('labels.fields.my_wishlist')}}</div>
         </div>
     </div>
     <!-- /page-title -->
@@ -17,7 +17,7 @@
                 <livewire:account-sidebar />
                 <div class="col-lg-9">
                     <div class="my-account-content account-wishlist">
-                        <h5 class="fw-5 mb_20">My Wishlist</h5>
+                        <h5 class="fw-5 mb_20">{{__('labels.fields.my_wishlist')}}</h5>
 
                         <div class="grid-layout wrapper-shop" data-grid="grid-3">
                             @if($wishlist->isNotEmpty())
@@ -25,10 +25,10 @@
                                 @include('components.product-card',['product'=> $item->product])
                             @endforeach
                             @else
-                                <span class="text-muted">You have no items in your wishlist. <a class="text-decoration-underline" href="{{route('shop')}}">Browse our shop</a> to find something you like.</span>
+                                <span class="text-muted">{{__('labels.text.your_wishlist_is_empty')}}. <a class="text-decoration-underline" href="{{route('shop')}}">{{__('labels.text.see_our_shop')}}.</a></span>
                             @endif
                             <!-- card product 1 -->
-{{--                            <div class="card-product">--}}
+{{--                            <div class="card-product">--}}²
 {{--                                <div class="card-product-wrapper">--}}
 {{--                                    <a href="product-detail.html" class="product-img">--}}
 {{--                                        <img class="lazyload img-product" data-src="{{asset('assets/front/images/products/white-3.jpg')}}" src="{{asset('assets/front/images/products/white-3.jpg')}}" alt="image-product">--}}
@@ -40,7 +40,7 @@
 {{--                                            <span class="tooltip">Quick Add</span>--}}
 {{--                                        </a>--}}
 {{--                                        <a href="javascript:void(0);" class="box-icon bg_white wishlist btn-icon-action">--}}
-{{--                                            <span class="icon icon-heart"></span>--}}
+{{--                                            <span class="icon icon-h²eart"></span>--}}
 {{--                                            <span class="tooltip">Add to Wishlist</span>--}}
 {{--                                            <span class="icon icon-delete"></span>--}}
 {{--                                        </a>--}}

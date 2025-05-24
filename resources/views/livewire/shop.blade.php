@@ -37,23 +37,23 @@
                          {{--   <div class="select-item">
                                 <span class="text-value-item" wire:click="order('seller','asc')">{{__('labels.sort.best_selling')}}</span>
                             </div>--}}
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order('name','asc')">{{__('labels.sort.name_asc')}}</span>
+                            <div class="select-item" wire:click="order('name','asc')">
+                                <span class="text-value-item" >{{__('labels.sort.name_asc')}}</span>
                             </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order('name','asc')">{{__('labels.sort.name_desc')}}</span>
+                            <div class="select-item" wire:click="order('name','asc')">
+                                <span class="text-value-item" >{{__('labels.sort.name_desc')}}</span>
                             </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order('price','asc')">{{__('labels.sort.price_asc')}}</span>
+                            <div class="select-item" wire:click="order('price','asc')">
+                                <span class="text-value-item" >{{__('labels.sort.price_asc')}}</span>
                             </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order('price','desc')">{{__('labels.sort.price_desc')}}</span>
+                            <div class="select-item" wire:click="order('price','desc')">
+                                <span class="text-value-item" >{{__('labels.sort.price_desc')}}</span>
                             </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order('created_at','asc')">{{__('labels.sort.oldest')}}</span>
+                            <div class="select-item" wire:click="order('created_at','asc')">
+                                <span class="text-value-item" >{{__('labels.sort.created_at_asc')}}</span>
                             </div>
-                            <div class="select-item">
-                                <span class="text-value-item" wire:click="order('created_at','desc')">{{__('labels.sort.newest')}}</span>
+                            <div class="select-item" wire:click="order('created_at','desc')" >
+                                <span class="text-value-item" >{{__('labels.sort.created_at_desc')}}</span>
                             </div>
                         </div>
                     </div>
@@ -209,14 +209,14 @@
             <header class="canvas-header">
                 <div class="filter-icon">
                     <span class="icon icon-filter"></span>
-                    <span>Filter</span>
+                    <span>{{__('labels.fields.filter')}}</span>
                 </div>
                 <span class="icon-close icon-close-popup" data-bs-dismiss="offcanvas" aria-label="Close"></span>
             </header>
             <div class="canvas-body">
                 <div class="widget-facet wd-categories">
                     <div class="facet-title"  data-bs-toggle="collapse" aria-expanded="true" aria-controls="categories">
-                        <span>Product categories</span>
+                        <span>{{__('labels.fields.products')}} {{__('labels.fields.categories')}}</span>
                         <span class="icon icon-arrow-up"></span>
                     </div>
                     <div id="categories" class="collapse show" >

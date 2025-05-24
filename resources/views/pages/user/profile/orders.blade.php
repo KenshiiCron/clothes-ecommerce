@@ -16,16 +16,16 @@
                 <livewire:account-sidebar />
                 <div class="col-lg-9">
                     <div class="my-account-content account-order">
-                        <h5 class="fw-5 mb_20">My Orders</h5>
+                        <h5 class="fw-5 mb_20">{{__('labels.fields.my_orders')}}</h5>
                         <div class="wrap-account-order">
                             <table>
                                 <thead>
                                 <tr>
-                                    <th class="fw-6">Order</th>
-                                    <th class="fw-6">Date</th>
-                                    <th class="fw-6">Status</th>
-                                    <th class="fw-6">Total</th>
-                                    <th class="fw-6">Actions</th>
+                                    <th class="fw-6">{{__('labels.fields.order')}}</th>
+                                    <th class="fw-6">{{__('labels.fields.date')}}</th>
+                                    <th class="fw-6">{{__('labels.fields.state')}}</th>
+                                    <th class="fw-6">{{__('labels.fields.total')}}</th>
+                                    <th class="fw-6">{{__('labels.fields.actions')}}</th>
                                 </tr>
                                 </thead>
                                 @foreach($orders as $order)
@@ -57,10 +57,10 @@
                                                 <table>
                                                     <thead>
                                                     <tr>
-                                                        <th>Image</th>
-                                                        <th>Name</th>
-                                                        <th>Quantity</th>
-                                                        <th>Action</th>
+                                                        <th>{{__('labels.fields.image')}}</th>
+                                                        <th>{{__('labels.fields.name')}}</th>
+                                                        <th>{{__('labels.fields.quantity')}}</th>
+                                                        <th>{{__('labels.fields.actions')}}</th>
                                                     </tr>
                                                     </thead>
                                                     <tbody>

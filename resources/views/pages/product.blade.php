@@ -7,9 +7,9 @@
         <div class="container">
             <div class="tf-breadcrumb-wrap d-flex justify-content-between flex-wrap align-items-center">
                 <div class="tf-breadcrumb-list">
-                    <a href="{{route('home')}}" class="text">{{__('navigation.home')}}</a>
+                    <a href="{{route('home')}}" class="text">{{__('labels.navigation.home')}}</a>
                     <i class="icon icon-arrow-right"></i>
-                    <a href="{{route('shop')}}" class="text">{{__('shop')}}</a>
+                    <a href="{{route('shop')}}" class="text">{{__('labels.navigation.shop')}}</a>
                     <i class="icon icon-arrow-right"></i>
                     <span class="text">{{$product->name}}</span>
                 </div>
@@ -42,7 +42,7 @@
                     <div class="widget-tabs style-has-border">
                         <ul class="widget-menu-tab">
                             <li class="item-title active">
-                                <span class="inner">Description</span>
+                                <span class="inner">{{__('labels.fields.description')}}</span>
                             </li>
                             <li class="item-title">
                                 <span class="inner">Additional Information</span>

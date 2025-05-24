@@ -46,7 +46,7 @@
                         @enderror
                     </fieldset>
                     <fieldset class="box fieldset">
-                        <label for="delivery">{{__('labels.fields.shipping_to')}}</label>
+                        <label for="delivery">{{__('labels.fields.shipping')}}</label>
                         <div class="select-custom">
                             <select class="tf-select w-100" id="delivery" wire:model.live="shipping_to" data-default="">
                                 <option value="1" selected>{{__('labels.fields.desk')}}</option>
